@@ -1,0 +1,31 @@
+.navbar {
+
+    /* border: 2px solid rgb(255, 0, 0);  */
+    background-color: rgba(50, 50, 50, 0.441);
+    padding: 20 40 20 40;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+  }
+  
+.logo {
+    text-align: left;
+    /* border: 2px solid rgb(4, 167, 255);  */
+    grid-column: 1;
+    color: white;
+}
+
+.links {
+    text-align: right;
+    /* border: 2px solid rgb(36, 143, 48);  */
+    grid-column: 2;
+    
+    
+}
+
+#home, #profile {
+    text-decoration: none;
+    color:white;
+    margin-left: 20px;
+}
+
