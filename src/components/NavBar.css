@@ -1,8 +1,7 @@
 .navbar {
-
     /* border: 2px solid rgb(255, 0, 0);  */
-    background-color: rgba(50, 50, 50, 0.441);
-    padding: 20 40 20 40;
+    background-color: rgba(50, 50, 50, 0.38);
+    padding: 20 60 20 60;
     display: grid;
     grid-template-columns: 1fr 1fr;
 
@@ -17,15 +16,34 @@
 
 .links {
     text-align: right;
-    /* border: 2px solid rgb(36, 143, 48);  */
     grid-column: 2;
-    
-    
 }
 
 #home, #profile {
     text-decoration: none;
     color:white;
-    margin-left: 20px;
+    margin-left: 30px;
+}
+
+.nav-link {
+    transition: .4s ease-in-out ; /* Smooth transition for the border color */
+    padding-bottom: 18px;
+    border-bottom: 1.5px solid transparent; /* Default state */
+
+
+}
+
+.nav-link-active {
+    border-bottom: 1.5px solid white; /* Default state */
+    padding-bottom: 18px;
+
+   
+
+}
+
+.nav-link:hover {
+    transition: .4s  ease-in-out ; /* Smooth transition for the border color */
+    border-bottom: 1.5px solid rgb(255, 255, 255); /* Visible border on hover */
+
 }
 
