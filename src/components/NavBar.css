@@ -11,6 +11,11 @@
     text-align: left;
     /* border: 2px solid rgb(4, 167, 255);  */
     grid-column: 1;
+    font-weight: 700;
+}
+
+#main {
+    text-decoration: none;
     color: white;
 }
 

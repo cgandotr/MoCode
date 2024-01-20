@@ -7,12 +7,17 @@ import {
 import './index.css';
 import App from './App';
 import Profile from './pages/Profile';
+import Home from './pages/Home';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <App/>,
+  },
+  {
+    path: "home",
+    element: <Home/>,
   },
   {
     path: "profile",

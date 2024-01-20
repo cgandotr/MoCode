@@ -6,7 +6,15 @@ function App() {
   return (
     <div className="App">
       <NavBar></NavBar>
-      App
+      <div className="intro">
+        <div id="left">
+          <h1 id="logo">MoCode</h1>
+          <h2 id="liner">Get Your Offer Letter!</h2>
+        </div>
+        <div id="right">
+          <img alt="Description"></img>
+        </div>
+      </div>
       <Footer></Footer>
     </div>
   );

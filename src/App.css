@@ -6,4 +6,56 @@
   background: linear-gradient(to top right, #000000, #050021, #07002e);
   color:white;
   background-attachment:fixed;
+  overflow: auto;
+
+
+
+
+}
+
+.intro {
+     margin: 100 15% 0 15% ;
+      /* border: 3px solid rgba(255, 255, 255, 0.348);  */
+      padding: 10p 10 10 10;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 50vh;
+      justify-content: center; /* Center children horizontally */
+      display: flex;        /* Enable Flexbox */
+      transition: 1s ease-in-out ; /* Smooth transition for the border color */
+      border-radius: 30px; /* All corners will be rounded with a radius of 10px */
+}
+
+#left, #right {
+  padding: 2% 5% 2% 5%;
+  /* border: 2px solid rgb(91, 39, 39); */
+  width: 100%; 
+}
+
+#left {
+  grid-column: 1;
+  right: 0;
+  /* border-right: 3px solid rgba(255, 255, 255, 0.348);  */
+}
+#right {
+  grid-column: 2;
+}
+
+#logo {
+
+}
+
+#liner {
+  margin-top: -40;
+
+}
+h1 {
+  font-weight: 600;
+  font-size: 60;
+}
+
+h2 {
+  font-weight: 200;
+  font-size: 20;
 }
