@@ -4,3 +4,12 @@
     background: linear-gradient(to top right, #000000, #050021, #07002e);
     color: white;
   }
+
+  #profileIcon {
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+    border-radius: 50%; /* This creates the circular shape */
+    object-fit: cover; /* This ensures the image covers the area without stretching */
+    background-image:ProfileIcon;
+
+  }

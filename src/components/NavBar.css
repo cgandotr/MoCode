@@ -4,14 +4,16 @@
     padding: 20 60 20 60;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 20px;
 
   }
   
 .logo {
-    text-align: left;
     /* border: 2px solid rgb(4, 167, 255);  */
     grid-column: 1;
     font-weight: 700;
+    display: flex;
+    align-items: center; /* This centers the child vertically */
 }
 
 #main {
@@ -22,12 +24,17 @@
 .links {
     text-align: right;
     grid-column: 2;
+    /* border: 2px solid rgb(4, 167, 255);  */
+    align-items: center; /* This centers the child vertically */
+    margin-top: 1px;
+    
 }
 
 #home, #profile {
     text-decoration: none;
     color:white;
     margin-left: 30px;
+
 }
 
 .nav-link {
@@ -42,8 +49,6 @@
     border-bottom: 1.5px solid white; /* Default state */
     padding-bottom: 18px;
 
-   
-
 }
 
 .nav-link:hover {
@@ -52,3 +57,8 @@
 
 }
 
+#profile-icon {
+    width: 20px;
+    margin-bottom: -4px;
+
+}

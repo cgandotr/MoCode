@@ -1,6 +1,7 @@
 import './App.css';
 import NavBar from '../src/components/NavBar';
 import Footer from '../src/components/Footer';
+import SignIn from '../src//components/SignIn'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <img alt="Description"></img>
         </div>
       </div>
+      <SignIn></SignIn>
       <Footer></Footer>
     </div>
   );
