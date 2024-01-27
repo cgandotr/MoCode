@@ -14,7 +14,7 @@
 }
 
 .intro {
-     margin: 100 15% 0 15% ;
+     margin: 100 20% 0 20% ;
       /* border: 3px solid rgba(255, 255, 255, 0.348);  */
       padding: 10p 10 10 10;
       position: relative;
@@ -51,11 +51,37 @@
 
 }
 h1 {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 60;
 }
 
 h2 {
   font-weight: 200;
-  font-size: 20;
+  font-size: 15;
+}
+.code-box {
+  background-color: #282a36;
+  color: #f8f8f2;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+#animatedText {
+  border-right: 2px solid;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(20, end), blink .75s step-end infinite;
 }

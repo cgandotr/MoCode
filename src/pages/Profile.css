@@ -3,13 +3,40 @@
     width: 100%;
     background: linear-gradient(to top right, #000000, #050021, #07002e);
     color: white;
+    overflow: auto;
   }
 
+#profileMetaData {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 34px;
+  padding: 30 30 30 30;
+  margin: 50 0 50 10%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 283px;
+height: 418px;
+  
+}
   #profileIcon {
     width: 100px; /* Adjust size as needed */
     height: 100px; /* Adjust size as needed */
     border-radius: 50%; /* This creates the circular shape */
     object-fit: cover; /* This ensures the image covers the area without stretching */
     background-image:ProfileIcon;
+    margin-right: 30;
 
+  }
+
+  #logOutBtn {
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      height: 100%;
+
+  }
+  #logOut {
+    width: 100%;
+      border-top: 3px solid rgb(255, 255, 255); 
   }

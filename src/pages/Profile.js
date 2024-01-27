@@ -36,11 +36,15 @@ function Profile() {
                 <div className="loggedIn">
                     <div id="profileMetaData">
                         <img id="profileIcon" src={currentUser.photo}></img>
-                        <h2>{currentUser.name}</h2>
-                        <h2>{currentUser.email}</h2>
+                        <div id="info">
+                             <h2>{currentUser.name}</h2>
+                             <h3>{currentUser.email}</h3>
+                        </div>
+                        <div id="logOut">
+                            <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
+                        </div>
                     </div>
 
-                    <button onClick={googleLogoutFnc}>Sign Out</button>
                 </div>
             ) : (
                <SignIn></SignIn>
