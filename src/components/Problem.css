@@ -1,0 +1,80 @@
+.problem {
+    padding: 15px;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.207);
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+}
+
+#status {
+    margin-left: 10px;
+    height: 20px;
+}
+
+.title-status-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+#title {
+    margin-left: 10px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+#category, #difficulty {
+    margin-left: 50px;
+    padding: 7px 15px;
+    border-radius: 34px;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap; /* Prevents breaking the content into multiple lines */
+}
+
+#buttons {
+    margin-left: 3%;
+    display: flex;
+}
+
+#start-pause, #complete, #incomplete {
+    margin: 0 10 0 10;
+    height: 25px;
+}
+
+
+
+.problem, .title-status-container, #category, #difficulty, #buttons {
+    transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
+}
+/* Responsive adjustments */
+@media (max-width: 1500px) {
+    .problem {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #status {
+        margin-left: 1;
+    }
+
+    .status-title-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 10px; /* Adjust as needed */
+    }
+
+
+    #category, #difficulty, #buttons {
+        margin: 10 0 0 30px;
+        
+    }
+
+    #buttons {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}

@@ -17,25 +17,36 @@ function SignIn() {
 
     const googleLoginFnc = async (e) => {
         if (currentUser) {
-            navigate('/home'); // Redirect to dashboard or another route
-        }
-        else {
-            const provider = new GoogleAuthProvider()
+            navigate('/home'); // Redirect if already logged in
+        } else {
+            const provider = new GoogleAuthProvider();
             return signInWithPopup(auth, provider).then(async (result) => {
-            console.log("success")
-            await setDoc(doc(db, "users", result.user.uid), {
-                __id: result.user.uid,
-                name: result.user.displayName,
-                email: result.user.email,
-                photo: result.user.photoURL
+                console.log("success");
+                const userRef = doc(db, "users", result.user.uid);
+                
+                // Check if user already exists in Firebase
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    // Create a new document for new user
+                    await setDoc(userRef, {
+                        __id: result.user.uid,
+                        name: result.user.displayName,
+                        email: result.user.email,
+                        photo: result.user.photoURL,
+                        history: ["GdiDgvCKNTkJzHOBKVq6"],
+                        reccommended: ["GdiDgvCKNTkJzHOBKVq6", "232"]
+                    });
+                } else {
+                    // User already exists, you can handle this case if needed
+                    console.log("User already exists in Firebase.");
+                }
+                navigate('/home'); // Redirect to dashboard or another route
+            }).catch((error) => {
+                console.log(error);
             });
-            navigate('/home'); // Redirect to dashboard or another route
-        
-        }).catch((error) => {
-            console.log(error)
-        })
         }
     }
+    
 
 
 

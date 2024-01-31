@@ -4,3 +4,13 @@
     background: linear-gradient(to top right, #000000, #050021, #07002e);
     color: white;
   }
+
+  #welcome {
+    font-size: 30px;
+    font-weight: 500px;
+    margin: 50 0 0 5%;
+  }
+  #problems {
+    width: 50%;
+    margin: 50 0 0 5%;
+  }

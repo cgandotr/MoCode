@@ -4,13 +4,20 @@
     background: linear-gradient(to top right, #000000, #050021, #07002e);
     color: white;
     overflow: auto;
+
   }
+
+  #loggedIn {
+    display: flex; /* Enable flexbox */
+    align-items: start; /* Align items to the start of the container vertically */
+}
+
 
 #profileMetaData {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 34px;
   padding: 30 30 30 30;
-  margin: 50 0 50 10%;
+  margin: 50 0 50 5%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 283px;
@@ -39,4 +46,8 @@ height: 418px;
   #logOut {
     width: 100%;
       border-top: 3px solid rgb(255, 255, 255); 
+  }
+
+  #problems {
+    width: 10vw; /* Adjust the width as needed */
   }

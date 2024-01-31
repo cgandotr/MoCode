@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Two Sum",
+        "link": "https://leetcode.com/problems/two-sum",
+        "difficulty": "Easy",
+        "category": "Arrays & Hashing"
+    },
+    {
+        "title": "Add Two Numbers",
+        "link": "https://leetcode.com/problems/add-two-numbers",
+        "difficulty": "Easy",
+        "category": "Linked List"
+    }
+]

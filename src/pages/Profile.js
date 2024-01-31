@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import SignIn from '../components/SignIn'
+import Problem from '../components/Problem'
+
 import ProfileIcon from '../extra/profile_icon.svg'; // Import SVG
 import './Profile.css';
 import { auth, db, app } from './../firebase'
@@ -33,7 +35,7 @@ function Profile() {
         <div className="Profile">
             <NavBar></NavBar>   
             {currentUser ? (
-                <div className="loggedIn">
+                <div id="loggedIn">
                     <div id="profileMetaData">
                         <img id="profileIcon" src={currentUser.photo}></img>
                         <div id="info">
@@ -44,7 +46,11 @@ function Profile() {
                             <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
                         </div>
                     </div>
-
+                    <div id="problems">
+                    {currentUser.history.map((problem, index) => (
+                                <Problem id={problem} parent="history"></Problem>
+                            ))}
+                    </div>
                 </div>
             ) : (
                <SignIn></SignIn>
