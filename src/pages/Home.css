@@ -4,3 +4,31 @@
     background: linear-gradient(to top right, #000000, #050021, #07002e);
     color: white;
   }
+
+  #welcome {
+    font-size: 30px;
+    font-weight: 500px;
+    margin: 50 0 0 5%;
+  }
+  #problems {
+    width: 50%;
+    margin: 50 0 0 5%;
+  }
+  
+  #rec-btn {
+    margin-right: 0;
+    background: rgba(255, 255, 255, 0.178);
+    color: white;
+    padding: 5px;
+    cursor: pointer; /* Changes cursor to pointer */
+    transform: none;
+
+
+  }
+
+  #rec-btn:active {
+    /* Override styles here to remove click effects */
+    /* Example: if there's a transform on active, you can reset it */
+    transform: none;
+    /* Reset any other style properties that are changed on active */
+}

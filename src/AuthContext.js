@@ -1,37 +1,39 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from './firebase'; // Adjust the path as necessary
-import { doc, setDoc, Timestamp, getDoc } from "firebase/firestore"; 
+import { auth, db } from './firebase';
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore"; 
+import problemsJSON from './problems.json'; 
+
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [userProblems, setUserProblems] = useState([]);
+    const [problems, setProblems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                await fetchUser(user);
+                await fetchUserAndProblems(user);
             } else {
-                // User is signed out
                 setCurrentUser(null);
+                setUserProblems([]);
+                setProblems([]);
                 setLoading(false);
             }
         });
 
-        // Define the async function inside useEffect
-        const fetchUser = async (user) => {
+        const fetchUserAndProblems = async (user) => {
+            setLoading(true);
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userDocRef);
-
                 if (userDoc.exists()) {
-                    // Set the currentUser state to the user data
                     setCurrentUser(userDoc.data());
+                    await fetchProblemsForUser(user.uid);
                 } else {
-                    // Handle case where user is authenticated but not in Firestore
-                    console.log("User is authenticated but not found in Firestore.");
                     setCurrentUser(null);
                 }
             } catch (error) {
@@ -41,11 +43,28 @@ export const AuthProvider = ({ children }) => {
             }
         };
 
+        const fetchProblemsForUser = async (userId) => {
+            const userProblemsRef = collection(db, "userProblems");
+            const q = query(userProblemsRef, where("__userId", "==", userId));
+            const userProblemsSnapshot = await getDocs(q);
+            const fetchedUserProblems = userProblemsSnapshot.docs.map(doc => doc.data());
+            setUserProblems(fetchedUserProblems);
+            console.log('Fetched user problems:', fetchedUserProblems);
+
+
+            // Fetch each problem based on userProblems
+            const filteredProblems = problemsJSON.filter(problem => 
+                fetchedUserProblems.some(userProblem => userProblem.problemLink === problem.link)
+            );
+            console.log('problems', filteredProblems)
+            setProblems(filteredProblems);
+        };
+
         return () => unsubscribe();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ currentUser, setCurrentUser, loading }}>
+        <AuthContext.Provider value={{ currentUser, userProblems, problems, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );
