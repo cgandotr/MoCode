@@ -26,7 +26,7 @@ function SignIn() {
                 
                 // Check if user already exists in Firebase
                 const docSnap = await getDoc(userRef);
-                if (docSnap.exists()) {
+                if (!docSnap.exists()) {
                     // Create a new document for new user
                     await setDoc(userRef, {
                         __id: result.user.uid,

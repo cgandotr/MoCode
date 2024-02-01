@@ -17,13 +17,30 @@ const statusImages = {
 };
 
 const categoryColors = {
-    "Arrays & Hashing":  "#5B60D0",
-    "Linked List": "#C05BD0"
+    "Arrays & Hashing":  "#d65a5a",
+    "Two Pointers": "#d6855a",
+    "Sliding Window": "#d6b35a",
+    "Stack": "#b1d65a",
+    "Binary Search": "#5ad666",
+    "Linked List": "#757dd1",
+    "Trees": "#5a96d6",
+    "Tries": "#5a68d6",
+    "Heap / Priority Queue": "#815ad6",
+    "Backtracking": "#bd5ad6",
+    "Graphs": "#d65ab3",
+    "Advanced Graphs": "#d65a64",
+    "1-D Dynamic Programming": "#5B60D0",
+    "2-D Dynamic Programming": "#5B60D0",
+    "Greedy": "#5B60D0",
+    "Intervals": "#5B60D0",
+    "Math & Geometry": "#5B60D0",
+    "Bit Manipulation": "#5B60D0",
+    "JavaScript": "#5B60D0",
 };
 
 const difficultyColors = {
-    "Easy":  "#5BD060",
-    "Medium": "#D0855B0",
+    "Easy":  "#63c742",
+    "Medium": "#e8932c",
     "Hard": "#D05B5B"
 };
 
@@ -47,14 +64,14 @@ function Problem({ id , parent}) {
     const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon1)
 
 
-    console.log('User Problems:', userProblems);
-    console.log('Problems:', problems);
+    // console.log('User Problems:', userProblems);
+    // console.log('Problems:', problems);
 
     const currentUserProblem = userProblems.find(up => up.__id === id);
     const currentProblem = currentUserProblem ? problems.find(p => p.link === currentUserProblem.problemLink) : null;
 
-    console.log('Current User Problem:', currentUserProblem);
-    console.log('Current Problem:', currentProblem);
+    // console.log('Current User Problem:', currentUserProblem);
+    // console.log('Current Problem:', currentProblem);
 
 
     if (!currentUserProblem || !currentProblem) {
@@ -65,21 +82,26 @@ function Problem({ id , parent}) {
 
     const handleStartPauseClick = () => {
         // If the external window is open and not closed, focus on it
-        if (externalWindow && !externalWindow.closed) {
-            externalWindow.focus();
-            setstartPauseBtn(PauseIcon);
-        } else {
-            // Open a new window and change the button to "Pause"
-            externalWindow = window.open(externalUrl, '_blank');
-            setstartPauseBtn(PauseIcon);
-    
-            // Check periodically if the external window has been closed
-            const checkWindowClosed = setInterval(() => {
-                if (externalWindow.closed) {
-                    setstartPauseBtn(PlayIcon);
-                    clearInterval(checkWindowClosed);
-                }
-            }, 1000); // Check every 1 second, adjust as needed
+        if (startPauseBtn == PlayIcon) {
+            if (externalWindow && !externalWindow.closed) {
+                externalWindow.focus();
+                setstartPauseBtn(PauseIcon);
+            } else {
+                // Open a new window and change the button to "Pause"
+                externalWindow = window.open(externalUrl, '_blank');
+                setstartPauseBtn(PauseIcon);
+        
+                // Check periodically if the external window has been closed
+                const checkWindowClosed = setInterval(() => {
+                    if (externalWindow.closed) {
+                        setstartPauseBtn(PlayIcon);
+                        clearInterval(checkWindowClosed);
+                    }
+                }, 1000); // Check every 1 second, adjust as needed
+            }
+        }
+        else {
+            setstartPauseBtn(PlayIcon)
         }
     };
     
@@ -107,15 +129,17 @@ function Problem({ id , parent}) {
 
     return (
         <div className='problem'>
-            <div className="title-status-container">
-                <img id="status" src={statusImages[currentUserProblem.status]} alt={`Status: ${currentUserProblem.status}`} />
-                <div id="title">{currentProblem.title}</div>
-            </div>
-            <div id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
-                {currentProblem.difficulty}
-            </div>
-            <div id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
-                {currentProblem.category}
+            <div id="problem-metadata">
+                <div className="title-status-container">
+                    <img id="status" src={statusImages[currentUserProblem.status]} alt={`Status: ${currentUserProblem.status}`} />
+                    <div id="title">{currentProblem.title}</div>
+                </div>
+                <div id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
+                    {currentProblem.difficulty}
+                </div>
+                <div id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
+                    {currentProblem.category}
+                </div>
             </div>
             {parent === "reccommend" && (
             <div id="buttons">

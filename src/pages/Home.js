@@ -8,10 +8,12 @@ import { AuthContext } from '../AuthContext';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db, app } from './../firebase'
 import { doc, setDoc, Timestamp, getDoc } from "firebase/firestore"; 
+import RecButton from '../extra/rec-icon.svg'
 
 function Home() {
     const { currentUser, setCurrentUser } = useContext(AuthContext);
 
+    
     return (
         <div className="Home">
             <NavBar></NavBar>
@@ -19,7 +21,10 @@ function Home() {
                 <div className="loggedIn">
                     <div id="welcome">Welcome Back {currentUser.name}!</div>
                          <div id="problems">
-                 
+                         {/* <button id="rec-btn">
+                            <img id="rec-btn" src={RecButton}></img>
+                            Reccommend
+                         </button> */}
                             {currentUser.reccommended.map((problem, index) => (
                                 <Problem id={problem} parent="reccommend"></Problem>
                             ))}

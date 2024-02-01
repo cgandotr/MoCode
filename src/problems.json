@@ -1,14 +1,20 @@
 [
     {
         "title": "Two Sum",
-        "link": "https://leetcode.com/problems/two-sum",
+        "link": "https://leetcode.com/problems/two-sum/",
         "difficulty": "Easy",
         "category": "Arrays & Hashing"
     },
     {
         "title": "Add Two Numbers",
-        "link": "https://leetcode.com/problems/add-two-numbers",
-        "difficulty": "Easy",
+        "link": "https://leetcode.com/problems/add-two-numbers/",
+        "difficulty": "Medium",
         "category": "Linked List"
+    },
+    {
+        "title": "Valid Palindrome",
+        "link": "https://leetcode.com/problems/valid-palindrome/",
+        "difficulty": "Easy",
+        "category": "Two Pointers"
     }
 ]
