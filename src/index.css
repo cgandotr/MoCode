@@ -5,9 +5,81 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Default Dark Mode */
+:root {
+
+}
+
+/* Light Mode */
+[data-theme="Light"] {
+  --background: linear-gradient(to top right, #e3dde5, #ffffff);
+  --main-font-color: rgb(45, 45, 45);
+  --nav-bar-background: rgba(255, 255, 255, 0);
+  --nav-bar-border: rgba(45, 45, 45, 0.281);
+  --problem-outline: rgba(80, 80, 80, 0.281);
+  --problem-date-color: rgba(76, 76, 76, 0.78);
+  --footer-text-color: rgba(0, 0, 0, 0.391);
+  --footer-border-color: rgba(0, 0, 0, 0.172);
+
+
+}
+
+[data-theme="Dark"] {
+  --background: linear-gradient(to top right, #000000, #050021, #07002e);
+  --main-font-color: white;
+  --faint-font-color: rgba(255, 255, 255, 0.456);
+  --nav-bar-background: rgba(50, 50, 50, 0.38);
+  --nav-bar-border: rgba(255, 255, 255, 0);
+  --problem-outline: rgba(255, 255, 255, 0.207);
+  --problem-date-color: rgba(250, 235, 215, 0.78);
+  --footer-text-color: rgba(255, 255, 255, 0.235);
+  --footer-border-color: rgba(255, 255, 255, 0.081);
+
+}
+
+div > * {
+  transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
+}
+
+
+/* Main Title*/
+h1 {
+  font-size: 70px;
+  font-weight: 600;
+  color: var(--main-font-color);
+
+}
+
+/* Headings */
+h2 {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--main-font-color);
+
+}
+
+/* Problem Titles */
+h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0; 
+  color: var(--main-font-color);
+
+}
+
+/* Problem Meta Data */
+h4 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0; 
+  color: var(--main-font-color);
+
 }

@@ -1,15 +1,18 @@
 .Profile {
     height: 100%;
     width: 100%;
-    background: linear-gradient(to top right, #000000, #050021, #07002e);
-    color: white;
+    background: var(--background);
+    color: var(--font-color);
     overflow: auto;
+
 
   }
 
   #loggedIn {
     display: flex; /* Enable flexbox */
-    align-items: start; /* Align items to the start of the container vertically */
+    flex-direction: row;
+    padding: 50px 50px 50px 50px;
+
 }
 
 
@@ -17,11 +20,11 @@
   background: rgba(255, 255, 255, 0.15);
   border-radius: 34px;
   padding: 30 30 30 30;
-  margin: 50 0 50 5%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 283px;
 height: 418px;
+
   
 }
   #profileIcon {
@@ -48,6 +51,12 @@ height: 418px;
       border-top: 3px solid rgb(255, 255, 255); 
   }
 
-  #problems {
-    width: 10vw; /* Adjust the width as needed */
-  }
+
+
+
+
+#history {
+  width: 50%;
+  margin: 0 5% 0 5%;
+}
+

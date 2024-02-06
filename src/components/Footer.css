@@ -2,7 +2,7 @@
     /* border: 2px solid rgb(255, 0, 0);  */
     box-sizing: border-box;
     padding: 20 40 20 40;
-    border: .75px solid rgba(255, 255, 255, 0.081); /* Adjust the color and thickness as needed */
+    border: .75px solid var(--footer-border-color);
     font-size: 10;  
     width: 100%;
     box-sizing: border-box;
@@ -15,5 +15,5 @@
 
   #text {
     text-align: center;
-    color: rgba(255, 255, 255, 0.235);
+    color: var(--footer-text-color);
   }
