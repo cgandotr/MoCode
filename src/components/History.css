@@ -1,0 +1,46 @@
+.history-container {
+    max-width: 1600px;
+    margin-top: 5vh;
+    margin-left: 10vw;
+}
+
+.history-container h3 {
+    font-size: 40px;
+    font-weight: 500px;
+}
+
+.history-list-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 50px;
+    font-weight: bold;
+    /* background-color: #007bff; */
+    color: #fff;
+    /* border-radius: 5px; */
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.problem-card {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 50px;
+    /* border: 1px solid #ddd; */
+    border-top: 1px solid #ddd;
+    /* border-radius: 5px; */
+    padding: 16px;
+    /* margin-bottom: 16px; */
+}
+
+.problem-card div {
+    margin-bottom: 8px;
+}
+
+.problem-card h3 {
+    color: #007bff;
+}
+
+.problem-card a {
+    text-decoration: none;
+    color: #007bff;
+}
