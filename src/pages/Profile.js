@@ -40,13 +40,11 @@ function Profile() {
                         <img id="profileIcon" src={currentUser.photo}></img>
                         <div id="info">
                              <h3>{currentUser.name}</h3>
-                             <h2>{"schinta"}</h2>
-                        </div>
-                        <div id = "links">
-                            <h2>{currentUser.email}</h2>
+                             <h2>{currentUser.email}</h2>
+                             <button id="editProfileBtn">Edit Profile</button> 
                         </div>
                         <div id = "editProfile">
-                            <button id="editProfileBtn">Edit Profile</button> 
+                            <h2>{"schinta"}</h2>
                         </div>
                         <div id="logOut">
                             <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
