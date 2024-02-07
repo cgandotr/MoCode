@@ -70,10 +70,15 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+
   const updateTheme = (displayMode) => {
     const root = document.documentElement;
     root.setAttribute('data-theme', displayMode);
   };
+
+        return () => unsubscribe();
+    }, []); 
+
 
   return (
     <AuthContext.Provider value={{ currentUser, userProblems, problems, loading }}>

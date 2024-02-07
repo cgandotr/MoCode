@@ -20,10 +20,11 @@ function SignIn() {
             navigate('/home'); // Redirect if already logged in
         } else {
             const provider = new GoogleAuthProvider();
-            return signInWithPopup(auth, provider).then(async (result) => {
+            try {
+                const result = await signInWithPopup(auth, provider);
                 console.log("success");
                 const userRef = doc(db, "users", result.user.uid);
-                
+    
                 // Check if user already exists in Firebase
                 const docSnap = await getDoc(userRef);
                 if (!docSnap.exists()) {
@@ -42,12 +43,13 @@ function SignIn() {
                     // User already exists, you can handle this case if needed
                     console.log("User already exists in Firebase.");
                 }
-                navigate('/home'); // Redirect to dashboard or another route
-            }).catch((error) => {
+                setCurrentUser(result.user); // Update current user
+            } catch (error) {
                 console.log(error);
-            });
+            }
         }
     }
+    
     
 
 
