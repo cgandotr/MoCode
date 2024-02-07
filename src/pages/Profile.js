@@ -44,7 +44,7 @@ function Profile() {
                              <button id="editProfileBtn">Edit Profile</button> 
                         </div>
                         <div id = "editProfile">
-                            <h2>{"schinta"}</h2>
+                            <h2>{currentUser.leetcodeUserName}</h2>
                         </div>
                         <div id="logOut">
                             <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
