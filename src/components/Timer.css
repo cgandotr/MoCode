@@ -1,0 +1,15 @@
+.timer{
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 23px;
+  padding: 10 10 10 100;
+  margin-left: 130%;
+  margin-top: -19%;
+  margin-bottom: 26%;
+  display: grid;
+  /*grid-template-columns: 1fr 1fr;*/
+  width: 283px;
+height: 5%;
+}
+#box1 {
+  padding-left: 26%;
+}

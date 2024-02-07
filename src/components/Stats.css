@@ -1,0 +1,42 @@
+.stats{
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 34px;
+  /*padding: 10 10 10 100;*/
+  margin-left: 130%;
+  margin-top: 14%;
+  display: grid;
+  /*grid-template-columns: 1fr 1fr;*/
+  width: 400px;
+height: 31%;
+}
+#table {
+  display: grid;
+  padding-bottom: 50%;
+  color: white;
+  /*padding-left: 28%;*/
+  /*padding-right: -100%*/
+  justify-content: space-between;
+}
+#titles {
+  width: 10000px;
+  padding-left: 2%;
+}
+#add {
+  width: 10000px;
+  padding-left: 5%;
+  padding-top: 4%;
+}
+
+#val {
+  padding-top: 2%;
+  text-align: center;
+  width: 10000px;
+  padding-right: 50%;
+}
+#val2 {
+  padding-top: 0%;
+}
+
+#box {
+  padding-left: 10%;
+}
