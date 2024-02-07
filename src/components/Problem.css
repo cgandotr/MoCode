@@ -55,16 +55,27 @@
 
 }
 
+#status {
+    height: 30px;
+    transition: all 0.3s ease; /* Smooth transition for size change */
+
+}
 
 #start-pause, #complete, #incomplete {
     margin: 0 10px 0 10px;
-    height: 25px;
+    height: 40px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
     border-radius: 50%; /* Make it round */
-
-
+    transition: all 0.3s ease; /* Smooth transition for size change */
 
 }
+
+#complete:hover, #start-pause:hover, #incomplete:hover {
+    transform: scale(1.15); /* Double the element's size on hover */
+}
+
+
+
 
 
 #problem-metadata.history-mode {
@@ -93,6 +104,7 @@
     overflow: hidden; /* Hides text that overflows the element's box */
     text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
 }
+
 
 
 /* Responsive adjustments */

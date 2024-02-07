@@ -2,18 +2,24 @@ import { useContext , useState} from 'react';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import './Problem.css';
 import '../components/Timer'
-import NewIcon from "../extra/new_icon.svg";
-import CompleteIcon1 from "../extra/complete_icon.svg"
-import CompleteIcon2 from "../extra/complete2_icon.svg";
-import RepeatIcon from "../extra/repeat_icon.svg";
-import PauseIcon from "../extra/pause_icon.svg"
-import PlayIcon from "../extra/play_icon.svg"
-import InCompleteIcon1 from "../extra/incomplete_icon.svg"
-import InCompleteIcon2 from "../extra/incomplete2_icon.svg"
+import NewIcon from "../extra/new.svg";
+import CompleteIcon1 from "../extra/complete-1.svg"
+import CompleteIcon2 from "../extra/complete-2.svg";
+import RepeatIcon from "../extra/repeat.svg";
+import PauseIcon from "../extra/pause.svg"
+import PlayIcon from "../extra/play.svg"
+import InCompleteIcon1 from "../extra/incomplete-1.svg"
+import InCompleteIcon2 from "../extra/incomplete-2.svg"
+
+import ConfirmStatus from '../components/ConfirmStatus'; // Adjust path as necessary
+
+import { db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 const statusImages = {
     "Not Complete": NewIcon,
     "Complete": CompleteIcon1,
+    "InComplete": InCompleteIcon1,
     "Repeat": RepeatIcon
 };
 
@@ -46,12 +52,12 @@ const difficultyColors = {
 };
 
 const buttonOptions = {
-    "Start":  "#5BD060",
-    "Pause": "#D0855B0",
+    "Start":  PlayIcon,
+    "Pause": PauseIcon,
     "Complete": CompleteIcon2,
     "CompleteClicked": CompleteIcon1,
-    "InCompleted": "#D05B5B",
-    "InCompletedClicked": "#D05B5B"
+    "InCompleted": InCompleteIcon2,
+    "InCompletedClicked": InCompleteIcon1
 };
 
 let externalWindow = null;
@@ -60,11 +66,21 @@ let externalWindow = null;
 function Problem({ id , parent, header}) {
     
     const { userProblems, problems } = useContext(AuthContext);
-    const [completeBtn, setcompleteBtn] = useState(CompleteIcon2)
+
+    const [completeBtn, setcompleteBtn] = useState(CompleteIcon2);
+    const [isCompleteClicked, setIsCompleteClicked] = useState(false);
+
     const [startPauseBtn, setstartPauseBtn] = useState(PlayIcon)
-    const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon1)
-    console.log(header)
+
+    const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon2)
+    const [isInCompleteClicked, setIsInCompleteClicked] = useState(false);
+
     const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalAction, setModalAction] = useState(() => () => {});
+    const [source, setSource] = useState('');
+
 
 
     // console.log('User Problems:', userProblems);
@@ -87,55 +103,116 @@ function Problem({ id , parent, header}) {
 
     const handleStartPauseClick = () => {
         // If the external window is open and not closed, focus on it
-        setIsTimerRunning(prevState => !prevState);
+        if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
+            setIsTimerRunning(prevState => !prevState);
 
-        if (startPauseBtn == PlayIcon) {
-            if (externalWindow && !externalWindow.closed) {
-                externalWindow.focus();
-                setstartPauseBtn(PauseIcon);
-            } else {
-                // Open a new window and change the button to "Pause"
-                externalWindow = window.open(externalUrl, '_blank');
-                setstartPauseBtn(PauseIcon);
-        
-                // Check periodically if the external window has been closed
-                const checkWindowClosed = setInterval(() => {
-                    if (externalWindow.closed) {
-                        setstartPauseBtn(PlayIcon);
-                        clearInterval(checkWindowClosed);
-                    }
-                }, 1000); // Check every 1 second, adjust as needed
+            if (startPauseBtn == PlayIcon) {
+                if (externalWindow && !externalWindow.closed) {
+                    externalWindow.focus();
+                    setstartPauseBtn(PauseIcon);
+                } else {
+                    // Open a new window and change the button to "Pause"
+                    externalWindow = window.open(externalUrl, '_blank');
+                    setstartPauseBtn(PauseIcon);
+            
+                    // Check periodically if the external window has been closed
+                    const checkWindowClosed = setInterval(() => {
+                        if (externalWindow.closed) {
+                            setstartPauseBtn(PlayIcon);
+                            clearInterval(checkWindowClosed);
+                        }
+                    }, 1000); // Check every 1 second, adjust as needed
+                }
             }
-        }
-        else {
-            setstartPauseBtn(PlayIcon)
-        }
+            else {
+                setstartPauseBtn(PlayIcon)
+            }
+    }
     };
     
 
-    const handleCompleteClick = () => {
-        if (completeBtn == CompleteIcon2) {
-            setcompleteBtn(CompleteIcon1)
-        }
-        else {
-            setcompleteBtn(CompleteIcon2)
-        }
-        
-    };
+    const handleCompleteHoverEnter = () => {
+    // If not clicked, allow hover to switch to icon 2
+    if (!isCompleteClicked) {
+        setcompleteBtn(CompleteIcon1);
+    }
+};
 
-    const handleInCompleteClick = () => {
-        if (incompleteBtn == InCompleteIcon2) {
-            setincompleteBtn(InCompleteIcon1)
-        }
-        else {
-            setincompleteBtn(InCompleteIcon2)
-        }
-        
-    };
+const handleCompleteHoverLeave = () => {
+    // Return to icon 1 only if it hasn't been clicked
+    if (!isCompleteClicked) {
+        setcompleteBtn(CompleteIcon2);
+    }
+};
+    
+
+const handleInCompleteHoverEnter = () => {
+    // If not clicked, allow hover to switch to icon 2
+    if (!isInCompleteClicked) {
+        setincompleteBtn(InCompleteIcon1);
+    }
+};
+
+const handleInCompleteHoverLeave = () => {
+    // Return to icon 1 only if it hasn't been clicked
+    if (!isInCompleteClicked) {
+        setincompleteBtn(InCompleteIcon2);
+    }
+};
+
+const handleCompleteClick = () => {
+    if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
+        setSource('Complete');
+        setModalAction(() => () => {
+            setIsCompleteClicked(!isCompleteClicked);
+            // Update the completeBtn and Firebase document here
+            // Toggle directly to icon 2 on click, regardless of hover state
+            if (!isCompleteClicked) {
+                // Setting as complete
+                // setcompleteBtn(CompleteIcon1);
+                setDoc(doc(db, 'userProblems', id), { status: "Complete" }, { merge: true });
+            } else {
+                // setcompleteBtn(CompleteIcon2);
+            }
+        });
+        setShowModal(true);
+    }
+    }
+    // If not confirmed, do nothing (you can also revert the icon if needed)
+
+
+const handleInCompleteClick = () => {
+    if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
+        setSource('Incomplete');
+        setModalAction(() => () => {
+            setIsInCompleteClicked(!isInCompleteClicked);
+            // Toggle directly to icon 2 on click, regardless of hover state
+            if (!isInCompleteClicked) {
+                // Setting as incomplete
+                // setincompleteBtn(InCompleteIcon1);
+                setDoc(doc(db, 'userProblems', id), { status: "InComplete" }, { merge: true });
+            } else {
+                // setincompleteBtn(InCompleteIcon2);
+            }
+        })
+        setShowModal(true);
+
+    }
+};
+
     
 
     return (
         <div className={`problem ${modeClass}`}>
+             <ConfirmStatus
+            isOpen={showModal} 
+            onConfirm={() => { 
+                modalAction();
+                setShowModal(false);
+            }} 
+            onCancel={() => setShowModal(false)} 
+            source={source}
+        />
             <div id="problem-metadata" className={modeClass}>
                 <div className={`title-status-container ${modeClass}`}>
                     <img id="status" src={statusImages[currentUserProblem.status]} alt={`Status: ${currentUserProblem.status}`} />
@@ -151,8 +228,23 @@ function Problem({ id , parent, header}) {
             {parent === "recommend" && (
                 <div id="buttons">
                     <img id="start-pause" onClick={handleStartPauseClick} src={startPauseBtn} alt="Start/Pause" />
-                    <img id="incomplete" onClick={handleInCompleteClick} src={incompleteBtn} alt="Incomplete" />
-                    <img id="complete" onClick={handleCompleteClick} src={completeBtn} alt="Complete" />
+                    <img 
+                        id="incomplete" 
+                        onMouseEnter={handleInCompleteHoverEnter} 
+                        onMouseLeave={handleInCompleteHoverLeave} 
+                        onClick={handleInCompleteClick} 
+                        src={incompleteBtn} 
+                        alt="Incomplete" 
+                    />
+                    <img 
+                        id="complete" 
+                        onMouseEnter={handleCompleteHoverEnter} 
+                        onMouseLeave={handleCompleteHoverLeave} 
+                        onClick={handleCompleteClick} 
+                        src={completeBtn} 
+                        alt="Complete" 
+                    />
+            
                 </div>
             )}
             {parent === "history" && (

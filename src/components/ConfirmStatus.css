@@ -1,0 +1,58 @@
+.modal-overlay {
+    position: fixed; /* Full-screen overlay */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.modal-content {
+    display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center children vertically */
+    align-items: center; /* Center children horizontally */
+    width: auto; /* Adjust based on content or set a specific width */
+    margin: auto; /* Helps with centering in older browsers */
+    background-color: var(--pop-up-background); /* Custom variable for background color */
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a shadow for better visibility */
+    z-index: 1001; /* Above the overlay */
+    position: relative;
+}
+
+#warning {
+    color: rgb(216, 78, 78);
+}
+#cancel-button {
+    font-size: 24px;
+    line-height: 1;
+    padding: 0 10px;
+    border: none;
+    background-color: transparent;
+    color: #000;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; /* Position relative to the nearest positioned ancestor */
+    top: 0; /* Align to the top edge of the container */
+    right: 0; /* Align to the right edge of the container */
+    margin: 10px 10px 0 0;
+}
+
+#confirm-button {
+    background-color: rgb(27, 148, 247);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+    height: 30px;
+  width: 25%;
+  margin-top: 10px;
+  border-radius: 30px;
+}
+

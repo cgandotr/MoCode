@@ -30,6 +30,7 @@ code {
   --footer-border-color: rgba(0, 0, 0, 0.172);
   --boxes-background: rgba(0, 0, 0, 0.085);
   --profile-seperators:  rgb(59, 59, 59);
+  --pop-up-background: rgb(223, 223, 223);
 
 
 }
@@ -46,6 +47,7 @@ code {
   --footer-border-color: rgba(255, 255, 255, 0.081);
   --boxes-background: rgba(255, 255, 255, 0.15);
   --profile-seperators: rgb(255, 255, 255);
+  --pop-up-background: rgb(72, 72, 72);
 
 }
 
