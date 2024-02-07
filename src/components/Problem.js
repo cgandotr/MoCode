@@ -2,7 +2,7 @@ import { useContext , useState} from 'react';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import './Problem.css';
 import NewIcon from "../extra/new_icon.svg";
-import CompleteIcon1 from "../extra/complete_icon.svg";
+import CompleteIcon1 from "../extra/complete_icon.svg"
 import CompleteIcon2 from "../extra/complete2_icon.svg";
 import RepeatIcon from "../extra/repeat_icon.svg";
 import PauseIcon from "../extra/pause_icon.svg"
@@ -56,13 +56,13 @@ const buttonOptions = {
 let externalWindow = null;
 
 
-function Problem({ id , parent}) {
+function Problem({ id , parent, header}) {
     
     const { userProblems, problems } = useContext(AuthContext);
     const [completeBtn, setcompleteBtn] = useState(CompleteIcon2)
     const [startPauseBtn, setstartPauseBtn] = useState(PlayIcon)
     const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon1)
-
+    console.log(header)
 
     // console.log('User Problems:', userProblems);
     // console.log('Problems:', problems);
@@ -73,7 +73,9 @@ function Problem({ id , parent}) {
     // console.log('Current User Problem:', currentUserProblem);
     // console.log('Current Problem:', currentProblem);
 
+    const modeClass = parent === "history" ? "history-mode" : "";
 
+    
     if (!currentUserProblem || !currentProblem) {
         return null;
     }
@@ -128,31 +130,36 @@ function Problem({ id , parent}) {
     
 
     return (
-        <div className='problem'>
-            <div id="problem-metadata">
-                <div className="title-status-container">
+        <div className={`problem ${modeClass}`}>
+            <div id="problem-metadata" className={modeClass}>
+                <div className={`title-status-container ${modeClass}`}>
                     <img id="status" src={statusImages[currentUserProblem.status]} alt={`Status: ${currentUserProblem.status}`} />
-                    <div id="title">{currentProblem.title}</div>
+                    <h3 id="title">{currentProblem.title}</h3>
                 </div>
-                <div id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
+                <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
                     {currentProblem.difficulty}
-                </div>
-                <div id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
+                </h4>
+                <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
                     {currentProblem.category}
-                </div>
+                </h4>
             </div>
-            {parent === "reccommend" && (
-            <div id="buttons">
-                <img id="start-pause" onClick={handleStartPauseClick} src={startPauseBtn}></img>
-                <img id="incomplete" onClick={handleInCompleteClick} src={incompleteBtn}></img>
-                <img id="complete" onClick={handleCompleteClick} src={completeBtn}></img>
-
-            </div>)
-            
-             }
+            {parent === "recommend" && (
+                <div id="buttons">
+                    <img id="start-pause" onClick={handleStartPauseClick} src={startPauseBtn} alt="Start/Pause" />
+                    <img id="incomplete" onClick={handleInCompleteClick} src={incompleteBtn} alt="Incomplete" />
+                    <img id="complete" onClick={handleCompleteClick} src={completeBtn} alt="Complete" />
+                </div>
+            )}
+            {parent === "history" && (
+                <h4 id="date-completed">
+                    {currentUserProblem.dateCompleted.toDate().toLocaleDateString("en-US", {
+                        month: 'long', 
+                        day: 'numeric',
+                    })}
+                </h4>
+            )}
         </div>
     );
-    
 }
 
 export default Problem;

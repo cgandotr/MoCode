@@ -1,6 +1,5 @@
 .SignIn {
     margin: 50 30% 100 30% ;
-            border-top: 2px solid rgba(255, 255, 255, 0.074); 
     padding: 10 10 10 10;
       height: 150;
       display: flex;        /* Enable Flexbox */

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import SignIn from '../components/SignIn'
+import NewUserInfo from '../components/NewUserInfo'
 import Problem from '../components/Problem'
 
 import ProfileIcon from '../extra/profile_icon.svg'; // Import SVG
@@ -35,6 +36,7 @@ function Profile() {
         <div className="Profile">
             <NavBar></NavBar>   
             {currentUser ? (
+                 currentUser.leetcodeUserName ? (
                 <div id="loggedIn">
                     <div id="profileMetaData">
                         <img id="profileIcon" src={currentUser.photo}></img>
@@ -46,12 +48,18 @@ function Profile() {
                             <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
                         </div>
                     </div>
-                    <div id="problems">
-                    {currentUser.history.map((problem, index) => (
-                                <Problem id={problem} parent="history"></Problem>
-                            ))}
+                    <div id="history">
+                        <h2 id="history-title">Submission History</h2>
+                        <div id="problems">
+                        {currentUser.history.map((problem, index) => (
+                                    <Problem id={problem} parent="history"></Problem>
+                                ))}
+                        </div>
                     </div>
                 </div>
+                ) : (
+                    <NewUserInfo/>
+                )
             ) : (
                <SignIn></SignIn>
             )}
