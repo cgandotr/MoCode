@@ -21,18 +21,21 @@ function Home() {
             <NavBar />
             {currentUser ? (
                 currentUser.leetcodeUserName ? (
-                    <div className="loggedIn">
-                    <h2 id="welcome">Welcome Back {currentUser.name}!</h2>
+                    <div id="logged-in">
+                        <h2 id="welcome">Welcome Back {currentUser.name}!</h2>
+                        
                         <div id="recommended">
-                         <div id="problems">
-                            {currentUser.reccommended.map((problem, index) => (
-                                <Problem id={problem} parent="recommend"></Problem>
-                            ))}
-                            <Timer></Timer>
-                            <Stats></Stats>
+                            <div id="problems">
+                                {currentUser.reccommended.map((problem, index) => (
+                                    <Problem id={problem} parent="recommend"></Problem>
+                                ))}
+                            </div>
+                        </div>
+                        <div id="side-bar">
+                            <Timer className="timer"></Timer>
+                            <Stats className="stats"></Stats>
                         </div>
                     </div>
-                </div>
                 ) : (
                     <NewUserInfo/>
                 )

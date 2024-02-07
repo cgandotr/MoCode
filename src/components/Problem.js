@@ -1,6 +1,7 @@
 import { useContext , useState} from 'react';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import './Problem.css';
+import '../components/Timer'
 import NewIcon from "../extra/new_icon.svg";
 import CompleteIcon1 from "../extra/complete_icon.svg"
 import CompleteIcon2 from "../extra/complete2_icon.svg";
@@ -63,6 +64,8 @@ function Problem({ id , parent, header}) {
     const [startPauseBtn, setstartPauseBtn] = useState(PlayIcon)
     const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon1)
     console.log(header)
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+
 
     // console.log('User Problems:', userProblems);
     // console.log('Problems:', problems);
@@ -84,6 +87,8 @@ function Problem({ id , parent, header}) {
 
     const handleStartPauseClick = () => {
         // If the external window is open and not closed, focus on it
+        setIsTimerRunning(prevState => !prevState);
+
         if (startPauseBtn == PlayIcon) {
             if (externalWindow && !externalWindow.closed) {
                 externalWindow.focus();

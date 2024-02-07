@@ -2,12 +2,11 @@
   background: rgba(255, 255, 255, 0.15);
   border-radius: 34px;
   /*padding: 10 10 10 100;*/
-  margin-left: 130%;
-  margin-top: 14%;
+  
   display: grid;
   /*grid-template-columns: 1fr 1fr;*/
-  width: 400px;
-height: 31%;
+
+  height: 500px;
 }
 #table {
   display: grid;

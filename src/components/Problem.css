@@ -8,8 +8,8 @@
     align-items: center;
     height: fit-content;
     min-width: fit-content;
-    max-width: 800px; /* Make sure this is 800px, not 800 */
     transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
+      /* border: 3px solid rgba(255, 255, 255, 0.348);  */
 
 }
 
