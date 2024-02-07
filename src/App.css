@@ -3,8 +3,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to top right, #000000, #050021, #07002e);
-  color:white;
+  background: var(--background);
   background-attachment:fixed;
   overflow: auto;
 
@@ -16,11 +15,10 @@
 .intro {
      margin: 100 20% 0 20% ;
       /* border: 3px solid rgba(255, 255, 255, 0.348);  */
-      padding: 10p 10 10 10;
+      padding: 10 10 0 10;
       position: relative;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      height: 50vh;
       justify-content: center; /* Center children horizontally */
       display: flex;        /* Enable Flexbox */
       transition: 1s ease-in-out ; /* Smooth transition for the border color */
@@ -50,15 +48,8 @@
   margin-top: -40;
 
 }
-h1 {
-  font-weight: 700;
-  font-size: 60;
-}
 
-h2 {
-  font-weight: 200;
-  font-size: 15;
-}
+
 .code-box {
   background-color: #282a36;
   color: #f8f8f2;
