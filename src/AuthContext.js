@@ -76,8 +76,8 @@ export const AuthProvider = ({ children }) => {
     root.setAttribute('data-theme', displayMode);
   };
 
-        return () => unsubscribe();
-    }, []); 
+       
+ 
 
 
   return (
