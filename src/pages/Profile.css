@@ -19,7 +19,8 @@
 #profileMetaData {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 34px;
-  padding: 30 30 30 30;
+  padding: 40 40 40 40;
+  margin: 50 0 50 5%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 283px;
@@ -28,8 +29,8 @@ height: 418px;
   
 }
   #profileIcon {
-    width: 100px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
+    width: 120px; /* Adjust size as needed */
+    height: 120px; /* Adjust size as needed */
     border-radius: 50%; /* This creates the circular shape */
     object-fit: cover; /* This ensures the image covers the area without stretching */
     background-image:ProfileIcon;
@@ -37,18 +38,48 @@ height: 418px;
 
   }
 
+
   #logOutBtn {
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgb(27, 148, 247);
     color: rgb(255, 255, 255);
       cursor: pointer;
-      border: none;
+      border:none;
+      padding: 5 5 5 5;
+      width: 30%;
+      margin-top: 10;
+      border-radius: 30px;
+      
+  }
+  #editProfile{
+    background-color: rgba(18, 28, 165, 0);
+    color: rgb(255, 255, 255);
+      cursor: pointer;
+      margin: -100 0 -100 -10%;
+      width: 205%;
+      border-top: solid;
+      height: 25%;
+  
+      
+
+  }
+  #editProfileBtn {
+    background-color: rgb(27, 148, 247);
+    color: rgb(255, 255, 255);
+      cursor: pointer;
+      
+      padding: 5 5 5 5;
       width: 100%;
-      height: 100%;
+      fill:lightblue ;
+      border-radius: 30px;
+
 
   }
   #logOut {
-    width: 100%;
-      border-top: 3px solid rgb(255, 255, 255); 
+    width: 200%;
+    border-top: 3px solid rgb(255, 255, 255); 
+    margin: -40 0 -40 -110%;
+    height: 25%;
+    
   }
 
 

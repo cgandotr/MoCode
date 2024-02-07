@@ -41,8 +41,12 @@ function Profile() {
                     <div id="profileMetaData">
                         <img id="profileIcon" src={currentUser.photo}></img>
                         <div id="info">
-                             <h2>{currentUser.name}</h2>
-                             <h3>{currentUser.email}</h3>
+                             <h3>{currentUser.name}</h3>
+                             <h2>{currentUser.email}</h2>
+                             <button id="editProfileBtn">Edit Profile</button> 
+                        </div>
+                        <div id = "editProfile">
+                            <h2>{currentUser.leetcodeUserName}</h2>
                         </div>
                         <div id="logOut">
                             <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
