@@ -1,18 +1,22 @@
 .problem {
     padding: 20px 25px 30px 25px;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.207);
+    border-top: 1.5px solid var(--problem-outline);
     display: flex;
     justify-content: space-between;
     width: 100%;
     flex-direction: row;
     align-items: center;
     height: fit-content;
+    min-width: fit-content;
     max-width: 800px; /* Make sure this is 800px, not 800 */
+    transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
+
 }
 
 
 #problem-metadata {
     display: flex;
+    justify-content: space-between; /* Spread out content */
     flex-direction: column;
     align-items: flex-start; /* Align metadata items to the start */
     margin: 10px 0 10px 0;
@@ -26,21 +30,19 @@
 
 #title {
     margin-left: 10px;
-    font-size: 22px;
-    font-weight: 600;
 }
 
 #category, #difficulty {
     padding: 7px 15px;
     border-radius: 34px;
-    font-size: 15px;
-    font-weight: 400;
+    color: var(--main-font-color);
     white-space: nowrap; /* Prevents breaking the content into multiple lines */
 
 }
 
 #category, #difficulty, #buttons {
-    margin: 10 0 0 30px;
+    margin: 10px 0 0 30px;
+
     
 }
 
@@ -57,13 +59,42 @@
 #start-pause, #complete, #incomplete {
     margin: 0 10px 0 10px;
     height: 25px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
+    border-radius: 50%; /* Make it round */
+
+
+
 }
 
 
-
-.problem, .title-status-container, #category, #difficulty, #buttons, #problem-metadata {
-    transition: all 1s ease-in-out; /* Adjust time and easing function as needed */
+#problem-metadata.history-mode {
+    display: flex;
+    flex-direction: row; /* Ensures a horizontal layout */
+    justify-content: space-between; /* Spaces out the children equally */
+    align-items: center; /* Aligns items vertically in the center, if needed */
 }
+
+#date-completed {
+    color: var(--problem-date-color);
+    font-style: italic;
+    margin: 0 0 0 20px;
+    white-space: nowrap; /* Keep date on one line */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Use ellipsis for overflow */
+    padding: 0 10px; /* Add some padding for spacing, adjust as needed */
+    flex-shrink: 0; /* Prevent the date from shrinking */
+
+}
+
+#problem-metadata > #date-completed, .title-status-container > #title {
+    flex-shrink: 0; /* Prevents the element from shrinking */
+    min-width: fit-content; /* Ensures element does not shrink below its content size */
+    white-space: nowrap; /* Keeps the text on a single line */
+    overflow: hidden; /* Hides text that overflows the element's box */
+    text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 900px) {
     .problem {
@@ -71,9 +102,6 @@
         align-items: center;
         height: fit-content;
 
-    }
-
-    #status {
     }
 
 

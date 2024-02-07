@@ -1,16 +1,13 @@
 .Home {
     height: 100%;
     width: 100%;
-    background: linear-gradient(to top right, #000000, #050021, #07002e);
-    color: white;
+    background: var(--background);
   }
 
   #welcome {
-    font-size: 30px;
-    font-weight: 500px;
     margin: 50 0 0 5%;
   }
-  #problems {
+  #recommended {
     width: 50%;
     margin: 50 0 0 5%;
   }

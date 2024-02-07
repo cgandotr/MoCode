@@ -34,6 +34,8 @@ function SignIn() {
                         name: result.user.displayName,
                         email: result.user.email,
                         photo: result.user.photoURL,
+                        displayMode: "Dark",
+                        leetcodeUserName: "",
                         history: ["GdiDgvCKNTkJzHOBKVq6"],
                         reccommended: ["GdiDgvCKNTkJzHOBKVq6", "232"]
                     });
