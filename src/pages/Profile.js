@@ -5,7 +5,8 @@ import SignIn from '../components/SignIn'
 import NewUserInfo from '../components/NewUserInfo'
 import Problem from '../components/Problem'
 
-import ProfileIcon from '../extra/profile_icon.svg'; // Import SVG
+
+import LeetCodeIcon from '../extra/leetcode-icon.png'; // Import SVG
 import './Profile.css';
 import { auth, db, app } from './../firebase'
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
@@ -38,20 +39,24 @@ function Profile() {
             {currentUser ? (
                  currentUser.leetcodeUserName ? (
                 <div id="loggedIn">
-                    <div id="profileMetaData">
-                        <img id="profileIcon" src={currentUser.photo}></img>
-                        <div id="info">
-                             <h3>{currentUser.name}</h3>
-                             <h2>{currentUser.email}</h2>
-                             <button id="editProfileBtn">Edit Profile</button> 
+                    <div id="profile-side-bar">
+                        <div id="main-info">
+                            <img id="profile-img" src={currentUser.photo}></img>
+                            <div id="info">
+                                <h3>{currentUser.name}</h3>
+                                <h4>{currentUser.email}</h4>
+                                <button id="edit-btn">Edit Profile</button>
+                            </div>
                         </div>
-                        <div id = "editProfile">
-                            <h2>{currentUser.leetcodeUserName}</h2>
+                        <div id="info-extra">
+                            <img id="leetcode-icon" src={LeetCodeIcon}></img> 
+                            <h3 id="leetcode-username">{currentUser.leetcodeUserName}</h3>
                         </div>
-                        <div id="logOut">
-                            <button id="logOutBtn"onClick={googleLogoutFnc}>Log Out</button>
+                        <div id="log-out">
+                            <button id="log-out-btn" onClick={googleLogoutFnc}>Log Out</button>
                         </div>
                     </div>
+
                     <div id="history">
                         <h2 id="history-title">Submission History</h2>
                         <div id="problems">

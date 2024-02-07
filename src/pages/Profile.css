@@ -8,81 +8,98 @@
 
   }
 
-  #loggedIn {
-    display: flex; /* Enable flexbox */
-    flex-direction: row;
-    padding: 50px 50px 50px 50px;
-
+#loggedIn {
+  display: flex; /* Enable flexbox */
+  flex-direction: row;
+  padding: 50px 50px 50px 50px;
 }
 
 
-#profileMetaData {
-  background: rgba(255, 255, 255, 0.15);
+#profile-side-bar {
+  background: var(--boxes-background);
   border-radius: 34px;
   padding: 40 40 40 40;
   margin: 50 0 50 5%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 283px;
-height: 418px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: fit-content
 
   
 }
-  #profileIcon {
-    width: 120px; /* Adjust size as needed */
-    height: 120px; /* Adjust size as needed */
-    border-radius: 50%; /* This creates the circular shape */
-    object-fit: cover; /* This ensures the image covers the area without stretching */
-    background-image:ProfileIcon;
-    margin-right: 30;
 
-  }
+#main-info {
+  display: flex; /* Activates Flexbox layout */
+  justify-content: space-between; /* Spaces out the child elements */
+  align-items: start; /* Aligns items to the start of the flex container */
+  width: 100%; /* Ensures the container takes full width */
+  margin: 0 0 30px 0;
+}
 
+#profile-img {
+  border-radius: 50%; /* This creates the circular shape */
+  object-fit: cover; /* This ensures the image covers the area without stretching */
+  margin-right: 30;
+  height: 115px;
+}
 
-  #logOutBtn {
-    background-color: rgb(27, 148, 247);
-    color: rgb(255, 255, 255);
-      cursor: pointer;
-      border:none;
-      padding: 5 5 5 5;
-      width: 30%;
-      margin-top: 10;
-      border-radius: 30px;
-      
-  }
-  #editProfile{
-    background-color: rgba(18, 28, 165, 0);
-    color: rgb(255, 255, 255);
-      cursor: pointer;
-      margin: -100 0 -100 -10%;
-      width: 205%;
-      border-top: solid;
-      height: 25%;
+#info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#log-out-btn {
+  background-color: rgb(27, 148, 247);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding: 5 5 5 5;
+  width: 50%;
+  margin-top: 10;
+  border-radius: 30px;
   
-      
+}
 
-  }
-  #editProfileBtn {
+#edit-btn{
     background-color: rgb(27, 148, 247);
     color: rgb(255, 255, 255);
-      cursor: pointer;
-      
-      padding: 5 5 5 5;
-      width: 100%;
-      fill:lightblue ;
-      border-radius: 30px;
+    cursor: pointer;
+    padding: 5 5 5 5;
+    width: 50%;
+    border-radius: 30px;
+    width: 100%;
+}
 
+#log-out {
+  border-top: 1px solid var(--profile-seperators);
+  display: flex; /* Enables Flexbox */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  padding: 20px 0 0 0;  
+}
 
-  }
-  #logOut {
-    width: 200%;
-    border-top: 3px solid rgb(255, 255, 255); 
-    margin: -40 0 -40 -110%;
-    height: 25%;
-    
-  }
+#info-extra {
+  border-top: 1px solid var(--profile-seperators);
+  display: flex; /* Enables Flexbox */
+  flex-direction: row;
+  padding: 15px;
+}
 
+#leetcode-icon {
+  height: 30px;
+  width: 30px;
+      /* border: 2px solid rgb(4, 167, 255);  */
 
+  /* Removed align-items: center; since it's not applicable to individual items without display: flex */
+}
+
+#leetcode-username {
+  font-weight: 200;
+  /* border: 2px solid rgb(4, 167, 255);  */
+  width: 100%;
+  margin: 0 0 0 10px;
+  /* Removed align-items: center; since it's not applicable to individual items without display: flex */
+}
 
 
 

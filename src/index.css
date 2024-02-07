@@ -20,7 +20,7 @@ code {
 
 /* Light Mode */
 [data-theme="Light"] {
-  --background: linear-gradient(to top right, #e3dde5, #ffffff);
+  --background: linear-gradient(to top right, #ffffff00, #ffffff);
   --main-font-color: rgb(45, 45, 45);
   --nav-bar-background: rgba(255, 255, 255, 0);
   --nav-bar-border: rgba(45, 45, 45, 0.281);
@@ -28,6 +28,8 @@ code {
   --problem-date-color: rgba(76, 76, 76, 0.78);
   --footer-text-color: rgba(0, 0, 0, 0.391);
   --footer-border-color: rgba(0, 0, 0, 0.172);
+  --boxes-background: rgba(0, 0, 0, 0.085);
+  --profile-seperators:  rgb(59, 59, 59);
 
 
 }
@@ -42,6 +44,9 @@ code {
   --problem-date-color: rgba(250, 235, 215, 0.78);
   --footer-text-color: rgba(255, 255, 255, 0.235);
   --footer-border-color: rgba(255, 255, 255, 0.081);
+  --boxes-background: rgba(255, 255, 255, 0.15);
+  --profile-seperators: rgb(255, 255, 255);
+
 }
 
 div > * {
