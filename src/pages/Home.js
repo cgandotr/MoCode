@@ -4,11 +4,13 @@ import Footer from '../components/Footer';
 import SignIn from '../components/SignIn'
 import NewUserInfo from '../components/NewUserInfo'
 import Problem from '../components/Problem'
+import Stats from '../components/Stats'
+import Timer from '../components/Timer'
 import './Home.css'
 import { AuthContext } from '../AuthContext';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db, app } from './../firebase'
-import { doc, setDoc, Timestamp, getDoc } from "firebase/firestore"; 
+import { doc, setDoc, Timestamp, getDoc } from "firebase/firestore";
 import RecButton from '../extra/rec-icon.svg'
 
 function Home() {
@@ -26,6 +28,8 @@ function Home() {
                             {currentUser.reccommended.map((problem, index) => (
                                 <Problem id={problem} parent="recommend"></Problem>
                             ))}
+                            <Timer></Timer>
+                            <Stats></Stats>
                         </div>
                     </div>
                 </div>
@@ -37,7 +41,9 @@ function Home() {
             )}
             <Footer />
         </div>
-    );   
+    );
 }
 
+
 export default Home;
+
