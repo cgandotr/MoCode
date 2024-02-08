@@ -19,12 +19,16 @@ function Home() {
 
     const statusOrder = ["Not Complete", "Repeat", "InComplete", "Complete"];
 
-    const recommendedProblems = (currentUser?.recommended?.map(recommendedId =>
-        userProblems.find(problem => problem.__id === recommendedId)
-    ) || []).sort((a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+    const recommendedProblems = (
+        currentUser?.recommended
+          ?.filter(recommendedId => recommendedId && userProblems.some(problem => problem.__id === recommendedId)) // Filter out empty or not found IDs
+          .map(recommendedId =>
+            userProblems.find(problem => problem.__id === recommendedId)
+          ) || []
+      ).sort((a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+      
 
 
-    
 
     return (
         <div className="Home">
