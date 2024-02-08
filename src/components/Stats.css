@@ -1,8 +1,7 @@
 .stats{
-  background: rgba(255, 255, 255, 0.15);
   border-radius: 34px;
   /*padding: 10 10 10 100;*/
-  
+  background: var(--boxes-background);
   display: grid;
   /*grid-template-columns: 1fr 1fr;*/
 
@@ -11,7 +10,7 @@
 #table {
   display: grid;
   padding-bottom: 50%;
-  color: white;
+  color: var(--main-font-color);
   /*padding-left: 28%;*/
   /*padding-right: -100%*/
   justify-content: space-between;

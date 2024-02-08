@@ -14,7 +14,7 @@ import InCompleteIcon2 from "../extra/incomplete-2.svg"
 import ConfirmStatus from '../components/ConfirmStatus'; // Adjust path as necessary
 
 import { db } from '../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
 const statusImages = {
     "Not Complete": NewIcon,
@@ -170,7 +170,7 @@ const handleCompleteClick = () => {
             if (!isCompleteClicked) {
                 // Setting as complete
                 // setcompleteBtn(CompleteIcon1);
-                setDoc(doc(db, 'userProblems', id), { status: "Complete" }, { merge: true });
+                setDoc(doc(db, 'userProblems', id), { status: "Complete", dateCompleted: Timestamp.now() }, { merge: true });
             } else {
                 // setcompleteBtn(CompleteIcon2);
             }
@@ -190,7 +190,7 @@ const handleInCompleteClick = () => {
             if (!isInCompleteClicked) {
                 // Setting as incomplete
                 // setincompleteBtn(InCompleteIcon1);
-                setDoc(doc(db, 'userProblems', id), { status: "InComplete" }, { merge: true });
+                setDoc(doc(db, 'userProblems', id), { status: "InComplete", dateCompleted: Timestamp.now() }, { merge: true });
             } else {
                 // setincompleteBtn(InCompleteIcon2);
             }

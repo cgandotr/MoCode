@@ -57,7 +57,7 @@
 
 #status {
     height: 30px;
-    transition: all 0.3s ease; /* Smooth transition for size change */
+        transition: all 0.3s ease; /* Smooth transition for size change */
 
 }
 

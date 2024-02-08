@@ -17,19 +17,22 @@
   }
   
   #rec-btn {
-    margin-right: 0;
+
     background: rgba(255, 255, 255, 0.178);
     color: white;
-    padding: 5px;
+    padding: 10px;
     cursor: pointer; /* Changes cursor to pointer */
     transform: none;
-
+    width: fit-content;
+  
 
   }
 
   #logged-in {
     display: flex; /* Enables Flexbox */
     flex-direction: column; /* Stacks content vertically */
+          
+
   }
   
 

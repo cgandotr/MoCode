@@ -37,7 +37,7 @@ function SignIn() {
                         displayMode: "Dark",
                         leetcodeUserName: "",
                         history: ["GdiDgvCKNTkJzHOBKVq6"],
-                        reccommended: ["GdiDgvCKNTkJzHOBKVq6", "232"]
+                        recommended: ["GdiDgvCKNTkJzHOBKVq6"]
                     });
                 } else {
                     // User already exists, you can handle this case if needed

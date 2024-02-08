@@ -18,6 +18,7 @@ import { AuthContext } from '../AuthContext';
 function Profile() {
     // Grab Current User
     const { currentUser, setCurrentUser } = useContext(AuthContext);
+    const { userProblems, setUserProblems } = useContext(AuthContext);
 
 
     const googleLogoutFnc = async (e) => {
@@ -31,6 +32,8 @@ function Profile() {
         });
     };
 
+    const historyProblems = userProblems.filter(problem => problem.status === "Complete" || problem.status === "InComplete")
+    .sort((a, b) => b.dateCompleted.toDate() - a.dateCompleted.toDate()); // Assuming dateCompleted is a Firebase Timestamp
 
 
     return (
@@ -60,8 +63,8 @@ function Profile() {
                     <div id="history">
                         <h2 id="history-title">Submission History</h2>
                         <div id="problems">
-                        {currentUser.history.map((problem, index) => (
-                                    <Problem id={problem} parent="history"></Problem>
+                        {historyProblems.map((problem, index) => (
+                                    <Problem id={problem.__id} parent="history"></Problem>
                                 ))}
                         </div>
                     </div>

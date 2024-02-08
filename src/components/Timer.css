@@ -1,11 +1,13 @@
 .timer{
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--boxes-background);
   border-radius: 23px;
-  padding: 10 10 10 10;
+  padding: 10px;
   /*grid-template-columns: 1fr 1fr;*/
   height: 150px;
 }
+
 #time {
+  
   font-size: 50px;
   color: var(--main-font-color);
   align-items: center;
