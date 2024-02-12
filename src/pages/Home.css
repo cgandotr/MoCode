@@ -44,11 +44,16 @@
     height: 100%; /* Optional: Adjust based on your layout needs */
     max-width: 400px;
     width: 30%;
+
+    
   }
   .timer {
     margin: 0 0 20px 0;
+
   }
   .stats {
+    margin: 0 0 20px 0;
+      /* border: 2px solid rgb(4, 167, 255); */
 
   }
 

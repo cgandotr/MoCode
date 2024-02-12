@@ -1,7 +1,7 @@
-import { useContext , useState} from 'react';
+import { useContext , useEffect, useState} from 'react';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
-import './Problem.css';
-import '../components/Timer'
+import './ProblemRec.css';
+import './Timer'
 import NewIcon from "../extra/new.svg";
 import CompleteIcon1 from "../extra/complete-1.svg"
 import CompleteIcon2 from "../extra/complete-2.svg";
@@ -11,10 +11,10 @@ import PlayIcon from "../extra/play.svg"
 import InCompleteIcon1 from "../extra/incomplete-1.svg"
 import InCompleteIcon2 from "../extra/incomplete-2.svg"
 
-import ConfirmStatus from '../components/ConfirmStatus'; // Adjust path as necessary
+import ConfirmStatus from './ConfirmStatus'; // Adjust path as necessary
 
 import { db } from '../firebase';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import { doc, setDoc, Timestamp, getDoc } from 'firebase/firestore';
 
 const statusImages = {
     "Not Complete": NewIcon,
@@ -63,7 +63,7 @@ const buttonOptions = {
 let externalWindow = null;
 
 
-function Problem({ id , parent, header}) {
+const ProblemRec = ({ id, startTimerEmit, pauseTimerEmit, resetTimerEmit , timerControl, timerResetLister, onTimerResetAcknowledged, timerTime, timerRunningListener, history_status, history_dateCompleted, history_timeDuration}) => {
     
     const { userProblems, problems } = useContext(AuthContext);
 
@@ -75,24 +75,54 @@ function Problem({ id , parent, header}) {
     const [incompleteBtn, setincompleteBtn] = useState(InCompleteIcon2)
     const [isInCompleteClicked, setIsInCompleteClicked] = useState(false);
 
-    const [isTimerRunning, setIsTimerRunning] = useState(false);
-
     const [showModal, setShowModal] = useState(false);
     const [modalAction, setModalAction] = useState(() => () => {});
     const [source, setSource] = useState('');
 
 
+    const [allowCompleteActions, setAllowCompleteActions] = useState(true); // Example state, adjust based on your logic
 
-    // console.log('User Problems:', userProblems);
-    // console.log('Problems:', problems);
-
+    
+   
     const currentUserProblem = userProblems.find(up => up.__id === id);
     const currentProblem = currentUserProblem ? problems.find(p => p.link === currentUserProblem.problemLink) : null;
 
-    // console.log('Current User Problem:', currentUserProblem);
-    // console.log('Current Problem:', currentProblem);
+    useEffect(() => {
+        if (currentUserProblem.status[0] != "Complete" && currentUserProblem.status[0] != "InComplete" && timerControl) {
+            setAllowCompleteActions(true);
+        }
+        else {
+            setAllowCompleteActions(false);
+        }
+      }, [currentUserProblem.status[0], timerControl]);
 
-    const modeClass = parent === "history" ? "history-mode" : "";
+
+    useEffect(() => {
+        if (timerResetLister) {
+            // Change back to the "Play" button
+            setstartPauseBtn(PlayIcon);
+
+    
+            // Call the acknowledgment function passed from Home
+            onTimerResetAcknowledged();
+        }
+    }, [timerResetLister, onTimerResetAcknowledged]);
+
+    useEffect(() => {
+        if(timerControl) {
+
+        
+        if (!timerRunningListener) {
+          setstartPauseBtn(PlayIcon)
+        }
+        else {
+            setstartPauseBtn(PauseIcon)
+        }
+    }
+      }, [timerRunningListener]);
+    
+    
+      
 
     
     if (!currentUserProblem || !currentProblem) {
@@ -101,10 +131,11 @@ function Problem({ id , parent, header}) {
 
     const externalUrl = currentProblem.link; // Replace with your actual URL
 
+
+
     const handleStartPauseClick = () => {
         // If the external window is open and not closed, focus on it
-        if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
-            setIsTimerRunning(prevState => !prevState);
+        if (allowCompleteActions) {
 
             if (startPauseBtn == PlayIcon) {
                 if (externalWindow && !externalWindow.closed) {
@@ -119,13 +150,18 @@ function Problem({ id , parent, header}) {
                     const checkWindowClosed = setInterval(() => {
                         if (externalWindow.closed) {
                             setstartPauseBtn(PlayIcon);
+                            pauseTimerEmit(currentUserProblem.__id);
                             clearInterval(checkWindowClosed);
                         }
-                    }, 1000); // Check every 1 second, adjust as needed
+                    }, 500); 
                 }
+                startTimerEmit(currentUserProblem.__id, currentProblem.title);
+
             }
             else {
                 setstartPauseBtn(PlayIcon)
+                pauseTimerEmit(currentUserProblem.__id);
+
             }
     }
     };
@@ -133,7 +169,7 @@ function Problem({ id , parent, header}) {
 
     const handleCompleteHoverEnter = () => {
     // If not clicked, allow hover to switch to icon 2
-    if (!isCompleteClicked) {
+    if (allowCompleteActions && !isCompleteClicked) {
         setcompleteBtn(CompleteIcon1);
     }
 };
@@ -148,7 +184,7 @@ const handleCompleteHoverLeave = () => {
 
 const handleInCompleteHoverEnter = () => {
     // If not clicked, allow hover to switch to icon 2
-    if (!isInCompleteClicked) {
+    if (allowCompleteActions && !isInCompleteClicked) {
         setincompleteBtn(InCompleteIcon1);
     }
 };
@@ -161,36 +197,103 @@ const handleInCompleteHoverLeave = () => {
 };
 
 const handleCompleteClick = () => {
-    if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
+    if (allowCompleteActions) {
         setSource('Complete');
-        setModalAction(() => () => {
+        setModalAction(() => async () => {
             setIsCompleteClicked(!isCompleteClicked);
             // Update the completeBtn and Firebase document here
             // Toggle directly to icon 2 on click, regardless of hover state
             if (!isCompleteClicked) {
                 // Setting as complete
                 // setcompleteBtn(CompleteIcon1);
-                setDoc(doc(db, 'userProblems', id), { status: "Complete", dateCompleted: Timestamp.now() }, { merge: true });
+                const docRef = doc(db, 'userProblems', currentUserProblem.__id);
+                try {
+                    // Fetch current document
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        // Extract current arrays
+                        let currentStatus = docSnap.data().status || [];
+                        let currentDateCompleted = docSnap.data().dateCompleted || [];
+                        let currentTimeDuration = docSnap.data().timeDuration || [];
+        
+                        // Ensure arrays have at least an initial element if they are empty
+                        currentStatus[0] = "Complete";
+                        currentDateCompleted[0] = Timestamp.now();
+                        currentTimeDuration[0] = timerTime;
+        
+                        // Update document with modified arrays
+                        await setDoc(docRef, { 
+                            status: currentStatus, 
+                            dateCompleted: currentDateCompleted, 
+                            timeDuration: currentTimeDuration 
+                        }, { merge: true });
+        
+                        resetTimerEmit(currentProblem.__id);
+                    } else {
+                        console.log("Document does not exist!");
+                    }
+                } catch (error) {
+                    console.error("Error updating document: ", error);
+                }
+            
+
+                resetTimerEmit(currentUserProblem.__id);
             } else {
                 // setcompleteBtn(CompleteIcon2);
             }
         });
         setShowModal(true);
     }
+    else {
+
+    }
     }
     // If not confirmed, do nothing (you can also revert the icon if needed)
 
 
 const handleInCompleteClick = () => {
-    if (currentUserProblem.status != "Complete" && currentUserProblem.status != "InComplete") {
+    if (allowCompleteActions) {
         setSource('Incomplete');
-        setModalAction(() => () => {
+        setModalAction(() => async () => {
             setIsInCompleteClicked(!isInCompleteClicked);
             // Toggle directly to icon 2 on click, regardless of hover state
             if (!isInCompleteClicked) {
-                // Setting as incomplete
-                // setincompleteBtn(InCompleteIcon1);
-                setDoc(doc(db, 'userProblems', id), { status: "InComplete", dateCompleted: Timestamp.now() }, { merge: true });
+                // Setting as complete
+                // setcompleteBtn(CompleteIcon1);
+                const docRef = doc(db, 'userProblems', currentUserProblem.__id);
+                try {
+                    // Fetch current document
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        // Extract current arrays
+                        let currentStatus = docSnap.data().status || [];
+                        let currentDateCompleted = docSnap.data().dateCompleted || [];
+                        let currentTimeDuration = docSnap.data().timeDuration || [];
+        
+                        // Ensure arrays have at least an initial element if they are empty
+                        currentStatus[0] = "InComplete";
+                        currentDateCompleted[0] = Timestamp.now();
+                        currentTimeDuration[0] = timerTime;
+        
+                        // Update document with modified arrays
+                        await setDoc(docRef, { 
+                            status: currentStatus, 
+                            dateCompleted: currentDateCompleted, 
+                            timeDuration: currentTimeDuration 
+                        }, { merge: true });
+        
+                        resetTimerEmit(currentProblem.__id);
+                    } else {
+                        console.log("Document does not exist!");
+                    }
+                } catch (error) {
+                    console.error("Error updating document: ", error);
+                }
+            
+
+                resetTimerEmit(currentUserProblem.__id);
             } else {
                 // setincompleteBtn(InCompleteIcon2);
             }
@@ -198,13 +301,18 @@ const handleInCompleteClick = () => {
         setShowModal(true);
 
     }
+    else {
+
+    }
 };
 
     
 
+  
+
     return (
-        <div className={`problem ${modeClass}`}>
-             <ConfirmStatus
+        <div className='problem' id="rec">
+            <ConfirmStatus
             isOpen={showModal} 
             onConfirm={() => { 
                 modalAction();
@@ -212,10 +320,10 @@ const handleInCompleteClick = () => {
             }} 
             onCancel={() => setShowModal(false)} 
             source={source}
-        />
-            <div id="problem-metadata" className={modeClass}>
-                <div className={`title-status-container ${modeClass}`}>
-                    <img id="status" src={statusImages[currentUserProblem.status]} alt={`Status: ${currentUserProblem.status}`} />
+            />
+            <div id="problem-metadata" className='rec'>
+                <div className={`title-status-container`}>
+                    <img id="status" src={statusImages[currentUserProblem.status[0]]} alt={`Status: ${currentUserProblem.status[0]}`} />
                     <h3 id="title">{currentProblem.title}</h3>
                 </div>
                 <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
@@ -225,9 +333,15 @@ const handleInCompleteClick = () => {
                     {currentProblem.category}
                 </h4>
             </div>
-            {parent === "recommend" && (
+            
                 <div id="buttons">
-                    <img id="start-pause" onClick={handleStartPauseClick} src={startPauseBtn} alt="Start/Pause" />
+                    <img
+                        id="start-pause"
+                        onClick={handleStartPauseClick}
+                        src={startPauseBtn}
+                        alt="Start/Pause"
+                        className={allowCompleteActions ? 'active' : ''}
+                    />
                     <img 
                         id="incomplete" 
                         onMouseEnter={handleInCompleteHoverEnter} 
@@ -235,28 +349,24 @@ const handleInCompleteClick = () => {
                         onClick={handleInCompleteClick} 
                         src={incompleteBtn} 
                         alt="Incomplete" 
+                        className={allowCompleteActions ? 'active' : ''}
                     />
                     <img 
                         id="complete" 
                         onMouseEnter={handleCompleteHoverEnter} 
                         onMouseLeave={handleCompleteHoverLeave} 
                         onClick={handleCompleteClick} 
+                        class='shake-animation'
                         src={completeBtn} 
                         alt="Complete" 
+                        className={allowCompleteActions ? 'active' : ''}
                     />
             
                 </div>
-            )}
-            {parent === "history" && (
-                <h4 id="date-completed">
-                    {currentUserProblem.dateCompleted.toDate().toLocaleDateString("en-US", {
-                        month: 'long', 
-                        day: 'numeric',
-                    })}
-                </h4>
-            )}
+            
+      
         </div>
     );
 }
 
-export default Problem;
+export default ProblemRec;

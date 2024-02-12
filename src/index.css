@@ -22,6 +22,7 @@ code {
 [data-theme="Light"] {
   --background: linear-gradient(to top right, #ffffff00, #ffffff);
   --main-font-color: rgb(45, 45, 45);
+  --faint-font-color:  rgba(44, 44, 44, 0.719);
   --nav-bar-background: rgba(255, 255, 255, 0);
   --nav-bar-border: rgba(45, 45, 45, 0.281);
   --problem-outline: rgba(80, 80, 80, 0.281);

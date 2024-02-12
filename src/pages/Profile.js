@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import SignIn from '../components/SignIn'
 import NewUserInfo from '../components/NewUserInfo'
-import Problem from '../components/Problem'
+import ProblemHistory from '../components/ProblemHistory'
 
 
 import LeetCodeIcon from '../extra/leetcode-icon.png'; // Import SVG
@@ -20,6 +20,7 @@ function Profile() {
     const { currentUser, setCurrentUser } = useContext(AuthContext);
     const { userProblems, setUserProblems } = useContext(AuthContext);
 
+    console.log(userProblems)
 
     const googleLogoutFnc = async (e) => {
         signOut(auth).then(() => {
@@ -32,8 +33,23 @@ function Profile() {
         });
     };
 
-    const historyProblems = userProblems.filter(problem => problem.status === "Complete" || problem.status === "InComplete")
-    .sort((a, b) => b.dateCompleted.toDate() - a.dateCompleted.toDate()); // Assuming dateCompleted is a Firebase Timestamp
+    // Flatten all submissions into a single list for rendering
+    const allSubmissions = userProblems.reduce((acc, problem) => {
+        const submissions = problem.status.map((status, index) => ({
+            ...problem,
+            status: [problem.status[index]],
+            dateCompleted: [problem.dateCompleted[index]],
+            timeDuration: [problem.timeDuration[index]],
+        }));
+        return [...acc, ...submissions];
+    }, []);
+
+    console.log(allSubmissions)
+
+     // Sort the submissions by dateCompleted
+     const historyProblems = allSubmissions.filter(submission => submission.status[0] === "Complete" || submission.status[0] === "InComplete")
+     .sort((a, b) => b.dateCompleted[0].toDate() - a.dateCompleted[0].toDate());
+
 
 
     return (
@@ -64,7 +80,12 @@ function Profile() {
                         <h2 id="history-title">Submission History</h2>
                         <div id="problems">
                         {historyProblems.map((problem, index) => (
-                                    <Problem id={problem.__id} parent="history"></Problem>
+                                    <ProblemHistory
+                                    id={problem.__id}
+                                    history_status={problem.status[0]}
+                                    history_dateCompleted={problem.dateCompleted[0]}
+                                    history_timeDuration={problem.timeDuration[0]}
+                                    ></ProblemHistory>
                                 ))}
                         </div>
                     </div>

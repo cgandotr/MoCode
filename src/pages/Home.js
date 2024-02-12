@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import SignIn from '../components/SignIn'
 import NewUserInfo from '../components/NewUserInfo'
-import Problem from '../components/Problem'
+import ProblemRec from '../components/ProblemRec'
 import Stats from '../components/Stats'
 import Timer from '../components/Timer'
 import './Home.css'
@@ -25,10 +25,53 @@ function Home() {
           .map(recommendedId =>
             userProblems.find(problem => problem.__id === recommendedId)
           ) || []
-      ).sort((a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+      ).sort((a, b) => statusOrder.indexOf(a.status[0]) - statusOrder.indexOf(b.status[0]));
       
+    // State to control the timer
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+    const [timerProblemId, settimerProblemId] = useState(null);
+    const [timerProblemName, settimerProblemName] = useState(null);
+    const [timerReset, setTimerReset] = useState(false);
+    const [timerTime, setTimerTime] = useState(0); // Store the current timer time
+
+    // Function to update timer time from Timer component
+    const updateTimerTime = (newTime) => {
+        setTimerTime(newTime);
+    };
+
+    // Function to start the timer for a specific problem
+    const startTimerFnc = (problemId, problemName) => {
+        if (timerProblemId == null) {
+            setIsTimerRunning(true);
+            settimerProblemId(problemId);
+            settimerProblemName(problemName);
+            console.log(timerProblemName)
+        }
+        else {
+            if (problemId == timerProblemId) { 
+                setIsTimerRunning(true);
+            }
+        }
+    }
+    // Function to stop the timer
+    const pauseTimerFnc = (problemId) => {
+        if (problemId == timerProblemId) {
+            setIsTimerRunning(false);
+        }
+    };
+
+    const resetTimerFnc = (problemId, fromTimer = false) => {
+        if (fromTimer || problemId === timerProblemId) {
+            setIsTimerRunning(false);
+            settimerProblemId(null);
+            settimerProblemName(null);
+            setTimerReset(true);
+
+        }
+    };
 
 
+  
 
     return (
         <div className="Home">
@@ -41,13 +84,34 @@ function Home() {
                         <div id="recommended">
                             <div id="problems">
                                 {recommendedProblems.map((problem, index) => (
-                                    <Problem id={problem.__id} parent="recommend"></Problem>
+                                    <ProblemRec 
+                                        key={problem.__id} // Add a key for list rendering
+                                        id={problem.__id} 
+                                        startTimerEmit={startTimerFnc} 
+                                        pauseTimerEmit={pauseTimerFnc} 
+                                        resetTimerEmit={resetTimerFnc} 
+                                        timerControl={timerProblemId==null || timerProblemId == problem.__id}
+                                        timerResetLister={timerReset}
+                                        onTimerResetAcknowledged={() => setTimerReset(false)}
+                                        timerTime={timerTime}
+                                        timerRunningListener={isTimerRunning}
+                                    />
                                 ))}
                             </div>
                         </div>
 
                         <div id="side-bar">
-                            <Timer className="timer"></Timer>
+                            <Timer
+                                className="timer"
+                                isRunning={isTimerRunning}
+                                problemId={timerProblemId}
+                                problemName={timerProblemName}
+                                startTimerEmit={startTimerFnc} 
+                                pauseTimerEmit={pauseTimerFnc} 
+                                resetTimerEmit={resetTimerFnc} 
+                                updateTimerTimeEmit={updateTimerTime} // Pass the function to update timer time
+
+                            />
                             <Stats className="stats"></Stats>
                         </div>
                     </div>

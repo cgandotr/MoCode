@@ -1,37 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Timer.css';
+import Pin from "../extra/pin.svg"
+import CloseIcon1 from "../extra/close-1.svg"
+import CloseIcon2 from "../extra/close-2.svg"
+import PauseIcon from "../extra/pause.svg"
+import PlayIcon from "../extra/play.svg"
 
-function Timer({ isRunning, actionId, onAction }) {
+function Timer({ isRunning, problemId, problemName, resetTimerEmit, updateTimerTimeEmit, startTimerEmit, pauseTimerEmit}) {
   const [time, setTime] = useState(0);
-  const [currentId, setCurrentId] = useState(null); // Store the ID that started the timer
+  const [timerActive, setTimerActive] = useState(false);
+
+  const [closeBtn, setcloseBtn] = useState(CloseIcon2);
+  const [isCloseClicked, setIsCloseClicked] = useState(false);
+
+  const [startPauseBtn, setstartPauseBtn] = useState(PlayIcon)
   
-  useEffect(() => {
-    let interval = null;
 
-    if (isRunning && (currentId === null || currentId === actionId)) {
-      // Start or continue the timer if no ID has started the timer or if the action comes from the same ID
-      if (currentId === null) {
-        setCurrentId(actionId); // Set the ID that started the timer
-        onAction && onAction('started', actionId); // Optional callback for when the timer is started
-      }
+  let interval;
+  // Inside Timer component's useEffect that updates time
+useEffect(() => {
+  let interval;
+  if (isRunning && problemId) {
+      setstartPauseBtn(PauseIcon)
       interval = setInterval(() => {
-        setTime(prevTime => prevTime + 1); // Increment time every second
+          setTime(prevTime => {
+              const newTime = prevTime + 1;
+              updateTimerTimeEmit(newTime); // Update time in Home component
+              return newTime;
+          });
       }, 1000);
-    } else {
-      clearInterval(interval);
-    }
+  }
+  return () => clearInterval(interval);
+}, [isRunning, problemId, updateTimerTimeEmit]); // Include updateTimerTime in dependency array
 
-    return () => clearInterval(interval);
-  }, [isRunning, actionId, currentId, onAction]);
 
   useEffect(() => {
-    // Reset the timer and currentId when isRunning is false and a reset is triggered
-    if (!isRunning && actionId !== currentId) {
-      setTime(0);
-      setCurrentId(null); // Clear the ID, allowing a new ID to control the timer
-      onAction && onAction('reset', actionId); // Optional callback for when the timer is reset
+    if (!isRunning) {
+      setTimerActive(false);
+      clearInterval(interval);
+      setstartPauseBtn(PlayIcon)
     }
-  }, [isRunning, actionId]);
+  }, [isRunning]);
+
+  useEffect(() => {
+    if (!problemId) {
+      setTime(0);
+      setTimerActive(false);
+    }
+  }, [problemId]);
 
   const formatTime = () => {
     const getSeconds = `0${time % 60}`.slice(-2);
@@ -42,9 +58,66 @@ function Timer({ isRunning, actionId, onAction }) {
     return `${getHours}:${getMinutes}:${getSeconds}`;
   };
 
+
+  const handleCloseClick = () => {
+    setTime(0);
+    setTimerActive(false);
+    resetTimerEmit(null, true); // Indicating the reset call is from Timer
+
+  };
+
+  const handleStartPauseClick = () => {
+    if (problemId) {
+
+    
+        if (startPauseBtn == PlayIcon) {
+          startTimerEmit(problemId, problemName)
+          // setstartPauseBtn(PauseIcon)
+        }
+        else {
+          pauseTimerEmit(problemId)
+            setstartPauseBtn(PlayIcon)
+        }
+    }
+
+};
+
+
+  const handleCloseHoverEnter = () => {
+        
+        setcloseBtn(CloseIcon1);
+};
+
+const handleCloseHoverLeave= () => {
+        setcloseBtn(CloseIcon2);
+    
+};
+
+
   return (
     <div className='timer'>
-      <div id="time">{formatTime()}</div>
+    
+        <div id="cur-problem">
+          <img id="pin"src={Pin}></img>
+          <h2 id="problem">{problemName ? problemName : "None"}</h2>
+        </div>
+        <div id="time">{formatTime()}</div>
+        <div id="all-buttons">
+          <img
+            id="start-pause-button"
+            onClick={handleStartPauseClick}
+            src={startPauseBtn}
+        />
+        <img
+            id="close-button"
+            src={closeBtn}
+            onMouseEnter={handleCloseHoverEnter} 
+            onMouseLeave={handleCloseHoverLeave} 
+            onClick={handleCloseClick} 
+          />
+      </div>
+      
+      
     </div>
   );
 }

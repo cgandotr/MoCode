@@ -57,7 +57,7 @@
 
 #status {
     height: 30px;
-        transition: all 0.3s ease; /* Smooth transition for size change */
+    transition: all 0.3s ease; /* Smooth transition for size change */
 
 }
 
@@ -70,34 +70,15 @@
 
 }
 
-#complete:hover, #start-pause:hover, #incomplete:hover {
+#complete.active:hover, #start-pause.active:hover, #incomplete.active:hover {
     transform: scale(1.15); /* Double the element's size on hover */
+    cursor: pointer;
 }
 
 
 
 
-
-#problem-metadata.history-mode {
-    display: flex;
-    flex-direction: row; /* Ensures a horizontal layout */
-    justify-content: space-between; /* Spaces out the children equally */
-    align-items: center; /* Aligns items vertically in the center, if needed */
-}
-
-#date-completed {
-    color: var(--problem-date-color);
-    font-style: italic;
-    margin: 0 0 0 20px;
-    white-space: nowrap; /* Keep date on one line */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Use ellipsis for overflow */
-    padding: 0 10px; /* Add some padding for spacing, adjust as needed */
-    flex-shrink: 0; /* Prevent the date from shrinking */
-
-}
-
-#problem-metadata > #date-completed, .title-status-container > #title {
+.title-status-container > #title {
     flex-shrink: 0; /* Prevents the element from shrinking */
     min-width: fit-content; /* Ensures element does not shrink below its content size */
     white-space: nowrap; /* Keeps the text on a single line */
@@ -129,3 +110,4 @@
         margin: 7px ; /* Adjust as needed for spacing */
     }
 }
+

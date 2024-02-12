@@ -104,7 +104,9 @@
 
 
 #history {
-  width: 50%;
+  width: 55%;
+  min-width: fit-content;
+  
   margin: 0 5% 0 5%;
 }
 

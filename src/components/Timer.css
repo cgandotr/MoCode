@@ -1,15 +1,83 @@
-.timer{
+.timer {
   background: var(--boxes-background);
   border-radius: 23px;
-  padding: 10px;
-  /*grid-template-columns: 1fr 1fr;*/
-  height: 150px;
+  padding: 15px;
+  display: flex;
+  width: 100%; /* Ensure this does not cause overspill on its own */
+  flex-direction: column;
+  height: fit-content;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+
+
+#problem {
+  color: var(--faint-font-color);
+  font-style: italic;
+  font-size: 20px;
+  margin-left: 10px;
+  
 }
 
 #time {
-  
-  font-size: 50px;
+  font-size: 4vw;
   color: var(--main-font-color);
-  align-items: center;
+  /* border: 2px solid rgb(4, 167, 255); */
+  width: fit-content;
+  align-self: center;
 
+}
+
+#pin {
+  height: 22px;
+}
+
+#close-button {
+  height: 40px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+#close-button:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+#cur-problem {
+  display: flex;
+  flex-direction: row;
+    align-items: center;
+        /* border: 2px solid rgb(4, 167, 255); */
+    margin: 0 0 0 15px;
+
+
+}
+
+#start-pause-button {
+  height: 40px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  margin-right: 15px;
+  
+}
+
+#start-pause-button:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+#all-buttons {
+  padding: 10px 0 20px 0;
+  align-self: center;
+  display: flex; /* Align buttons in a row if necessary */
+  justify-content: center; /* Center buttons horizontally */
+  flex-wrap: wrap; /* Allow buttons to wrap in smaller containers */
+}
+
+@media (min-width: 1200px) { /* Adjust 1200px to the point where you want the font size to stop growing */
+  #time {
+    font-size: 60px; /* This is the maximum font size */
+  }
 }

@@ -36,7 +36,6 @@ function SignIn() {
                         photo: result.user.photoURL,
                         displayMode: "Dark",
                         leetcodeUserName: "",
-                        history: ["GdiDgvCKNTkJzHOBKVq6"],
                         recommended: ["GdiDgvCKNTkJzHOBKVq6"]
                     });
                 } else {

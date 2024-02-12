@@ -55,13 +55,13 @@ export const AuthProvider = ({ children }) => {
     const unsubscribeProblems = onSnapshot(q, (snapshot) => {
       const fetchedUserProblems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setUserProblems(fetchedUserProblems); // Update user problems with real-time data.
-      console.log('Fetched user problems:', fetchedUserProblems);
+      // console.log('Fetched user problems:', fetchedUserProblems);
 
       // Optionally, filter or process problems here before setting state
       const filteredProblems = problemsJSON.filter(problem => 
           fetchedUserProblems.some(userProblem => userProblem.problemLink === problem.link)
       );
-      console.log('Filtered problems:', filteredProblems);
+      // console.log('Filtered problems:', filteredProblems);
       setProblems(filteredProblems);
       setLoading(false);
     }, (error) => {
