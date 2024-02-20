@@ -2,15 +2,15 @@
     padding: 20px 25px 30px 25px;
     border-top: 1.5px solid var(--problem-outline);
     justify-content: space-between;
-    width: 100%;
+
     height: fit-content;
-    min-width: fit-content;
     transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
-      /* border: 3px solid rgba(255, 255, 255, 0.348);  */
+      /* border: 3px solid rgba(231, 9, 9, 0.348);  */
       display: grid;
   grid-template-columns: auto auto; /* Adjust based on content */
   grid-gap: 10px; /* Space between grid items */
   align-items: center; /* Align items vertically within their cell */
+  overflow: scroll;
 
 }
 
@@ -27,8 +27,7 @@
     font-style: italic;
     margin: 0 0 0 20px;
     white-space: nowrap; /* Keep date on one line */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Use ellipsis for overflow */
+   
     padding: 0 10px; /* Add some padding for spacing, adjust as needed */
     flex-shrink: 0; /* Prevent the date from shrinking */
 
@@ -52,21 +51,14 @@
   }
 
 #title.history {
-    margin-left: 10px;
+    margin-left: 12px;
           /* border: 3px solid rgba(218, 18, 18, 0.879);  */
           white-space: nowrap; /* Keeps the text on a single line */
     overflow: hidden; /* Hides text that overflows the element's box */
     text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
 
+
     
-}
-
-#category.history, #difficulty.history {
-    padding: 7px 15px;
-    border-radius: 34px;
-    color: var(--main-font-color);
-    white-space: nowrap; /* Prevents breaking the content into multiple lines */
-
 }
 
 

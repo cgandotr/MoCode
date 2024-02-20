@@ -16,5 +16,17 @@
         "link": "https://leetcode.com/problems/valid-palindrome/",
         "difficulty": "Easy",
         "category": "Two Pointers"
+    },
+    {
+        "title": "Min Stack",
+        "link": "https://leetcode.com/problems/min-stack/",
+        "difficulty": "Medium",
+        "category": "Stack"
+    },
+    {
+        "title": "Valid Sudoku",
+        "link": "https://leetcode.com/problems/valid-sudoku/",
+        "difficulty": "Medium",
+        "category": "Arrays & Hashing"
     }
 ]

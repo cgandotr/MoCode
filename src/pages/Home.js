@@ -10,7 +10,7 @@ import './Home.css'
 import { AuthContext } from '../AuthContext';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db, app } from './../firebase'
-import { doc, setDoc, Timestamp, getDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp, getDoc, writeBatch } from "firebase/firestore";
 import RecButton from '../extra/rec-icon.svg'
 
 function Home() {
@@ -70,7 +70,27 @@ function Home() {
         }
     };
 
-
+    const handleRecommendClick = async () => {
+        const batch = writeBatch(db); // Create a new batch instance
+      
+        currentUser.recommended.forEach((recommendedId) => {
+          const problem = userProblems.find(p => p.__id === recommendedId);
+          if (problem) {
+            const problemRef = doc(db, 'userProblems', problem.__id);
+            const updatedStatus = [...problem.status];
+            updatedStatus[0] = 'Not Complete'; // Set the first index to 'Not Complete'
+            batch.update(problemRef, { status: updatedStatus });
+          }
+        });
+      
+        try {
+          await batch.commit(); // Commit the batch
+          console.log('All recommended problems updated to Not Complete');
+          // Optionally, update local state here if needed for immediate UI reflection
+        } catch (error) {
+          console.error('Error updating recommended problems: ', error);
+        }
+      };
   
 
     return (
@@ -80,8 +100,11 @@ function Home() {
                 currentUser.leetcodeUserName ? (
                     <div id="logged-in">
                         <h2 id="welcome">Welcome Back {currentUser.name}!</h2>
-                        {/* <div id="rec-btn">Recommend</div> */}
+      
+
+                            
                         <div id="recommended">
+                            <div id="rec-btn" onClick={handleRecommendClick}>Recommend</div>
                             <div id="problems">
                                 {recommendedProblems.map((problem, index) => (
                                     <ProblemRec 
@@ -99,7 +122,7 @@ function Home() {
                                 ))}
                             </div>
                         </div>
-
+                          
                         <div id="side-bar">
                             <Timer
                                 className="timer"

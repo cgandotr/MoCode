@@ -1,40 +1,57 @@
 .stats{
   border-radius: 34px;
-  /*padding: 10 10 10 100;*/
   background: var(--boxes-background);
-  display: grid;
-  /*grid-template-columns: 1fr 1fr;*/
-  width: 100%;
+  padding: 30px;
   height: 500px;
-}
-#table {
-  display: grid;
-  padding-bottom: 50%;
-  color: var(--main-font-color);
-  /*padding-left: 28%;*/
-  /*padding-right: -100%*/
-  justify-content: space-between;
-}
-#titles {
-  width: 10000px;
-  padding-left: 2%;
-}
-#add {
-  width: 10000px;
-  padding-left: 5%;
-  padding-top: 4%;
+
 }
 
-#val {
-  padding-top: 2%;
-  text-align: center;
-  width: 10000px;
-  padding-right: 50%;
+
+#bottom-stats{
+  border-top: 1.5px solid var(--problem-outline);
+  padding: 5px 0 0 0;
+  /* border: 2px solid rgb(4, 167, 255); */
+  height: 60%;
+
+
 }
-#val2 {
-  padding-top: 0%;
+
+#list {
+    padding: 10px 20px 20px 20px;
+
+}
+#three {
+  display: flex;
+
+  justify-content: space-between; /* Align items on the main-axis to have space between them */
+  align-items: center; /* Align items on the cross-axis in the center */
+  width: 100%; /* Ensure the div takes full width to spread title and number apart */
+}
+
+#number {
+  white-space: nowrap; /* Prevent wrapping */
+
+}
+
+
+#stack {
+  padding: 20px 0 0 0;
+  /* border: 2px solid rgb(4, 167, 255); */
+  height: 100%;
+  align-items: center;
 }
 
 #box {
-  padding-left: 10%;
+  /* border: 2px solid rgb(4, 167, 255); */
+
+  display: row;
+  justify-content: center;
+  align-items: center;
+  
+
+}
+
+
+#switch {
+  float: right;
 }

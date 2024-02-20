@@ -1,6 +1,5 @@
 .footer {
     /* border: 2px solid rgb(255, 0, 0);  */
-    box-sizing: border-box;
     padding: 20 40 20 40;
     border: .75px solid var(--footer-border-color);
     font-size: 10;  

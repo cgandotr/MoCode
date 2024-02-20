@@ -1,4 +1,4 @@
-import { useContext , useEffect, useState} from 'react';
+import { useContext , React} from 'react';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import './ProblemHistory.css';
 
@@ -9,6 +9,8 @@ import InCompleteIcon2 from "../extra/incomplete-2.svg"
 
 import { db } from '../firebase';
 import { doc, setDoc, Timestamp, getDoc } from 'firebase/firestore';
+
+import Tooltip from '@mui/material/Tooltip';
 
 const statusImages = {
     "Complete": CompleteIcon1,
@@ -77,14 +79,18 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
         <div className="history" id='problem'>
             <div id="problem-metadata" className='history'>
                 <div id='title-status-container' className="history">
-                    <img id="status" className="history" src={statusImages[history_status]} alt={`Status: ${history_status}`} />
-                    <h3 id="title" className="history" >{currentProblem.title}</h3>
+                    <Tooltip title={`Problem Status: ${history_status}`}>
+                        <img id="status" className="history" src={statusImages[history_status]} alt={`Status: ${history_status}`} />
+                    </Tooltip>
+                    <Tooltip title={currentProblem.title}>
+                        <h3 id="title" className="history" >{currentProblem.title}</h3>
+                    </Tooltip>
                 </div>
                 
-                <h4 id="difficulty" className='history' style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
+                <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
                     {currentProblem.difficulty}
                 </h4>
-                <h4 id="category" className='history' style={{ backgroundColor: categoryColors[currentProblem.category] }}>
+                <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
                     {currentProblem.category}
                 </h4>
             </div>

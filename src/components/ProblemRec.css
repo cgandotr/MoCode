@@ -4,6 +4,8 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: fit-content;
+    min-width: fit-content;
     flex-direction: row;
     align-items: center;
     height: fit-content;
@@ -29,16 +31,17 @@
 }
 
 #title {
-    margin-left: 10px;
+    margin-left: 12px;
 }
 
 #category, #difficulty {
     padding: 7px 15px;
     border-radius: 34px;
-    color: var(--main-font-color);
+    color: white;
     white-space: nowrap; /* Prevents breaking the content into multiple lines */
 
 }
+
 
 #category, #difficulty, #buttons {
     margin: 10px 0 0 30px;
@@ -58,6 +61,8 @@
 #status {
     height: 30px;
     transition: all 0.3s ease; /* Smooth transition for size change */
+    box-shadow: 2px 2px 2px rgba(75, 75, 75, 0.096);
+    border-radius: 50%; /* Make it round */
 
 }
 

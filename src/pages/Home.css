@@ -2,6 +2,10 @@
     height: 100%;
     width: 100%;
     background: var(--background);
+    /* border: 5px solid rgb(174, 214, 63);  */
+    overflow: auto;
+
+
   }
 
   #welcome {
@@ -10,12 +14,12 @@
   #recommended {
     width: 50%;
     height: fit-content;
-    margin: 50 0 0 5%;
+    margin: 20 0 0 5%;
     flex-grow: 1; /* Allows this section to take up available space */
-      /* border: 3px solid rgba(255, 255, 255, 0.348);  */
+          /* border: 3px solid rgba(255, 255, 255, 0.348);  */
 
   }
-  
+
   #rec-btn {
 
     background: rgba(255, 255, 255, 0.178);
@@ -24,21 +28,25 @@
     cursor: pointer; /* Changes cursor to pointer */
     transform: none;
     width: fit-content;
-  
+    float: right;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    padding: 10px 15px 10px 15px;
 
   }
+
+
 
   #logged-in {
-    display: flex; /* Enables Flexbox */
-    flex-direction: column; /* Stacks content vertically */
-          
-
+    display: flex; /* Enable flexbox */
+    flex-direction: column;
   }
+  
   
 
   
   #side-bar {
-    margin: 120 5% 0 5%;
+    margin: 5% 5% 0 5%;
     position: absolute;
     right: 0; /* Positions the sidebar to the right */
     height: 100%; /* Optional: Adjust based on your layout needs */
@@ -48,24 +56,14 @@
     
   }
   .timer {
-    margin: 0 0 20px 0;
+    margin: 0 0 5% 0;
 
   }
-  .stats {
-    margin: 0 0 20px 0;
-      /* border: 2px solid rgb(4, 167, 255); */
 
-  }
 
   #logged-in {
     display: flex;
     flex-direction: column;
   }
   
-  #rec-btn:active {
-    /* Override styles here to remove click effects */
-    /* Example: if there's a transform on active, you can reset it */
-    transform: none;
-    /* Reset any other style properties that are changed on active */
-}
-
+ 
