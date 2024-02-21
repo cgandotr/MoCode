@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import './App.css';
-import NavBar from '../src/components/NavBar';
-import Footer from '../src/components/Footer';
-import SignIn from '../src//components/SignIn'
-
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import SignIn from './components/SignIn'
+import { AuthContext } from './AuthContext';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, db, app } from './firebase'
 function App() {
   const [text, setText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const texts = ["jobOffer;", "happiness;", "salaryRaise;", "passCSE115A;"];
+  const { currentUser, setCurrentUser, problems } = useContext(AuthContext);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -57,7 +60,12 @@ function App() {
 
 
       </div>
-      <SignIn></SignIn>
+      {currentUser ? (
+        <p></p>
+      ) : (
+        <SignIn></SignIn>
+      )}
+      
       <Footer></Footer>
     </div>
   );

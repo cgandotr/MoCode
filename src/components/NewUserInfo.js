@@ -94,12 +94,13 @@ function NewUserInfo() {
             <form id="form" onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    id = "uname"
                     value={leetcodeUsername}
                     onChange={(e) => setLeetcodeUsername(e.target.value)}
                     placeholder="LeetCode Username"
                     required
                 />
-                <button type="submit">Submit</button>
+                <button type="submit" id="submit-btn">Submit</button>
             </form>
         </div>
     );

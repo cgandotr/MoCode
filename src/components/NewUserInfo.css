@@ -18,3 +18,27 @@
     align-items: center;
 }
 
+#submit-btn {
+    background-color: rgb(27, 148, 247);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 2 2 2 2;
+    width: 50%;
+    margin-left: 10px;
+    border-radius: 30px;
+    
+    
+  }
+  
+  #uname {
+
+    border-radius: 10px;
+    padding: 2 2 2 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  #form{
+    align-items: center;
+    display: flex;
+  }
