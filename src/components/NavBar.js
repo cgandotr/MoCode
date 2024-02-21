@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import './NavBar.css';
 import ProfileIcon from '../extra/profile_icon.svg';
+import ProfileDarkIcon from '../extra/profile_icon_dark.svg';
 import { AuthContext } from '../AuthContext';
 import { db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -66,7 +67,7 @@ function NavBar() {
                 </div>
                 <NavLink to="/home" id="home" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Home</NavLink>
                 <NavLink to="/profile" id="profile" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>
-                    <img id="profile-icon" src={ProfileIcon} alt="Profile" />
+                    <img id="profile-icon" src={isDarkMode ? ProfileIcon : ProfileDarkIcon} alt="Profile" />
                 </NavLink>
             </div>
         </div>

@@ -39,7 +39,9 @@
 }
 
 #profile-icon {
-    color: var(--main-font-color);
+    /*color: var(--main-font-color);*/
+    /*mix-blend-mode: difference;*/
+    fill: var(--main-font-color);
 }
 
 .nav-link {
