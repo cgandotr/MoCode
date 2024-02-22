@@ -17,6 +17,26 @@ MoCode is an innovative application designed specifically for software developme
 * Firebase
 * Node JS
 
+## Getting Started
+
+
+#### Prerequisites
+* 
+
+#### Installation Guide
+
+1. Clone the repo
+```sh
+git clone https://github.com/cgandotr/MoCode.git
+```
+2. Install NPM packages
+```sh
+npm install
+```
+3. Run the application
+```sh
+npm start
+```
 
 
 ## Contributors
