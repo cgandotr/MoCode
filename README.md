@@ -9,7 +9,7 @@
 
 ## About the Project
 
-This app aims to offer a dynamic and data-driven approach to coding practice, focusing on improving users' proficiency in targeted areas and overall problem-solving skills.
+MoCode is an innovative application designed specifically for software development learners aiming to excel in technical interviews. By integrating a sophisticated recommendation algorithm, MoCode personalizes your study experience, suggesting LeetCode problems that align with your individual goals and performance metrics. This targeted approach ensures efficient and effective preparation, making MoCode an indispensable tool for aspiring software developers.
 
 ## Built With
 
