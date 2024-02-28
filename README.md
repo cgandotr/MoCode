@@ -11,17 +11,7 @@
 
 MoCode is an innovative application designed specifically for software development learners aiming to excel in technical interviews. By integrating a sophisticated recommendation algorithm, MoCode personalizes your study experience, suggesting LeetCode problems that align with your individual goals and performance metrics. This targeted approach ensures efficient and effective preparation, making MoCode an indispensable tool for aspiring software developers.
 
-## Built With
-
-* React
-* Firebase
-* Node JS
-
 ## Getting Started
-
-
-#### Prerequisites
-* 
 
 #### Installation Guide
 
@@ -38,6 +28,14 @@ npm install
 npm start
 ```
 
+#### Credentials
+
+Contributions require permissions. Email `cgandotr@ucsc.edu` for access to the GitHub repository and the Firebase Database.
+
+
+## Deployment
+
+
 
 ## Contributors
 
@@ -47,5 +45,14 @@ npm start
 - Sree Chinta -- `schinta@ucsc.edu`
 - Samik Pradhan -- `srpradha@ucsc.edu`
 
+## Built With
+
+* [React](https://react.dev/)
+* [Firebase](https://firebase.google.com/)
+* [Node JS](https://nodejs.org/en)
 
 
+
+## License
+
+This project is licensed under the MIT License -- see the [LICENSE.md](LICENSE.md) file for details
