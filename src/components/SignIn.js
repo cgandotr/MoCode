@@ -29,6 +29,7 @@ function SignIn() {
                 const docSnap = await getDoc(userRef);
                 if (!docSnap.exists()) {
                     // Create a new document for new user
+                    // const priorities = await defaultPrioritiesString()
                     await setDoc(userRef, {
                         __id: result.user.uid,
                         name: result.user.displayName,
@@ -36,7 +37,7 @@ function SignIn() {
                         photo: result.user.photoURL,
                         displayMode: "Dark",
                         leetcodeUserName: "",
-                        recommended: ["GdiDgvCKNTkJzHOBKVq6"]
+                        recommended: [],
                     });
                 } else {
                     // User already exists, you can handle this case if needed

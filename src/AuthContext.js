@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
     // Set up real-time listener for the user's problems
     const unsubscribeProblems = onSnapshot(q, (snapshot) => {
-      const fetchedUserProblems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const fetchedUserProblems = snapshot.docs.map(doc => ({ ...doc.data() }));
       setUserProblems(fetchedUserProblems); // Update user problems with real-time data.
       // console.log('Fetched user problems:', fetchedUserProblems);
 

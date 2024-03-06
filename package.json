@@ -1,6 +1,6 @@
 {
   "name": "mocode-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -27,9 +27,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "tsc -w",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && firebase deploy"
+
   },
   "eslintConfig": {
     "extends": [
