@@ -66,7 +66,9 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
   function formatTime(timeInSeconds) {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
-  
+    if (timeInSeconds == null) {
+        return "null"
+    }
     if (hours > 0) {
       return `${hours}hr, ${minutes}min`;
     } else {

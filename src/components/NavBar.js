@@ -52,6 +52,7 @@ function NavBar() {
     const handleThemeChange = (event) => {
         setIsDarkMode(event.target.checked);
     };
+    
     return (
         <div className='navbar'>
             <div className='logo'>

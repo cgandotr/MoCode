@@ -6,10 +6,20 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [{
-      "source": "**",
-      "destination": "/index.html"
-    }]
-    
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 3000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

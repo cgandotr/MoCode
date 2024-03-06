@@ -36,7 +36,8 @@ function Profile() {
 // Derived state for sorted problems based on selected criteria
 const [sortedHistoryProblems, setSortedHistoryProblems] = useState([]);
 
-const statusOrder = ["Not Complete", "Repeat", "InComplete", "Complete"];
+const statusOrder = ["Not Complete", "InComplete", "Complete"];
+const difficultyOrder = ["Easy", "Medium", "Hard"];
 
 
 useEffect(() => {
@@ -50,7 +51,7 @@ useEffect(() => {
         }));
         return [...acc, ...submissions];
     }, []);
-    console.log(allSubmissions)
+    // console.log(allSubmissions)
 
     // Filter and sort submissions based on selected criteria
     const filteredAndSorted =  allSubmissions.filter(submission => submission.status[0] === "Complete" || submission.status[0] === "InComplete")
@@ -64,8 +65,8 @@ useEffect(() => {
             return (problemA?.title || "").localeCompare(problemB?.title || "");
         case 'difficulty':
             // Assuming 'difficulty' is a string like 'Easy', 'Medium', 'Hard'
-            if (problemA?.difficulty === problemB?.difficulty) return 0;
-            return (problemA?.difficulty || "").localeCompare(problemB?.difficulty || "");
+            return difficultyOrder.indexOf(problemA?.difficulty) - difficultyOrder.indexOf(problemB?.difficulty);
+
         case 'category':
             // Assuming 'category' is a string
             if (problemA?.category === problemB?.category) return 0;
@@ -80,7 +81,7 @@ useEffect(() => {
                 return bDate - aDate;
         }
     });
-        console.log(filteredAndSorted)
+        // console.log(filteredAndSorted)
 
     setSortedHistoryProblems(filteredAndSorted);
 }, [userProblems, sortBy]);

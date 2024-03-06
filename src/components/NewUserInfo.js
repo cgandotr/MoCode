@@ -3,7 +3,9 @@ import './NewUserInfo.css';
 import { db } from './../firebase';
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { AuthContext } from '../AuthContext';
-import { orbit } from 'ldrs'
+import { CircularProgress } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../functions";
 
 
 function NewUserInfo() {
@@ -11,7 +13,19 @@ function NewUserInfo() {
     const [isLoading, setIsLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
     const [ellipsis, setEllipsis] = useState('');
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, userProblems } = useContext(AuthContext);
+
+    const [showFailureAlert, setShowFailureAlert] = useState(false); // State to control the visibility of the failure alert
+
+    // Function to show the failure alert for 2 seconds
+    const showTemporaryFailureAlert = () => {
+        setShowFailureAlert(true); // Show the alert
+
+        // Set a timeout to hide the alert after 2 seconds
+        setTimeout(() => {
+            setShowFailureAlert(false); // Hide the alert
+        }, 2000);
+    };
 
     useEffect(() => {
         let ellipsisInterval;
@@ -24,19 +38,12 @@ function NewUserInfo() {
         return () => clearInterval(ellipsisInterval); // Clean up on unmount or isLoading change
     }, [isLoading]);
 
-    const isValidUsername = () => {
-        return new Promise((resolve) => {
-            setLoadingMessage("Checking Username");
-            setTimeout(() => resolve(true), 3000); // Simulate a 3-second check
-        });
-    };
 
-    const fetchProblems = () => {
-        return new Promise((resolve) => {
-            setLoadingMessage("Fetching Problems");
-            setTimeout(() => resolve(true), 3000); // Simulate a 3-second fetch
-        });
-    };
+    
+
+
+
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -48,21 +55,21 @@ function NewUserInfo() {
 
         setIsLoading(true);
 
-        // First, check if the username is valid
-        const usernameValid = await isValidUsername();
-        if (!usernameValid) {
-            alert("Invalid username.");
+        // Pass the leetcodeUsername to isValidUsername function
+        setLoadingMessage("Checking Username");
+        const usernameValid = await isUsernameValid(leetcodeUsername);
+        if (usernameValid == false) {
+            showTemporaryFailureAlert();
             setIsLoading(false);
             return;
         }
-
+        console.log("returned data" + usernameValid);
         // Then, fetch problems for the user
-        const problemsFetched = await fetchProblems();
-        if (!problemsFetched) {
-            alert("Failed to fetch problems.");
-            setIsLoading(false);
-            return;
-        }
+        setLoadingMessage("Fetching History");
+        await populateNewUserHistory(currentUser.__id, usernameValid);
+      
+        setLoadingMessage("Generating Questions");
+        await generateQuestions(currentUser, userProblems);
 
         // Update Firestore with the new username
         setTimeout(async () => {
@@ -81,9 +88,10 @@ function NewUserInfo() {
 
     if (isLoading) {
         return (
+            
             <div className="loading-container">
-                <l-orbit size="35" speed="1.5" id="load" color="white"></l-orbit>
-                <h3>{loadingMessage}{ellipsis}</h3>
+                <CircularProgress id="circle" sx={{ color: 'var(--main-font-color)', marginBottom: "10%"}} />
+                <h3 id="loading-msg">{loadingMessage}{ellipsis}</h3>
             </div>
         );
     }
@@ -101,6 +109,11 @@ function NewUserInfo() {
                 />
                 <button type="submit">Submit</button>
             </form>
+            {showFailureAlert && (
+                <Alert className="alert" variant="filled" severity="error">
+                Invalid LeetCode Username
+                </Alert>
+            )}
         </div>
     );
 }

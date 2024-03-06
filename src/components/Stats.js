@@ -85,7 +85,7 @@ function Stats() {
             return bCount - aCount;
         });
 
-        console.log(sortedProblems)
+        // console.log(sortedProblems)
         
         // Select top 3 problems
         const top3Problems = sortedProblems.slice(0, 3);
@@ -196,6 +196,9 @@ function Stats() {
                                             highlightScope: { faded: 'global', highlighted: 'item' },
                                         
                                         }]}
+                                        sx={{
+                                            // width: [100, 200, 300] 
+                                        }}
                                     height={300}
                                     width={300}
                     
@@ -204,8 +207,48 @@ function Stats() {
                             </Stack>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateCalendar      />
+                    <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        localeText={{
+                            calendarWeekNumberHeaderText: '#',
+                            calendarWeekNumberText: (weekNumber) => `${weekNumber}.`,
+                        }}
+                        >
+                        <DateCalendar 
+                          readOnly={true}
+
+                            sx={{
+                            '& .MuiPickersCalendarHeader-label': { // Targets all text within the component
+                                color: 'var(--main-font-color)',
+                            },
+                            '& .MuiSvgIcon-root': {
+                                color: 'var(--faint-font-color)',
+                            },
+                            '& .MuiPickersYear-yearButton': {
+                                color: 'var(--main-font-color)',
+                            },
+                            '& .MuiPickersDay-root': {
+                                color: 'var(--main-font-color)',
+                            },
+                            '& .MuiDayCalendar-weekDayLabel': {
+                                color: 'var(--main-font-color)',
+                            },
+                            
+                            '& .MuiDayCalendar-header': {
+                                backgroundColor: 'var(--boxes-background)',
+                                borderRadius: '50px',
+                            },
+
+                            '& .css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected': {
+                                backgroundColor: 'rgba(0, 0, 0, 0)',
+                            },
+
+                              
+                             
+                             
+                        
+                              }}
+                        />
                         </LocalizationProvider>
                     </TabPanel>
                 </SwipeableViews>
