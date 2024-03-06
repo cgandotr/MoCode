@@ -23,7 +23,7 @@ git clone https://github.com/cgandotr/MoCode.git
 ```sh
 npm install
 ```
-3. Run the application
+3. Run the application (locally)
 ```sh
 npm start
 ```
@@ -35,11 +35,14 @@ Contributions require permissions. Email `cgandotr@ucsc.edu` for access to the G
 
 ## Deployment
 
-
+Run the following to Deploy 
+```sh
+npm run deploy
+```
 
 ## Contributors
 
-- Camille Gandotra -- `cgantodr@ucsc.edu`
+- Camille Gandotra -- `cgandotr@ucsc.edu`
 - Ezekiel Norman -- `eznorman@ucsc.edu`
 - Anish Kumar -- `akumar74@ucsc.edu`
 - Sree Chinta -- `schinta@ucsc.edu`
@@ -50,7 +53,6 @@ Contributions require permissions. Email `cgandotr@ucsc.edu` for access to the G
 * [React](https://react.dev/)
 * [Firebase](https://firebase.google.com/)
 * [Node JS](https://nodejs.org/en)
-
 
 
 ## License
