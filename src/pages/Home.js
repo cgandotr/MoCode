@@ -95,7 +95,7 @@ function Home() {
 
     return (
         <div className="Home">
-            <NavBar />
+            <NavBar/>
             {currentUser ? (
                 currentUser.leetcodeUserName ? (
                     <div id="logged-in">
