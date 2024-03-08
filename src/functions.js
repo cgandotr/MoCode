@@ -19,26 +19,72 @@ Checks if LeetCode UserName is Valid
 string: LeetCode UserName -> boolean: False,
                              object: Recent Submissions from Valid LeetCode Username
 */
+
+
+
+// https://leetcode.com/graphql?query=query
+// { 
+//    recentAcSubmissionList(username: "camillegandotra", limit: 5) {
+//     id
+//     title
+//     titleSlug
+//     timestamp
+//   }
+// }
+
 export async function isUsernameValid(username) {
-    try {
-        const response = await fetch(`https://leetcode-api-faisalshohag.vercel.app/${username}`);
-        if (response.status !== 200) {
-            return false;
-        }
+    return true;
+//     const endpoint = "https://leetcode.com/graphql"; // LeetCode GraphQL endpoint
+//     const query = `
+//     {
+      
+//         recentAcSubmissionList(username: "${username}", limit: 5) {
+//                 id
+//                 title
+//                 titleSlug
+//                 timestamp
+//               }
+//     }`;
 
-        const data = await response.json();
-        if (data.errors) {
-            return false;
-        }
+//     try {
+//         const response = await fetch('https://mocode-115a.web.app/api/graphql', {
+//             method: 'POST',
+//             headers: {
+//               'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//               query: `{
+//                 matchedUser(username: "yourUsername") {
+//                   activeBadge {
+//                     displayName
+//                     icon
+//                   }
+//                 }
+//               }`,
+//               variables: {}
+//             }),
+//           })
 
-        const submissions = data.recentSubmissions;
-        return submissions;
+//         console.log(response);
+//         if (response.status !== 200) {
+//             return false;
+//         }
 
-    } catch (error) {
-        console.error("Error checking username validity:", error);
-        return false; 
-    }
+//         const data = await response.json();
+//         console.log(data); // Logging the data to see the structure
+//         if (data.errors) {
+//             return false;
+//         }
+
+//         // Depending on the exact structure of the response data, you might need to adjust this:
+//         return data.data.matchedUser !== null;
+
+//     } catch (error) {
+//         console.error("Error checking username validity:", error);
+//         return false;
+//     }
 }
+
 
 /*
 Populates User History
@@ -49,20 +95,21 @@ string: userId,
 object: submission history
 */
 export async function populateNewUserHistory(userId, submissions) {
-    const questions = await fetchQuestions();
+    // console.log(submissions)
+    // const questions = await fetchQuestions();
 
-    for (const sub of submissions) {
-        const matchingQuestion = questions.find(question => question.title === sub.title);
+    // for (const sub of submissions) {
+    //     const matchingQuestion = questions.find(question => question.title === sub.title);
         
-        if (matchingQuestion) {
-            const timeStamp = Timestamp.fromMillis(sub.timestamp * 1000);
-            const status = sub.statusDisplay === "Accepted" ? "Complete" : "InComplete";
-            const timeDuration = null;
-            await addUserProblemEntry(userId, matchingQuestion, timeStamp, status, timeDuration);
-        }
-        else {
-        }
-    }
+    //     if (matchingQuestion) {
+    //         const timeStamp = Timestamp.fromMillis(sub.timestamp * 1000);
+    //         const status = sub.statusDisplay === "Accepted" ? "Complete" : "InComplete";
+    //         const timeDuration = null;
+    //         await addUserProblemEntry(userId, matchingQuestion, timeStamp, status, timeDuration);
+    //     }
+    //     else {
+    //     }
+    // }
     return;
 }
 
@@ -75,7 +122,7 @@ object: userData,
 object: userProblems
 */
 export async function generateQuestions(userData, userProblems) {
-    
+    // deleteUP(userData.__id)
     const userProblemsDeleted = await flushPreviousQuestions(userData, userProblems);
     userProblems = userProblems.filter(up => !userProblemsDeleted.includes(up.__id));
 
@@ -321,18 +368,18 @@ function calculateScoreRepeat(userProblem) {
     const currentDate = new Date();
 
     // Initialize both scores with a minimum value of 0.25
-    let recencyScore = 0.25;
+    let recencyScore = 0.50;
     let frequencyScore = 0.25;
 
     if (userProblem.dateCompleted[0]) {
         const lastAttemptDate = new Date(userProblem.dateCompleted[0]); 
         if (!isNaN(lastAttemptDate.getTime())) { 
             const hoursSinceLastAttempt = (currentDate - lastAttemptDate) / (1000 * 60 * 60);
-            recencyScore = Math.max(0.25, 1 - (hoursSinceLastAttempt / (24 * 60))); // Normalizing over 60 days
+            recencyScore = Math.max(0.50, 1 - (hoursSinceLastAttempt / (24 * 60))); // Normalizing over 60 days
         }
     }
     frequencyScore = Math.max(0.25, 1 - (Math.min(userProblem.dateCompleted.length, 15) / 15)); 
-    // [.5, 2]
+    // [.75, 2]
     return recencyScore + frequencyScore;
 }
 
@@ -346,9 +393,9 @@ const difficultyToNum = {
 
 // Calculate Score based on New Question
 function calculateScoreNew(problem, averageDifficulty, recentCategories) {
-    let categoryScore = recentCategories.includes(problem.category) ? 1 : 0.5;
-    let difficultyScore = Math.max(0.0, Math.min(3, 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficulty)));
-     // [.5, 4]
+    let categoryScore = recentCategories.includes(problem.category) ? 1 : 0.25;
+    let difficultyScore = Math.max(0.0, Math.min(4, 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficulty)));
+     // [.25, 5]
     return  categoryScore + difficultyScore;
 }
 
@@ -816,3 +863,20 @@ END
 OLD FUNCTIONS
 ----------------------------------------------------------------------------------------------------------------------------
 */
+
+
+function matchLeetCodeUserName(username) {
+    return `
+
+    https://leetcode.com/graphql?query=query
+    { 
+        matchedUser(username: "${username}") {
+            activeBadge {
+            displayName
+            icon
+            }
+        }
+    }
+`
+
+} 

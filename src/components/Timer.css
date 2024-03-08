@@ -14,13 +14,13 @@
 #problem {
   color: var(--faint-font-color);
   font-style: italic;
-  font-size: 20px;
+  font-size: 15px;
   margin-left: 10px;
   
 }
 
 #time {
-  font-size: 4vw;
+  font-size: vw;
   color: var(--main-font-color);
   /* border: 2px solid rgb(4, 167, 255); */
   width: fit-content;
@@ -29,11 +29,11 @@
 }
 
 #pin {
-  height: 22px;
+  height: 15px;
 }
 
 #close-button {
-  height: 40px;
+  height: 35px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -55,7 +55,7 @@
 }
 
 #start-pause-button {
-  height: 40px;
+  height: 35px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -76,8 +76,10 @@
   flex-wrap: wrap; /* Allow buttons to wrap in smaller containers */
 }
 
-@media (min-width: 1200px) { /* Adjust 1200px to the point where you want the font size to stop growing */
+@media (min-width: 800px) { /* Adjust 1200px to the point where you want the font size to stop growing */
   #time {
-    font-size: 60px; /* This is the maximum font size */
+    font-size: 40px; /* This is the maximum font size */
   }
+  
 }
+

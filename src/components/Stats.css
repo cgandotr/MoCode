@@ -2,7 +2,8 @@
   border-radius: 34px;
   background: var(--boxes-background);
   padding: 30px;
-  height: 500px;
+  position: relative;
+    /* border: 5px solid rgb(174, 214, 63);  */
 
 }
 
@@ -26,8 +27,16 @@
   justify-content: space-between; /* Align items on the main-axis to have space between them */
   align-items: center; /* Align items on the cross-axis in the center */
   width: 100%; /* Ensure the div takes full width to spread title and number apart */
+  
 }
 
+#title3 {
+  white-space: nowrap; /* Keeps the text on a single line */
+  overflow: hidden; /* Hides text that overflows the element's box */
+  text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
+  /* border: 3px solid rgb(248, 37, 37);  */
+  width: 90%;
+}
 #number {
   white-space: nowrap; /* Prevent wrapping */
 
@@ -35,24 +44,44 @@
 
 
 #stack {
-  padding: 20px 0 0 0;
   /* border: 2px solid rgb(4, 167, 255); */
-  height: 100%;
-  align-items: center;
 }
 
-#box {
-  /* border: 2px solid rgb(4, 167, 255); */
 
-  display: row;
-  justify-content: center;
-  align-items: center;
-  
-
-}
 
 
 #switch {
   float: right;
 }
 
+.react-swipeable-view-container {
+    /* border: 2px solid rgb(4, 167, 255); */
+    min-width: fit-content;
+  
+}
+
+#full-width-tabpanel-0 {
+  /* border: 2px solid rgb(191, 208, 217); */
+/* align-items: center; */
+}
+
+
+.MuiDayCalendar-root {
+  /* border: 2px solid rgb(123, 192, 45); */
+
+}
+
+#full-width-tabpanel-1 {
+  /* border: 2px solid rgb(4, 167, 255); */
+  width: fit-content;
+  padding: 0;
+
+}
+
+.MuiDateCalendar-root.css-lk3aih-MuiDateCalendar-root {
+  /* border: 2px solid rgb(4, 167, 255); */
+  padding: 0;
+  margin: 0;
+  scale: .9;
+
+}

@@ -1,0 +1,17 @@
+.loading-container {
+    margin: 50 30% 100 30% ;
+
+    width: 300px;
+    position: relative;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 10 10 10 10;
+    flex-direction: column;
+    align-items: center;
+    /* border: 2px solid rgb(4, 167, 255); */
+}
+
+#loading-msg {
+    color: var(--main-font-color);
+}

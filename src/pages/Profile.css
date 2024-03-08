@@ -3,7 +3,7 @@
     width: 100%;
     background: var(--background);
     color: var(--font-color);
-    overflow: auto;
+
 
 
   }
@@ -18,11 +18,11 @@
 #profile-side-bar {
   background: var(--boxes-background);
   border-radius: 34px;
-  padding: 40 40 40 40;
+  padding: 30;
   margin: 50 0 50 5%;
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 250px;
   height: fit-content
 
   
@@ -40,7 +40,7 @@
   border-radius: 50%; /* This creates the circular shape */
   object-fit: cover; /* This ensures the image covers the area without stretching */
   margin-right: 30;
-  height: 115px;
+  height: 90px;
 }
 
 #info {
@@ -69,6 +69,7 @@
     width: 50%;
     border-radius: 30px;
     width: 100%;
+
 }
 
 #log-out {
@@ -116,14 +117,18 @@
 
 #history {
   width: 55%;
+
   margin: 0 5% 0 5%;
   /* border: 3px solid rgba(33, 179, 104, 0.348);  */
 
 }
 
 #problems {
-  width: 100%;
   /* border: 3px solid rgb(190, 39, 19);  */
+  width: 100%;
+  height:70vh;
+  overflow-y: scroll;
+
 
   
 }
@@ -131,6 +136,10 @@
 #sort-by {
   
   margin: 8% 1% 2% auto;
+}
+
+#info-name{
+  font-size: 15px;
 }
 
 

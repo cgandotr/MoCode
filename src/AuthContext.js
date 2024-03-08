@@ -3,14 +3,17 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from './firebase';
 import { doc, collection, query, where, onSnapshot } from "firebase/firestore"; // Corrected import
 import problemsJSON from './problems.json';
-
+import LoadingPage from './components/LoadingPage';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProblems, setUserProblems] = useState([]);
   const [problems, setProblems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Loading'); // Added loading message state
+  const [loadingProblems, setLoadingProblems] = useState(false);
+
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -37,7 +40,6 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null);
         setUserProblems([]);
         setProblems([]);
-        setLoading(false);
         updateTheme("Dark"); // Optionally reset to default theme.
       }
     });
@@ -46,8 +48,26 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribeAuth();
   }, []);
 
+  // useEffect(() => {
+  //   if (currentUser?.__id) {
+  //     console.log(currentUser)
+  //     const userDocRef = doc(db, "users", currentUser.__id);
+  //     const unsubscribeUserDoc = onSnapshot(userDocRef, (doc) => {
+  //       if (doc.exists()) {
+  //         const userData = doc.data();
+  //         setCurrentUser(userData); // Update with detailed user data
+  //         fetchProblemsForUser(userData.__id); // Assuming userData.__id is correct, adjust if needed
+  //       } else {
+  //         console.log("No such document!");
+  //       }
+  //     });
+
+  //     return () => unsubscribeUserDoc();
+  //   }
+  // }, [currentUser?.leetCodeUserName]);
+
+
   const fetchProblemsForUser = (userId) => {
-    setLoading(true);
     const userProblemsRef = collection(db, "userProblems");
     const q = query(userProblemsRef, where("__userId", "==", userId));
 
@@ -63,10 +83,8 @@ export const AuthProvider = ({ children }) => {
       );
       // console.log('Filtered problems:', filteredProblems);
       setProblems(filteredProblems);
-      setLoading(false);
     }, (error) => {
       console.error("Error fetching user problems:", error);
-      setLoading(false);
     });
   };
 
@@ -81,8 +99,19 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ currentUser, userProblems, problems, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ 
+      currentUser, 
+      userProblems, 
+      problems, 
+      loadingPage, 
+      loadingMessage, // Provide loading message through context
+      setLoadingPage, // Provide the setLoadingPage function so consumers can update the loading state
+      setLoadingMessage, // Provide the setLoadingMessage function so consumers can update the loading message
+      loadingProblems,
+      setLoadingProblems
+    }}>
+      {children}
     </AuthContext.Provider>
   );
+
 };

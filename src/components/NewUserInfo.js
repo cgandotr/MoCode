@@ -6,14 +6,12 @@ import { AuthContext } from '../AuthContext';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../functions";
+import LoadingPage from "./LoadingPage";
 
 
 function NewUserInfo() {
     const [leetcodeUsername, setLeetcodeUsername] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [loadingMessage, setLoadingMessage] = useState('');
-    const [ellipsis, setEllipsis] = useState('');
-    const { currentUser, userProblems } = useContext(AuthContext);
+    const { currentUser, userProblems, setLoadingMessage, setLoadingPage, loadingPage } = useContext(AuthContext);
 
     const [showFailureAlert, setShowFailureAlert] = useState(false); // State to control the visibility of the failure alert
 
@@ -26,17 +24,6 @@ function NewUserInfo() {
             setShowFailureAlert(false); // Hide the alert
         }, 2000);
     };
-
-    useEffect(() => {
-        let ellipsisInterval;
-        if (isLoading) {
-            ellipsisInterval = setInterval(() => {
-                setEllipsis((prev) => (prev.length < 3 ? prev + '.' : ''));
-            }, 500); // Update ellipsis every 500ms
-        }
-
-        return () => clearInterval(ellipsisInterval); // Clean up on unmount or isLoading change
-    }, [isLoading]);
 
 
     
@@ -53,18 +40,17 @@ function NewUserInfo() {
             return;
         }
 
-        setIsLoading(true);
+        setLoadingPage(true);
 
-        // Pass the leetcodeUsername to isValidUsername function
         setLoadingMessage("Checking Username");
         const usernameValid = await isUsernameValid(leetcodeUsername);
+
         if (usernameValid == false) {
             showTemporaryFailureAlert();
-            setIsLoading(false);
+            setLoadingPage(false);
             return;
         }
-        console.log("returned data" + usernameValid);
-        // Then, fetch problems for the user
+
         setLoadingMessage("Fetching History");
         await populateNewUserHistory(currentUser.__id, usernameValid);
       
@@ -81,19 +67,13 @@ function NewUserInfo() {
                 console.error("Error updating user info:", error);
                 alert("Failed to update user information.");
             } finally {
-                setIsLoading(false);
+                setLoadingPage(false);
             }
         }, 3000); // Simulate a delay before Firestore update
     };
 
-    if (isLoading) {
-        return (
-            
-            <div className="loading-container">
-                <CircularProgress id="circle" sx={{ color: 'var(--main-font-color)', marginBottom: "10%"}} />
-                <h3 id="loading-msg">{loadingMessage}{ellipsis}</h3>
-            </div>
-        );
+    if (loadingPage) {
+        return <LoadingPage/>
     }
 
     return (

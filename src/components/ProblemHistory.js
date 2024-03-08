@@ -89,12 +89,16 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
                     </Tooltip>
                 </div>
                 
-                <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
-                    {currentProblem.difficulty}
-                </h4>
-                <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
-                    {currentProblem.category}
-                </h4>
+                <Tooltip title={`Difficulty Level`}>
+                    <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
+                        {currentProblem.difficulty}
+                    </h4>
+                </Tooltip>
+                <Tooltip title={`Category`}>
+                    <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
+                        {currentProblem.category}
+                    </h4>
+                </Tooltip>
             </div>
             
             <div id="user-stats">

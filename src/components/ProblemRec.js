@@ -326,44 +326,54 @@ const handleInCompleteClick = () => {
             />
             <div id="problem-metadata" className='rec'>
                 <div className={`title-status-container`}>
-                    <img id="status" src={statusImages[currentUserProblem.status[0]]} alt={`Status: ${currentUserProblem.status[0]}`} />
-                    <h3 id="title">{currentProblem.title}</h3>
+                    <Tooltip title={`Problem Status: ${currentUserProblem.status[0]}`}>
+                        <img id="status" src={statusImages[currentUserProblem.status[0]]} alt={`Status: ${currentUserProblem.status[0]}`} />
+                    </Tooltip>
+                    <Tooltip title={currentProblem.title}>
+                        <h3 id="title">{currentProblem.title}</h3>
+                    </Tooltip>
                 </div>
-                <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
-                    {currentProblem.difficulty}
-                </h4>
-                <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
-                    {currentProblem.category}
-                </h4>
+                <Tooltip title={`Difficulty Level`}>
+                    <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
+                        {currentProblem.difficulty}
+                    </h4>
+                </Tooltip>
+                <Tooltip title={`Category`}>
+                    <h4 id="category" style={{ backgroundColor: categoryColors[currentProblem.category] }}>
+                        {currentProblem.category}
+                    </h4>
+                </Tooltip>
             </div>
             
                 <div id="buttons">
-                    <img
-                        id="start-pause"
-                        onClick={handleStartPauseClick}
-                        src={startPauseBtn}
-                        alt="Start/Pause"
-                        className={allowCompleteActions ? 'active' : ''}
-                    />
-                    <img 
-                        id="incomplete" 
-                        onMouseEnter={handleInCompleteHoverEnter} 
-                        onMouseLeave={handleInCompleteHoverLeave} 
-                        onClick={handleInCompleteClick} 
-                        src={incompleteBtn} 
-                        alt="Incomplete" 
-                        className={allowCompleteActions ? 'active' : ''}
-                    />
-                    <img 
-                        id="complete" 
-                        onMouseEnter={handleCompleteHoverEnter} 
-                        onMouseLeave={handleCompleteHoverLeave} 
-                        onClick={handleCompleteClick} 
-                        class='shake-animation'
-                        src={completeBtn} 
-                        alt="Complete" 
-                        className={allowCompleteActions ? 'active' : ''}
-                    />
+                        <img
+                            id="start-pause"
+                            onClick={handleStartPauseClick}
+                            src={startPauseBtn}
+                            alt="Start/Pause"
+                            className={allowCompleteActions ? 'active' : ''}
+                        />
+
+                        <img 
+                            id="incomplete" 
+                            onMouseEnter={handleInCompleteHoverEnter} 
+                            onMouseLeave={handleInCompleteHoverLeave} 
+                            onClick={handleInCompleteClick} 
+                            src={incompleteBtn} 
+                            alt="Incomplete" 
+                            className={allowCompleteActions ? 'active' : ''} enterDelay={3000}
+                        />
+                
+
+                        <img 
+                            id="complete" 
+                            onMouseEnter={handleCompleteHoverEnter} 
+                            onMouseLeave={handleCompleteHoverLeave} 
+                            onClick={handleCompleteClick} 
+                            src={completeBtn} 
+                            alt="Complete" 
+                            className={allowCompleteActions ? 'active' : ''}
+                        />
             
                 </div>
             

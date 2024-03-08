@@ -27,19 +27,15 @@
 }
 
 #warning {
-    color: rgb(216, 78, 78);
+    color: rgb(229, 61, 61);
 }
 #cancel-button {
-    font-size: 24px;
-    line-height: 1;
-    padding: 0 10px;
-    border: none;
     background-color: transparent;
-    color: #000;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 12px;
     position: absolute; /* Position relative to the nearest positioned ancestor */
     top: 0; /* Align to the top edge of the container */
     right: 0; /* Align to the right edge of the container */

@@ -6,6 +6,8 @@ import ProfileDarkIcon from '../extra/profile_icon_dark.svg';
 import { AuthContext } from '../AuthContext';
 import { db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import Switch from '@mui/material/Switch';
+import { alpha, styled } from '@mui/material/styles';
 
 function NavBar() {
     const { currentUser } = useContext(AuthContext);
@@ -54,22 +56,25 @@ function NavBar() {
         setIsDarkMode(event.target.checked);
     };
     
+   
+
     return (
         <div className='navbar'>
             <div className='logo'>
                 <NavLink to="/" id="main">MoCode</NavLink>
             </div>
-            <div className='links'>
-                <div className="theme-switch-wrapper">
-                    <label className="theme-switch" htmlFor="checkbox">
-                        <input type="checkbox" id="checkbox" onChange={handleThemeChange} checked={isDarkMode} />
-                        <div className="slider round"></div>
-                    </label>
+            <div id="switch">
+                    <Switch 
+                        onChange={handleThemeChange} color="default"
+                        checked={isDarkMode}
+                        >
+                    </Switch>
                 </div>
+            <div className='links'>
+                
+               
                 <NavLink to="/home" id="home" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Home</NavLink>
-                <NavLink to="/profile" id="profile" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>
-                    <img id="profile-icon" src={isDarkMode ? ProfileIcon : ProfileDarkIcon} alt="Profile" />
-                </NavLink>
+                <NavLink to="/profile" id="profile" className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"}>Profile</NavLink>
             </div>
         </div>
     );

@@ -3,37 +3,49 @@
     width: 100%;
     background: var(--background);
     /* border: 5px solid rgb(174, 214, 63);  */
-    overflow: auto;
-
-
   }
 
+ 
   #welcome {
+
     margin: 50 0 0 5%;
+        /* border: 5px solid rgb(174, 214, 63);  */
+    width: 40%;
+
   }
   #recommended {
+
     width: 50%;
     height: fit-content;
-    margin: 20 0 0 5%;
-    flex-grow: 1; /* Allows this section to take up available space */
-          /* border: 3px solid rgba(255, 255, 255, 0.348);  */
-
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align children to the right */
+    margin: 0 0 0  5%; /* Ensure you add 'px' units where needed */
+    /* border: 3px solid rgba(255, 255, 255, 0.348); */
   }
-
+  
   #rec-btn {
     background: var(--boxes-background);
     color: var(--main-font-color);
-    padding: 10px;
-    cursor: pointer; /* Changes cursor to pointer */
-    transform: none;
-    width: fit-content;
-    float: right;
-    margin-bottom: 20px;
+    cursor: pointer;
+    width: 100px;
     border-radius: 30px;
-    padding: 10px 15px 10px 15px;
+    padding: 10px 15px;
+    margin: 0 0 10px 0;
+    /* border: 3px solid rgb(190, 39, 19); */
+    /* Removed float: right; since we're now using flexbox for alignment */
+  }
+  
+
+  #rec-btn:hover {
+    background: var(--problem-outline);
 
   }
 
+  #rec-word {
+    font-size: 10px;
+
+  }
 
 
   #logged-in {
@@ -43,13 +55,18 @@
   
   
 
+  #problems-main {
+    /* border: 3px solid rgb(190, 39, 19);  */
+    width: 100%;
+  }
   
   #side-bar {
-    margin: 5% 5% 0 5%;
+      /* border: 3px solid rgb(190, 39, 19); */
+
+    margin: 30px 5% 15px 5%;
     position: absolute;
     right: 0; /* Positions the sidebar to the right */
-    height: 100%; /* Optional: Adjust based on your layout needs */
-    max-width: 400px;
+    max-width: 375px;
     width: 30%;
 
     
@@ -61,8 +78,9 @@
 
 
   #logged-in {
-    display: flex;
-    flex-direction: column;
   }
   
  
+.stats {
+}
+

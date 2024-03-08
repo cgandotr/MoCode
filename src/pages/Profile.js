@@ -89,7 +89,6 @@ useEffect(() => {
     const googleLogoutFnc = async (e) => {
         signOut(auth).then(() => {
             // Sign-out successful.
-            setCurrentUser(null); // dont need
             console.log('Sign out successful');
         }).catch((error) => {
             // An error happened.
@@ -141,7 +140,7 @@ useEffect(() => {
                                 label="Sort By"
                                 sx={{
 
-                                    height: '50px',
+                                    height: '40px',
                                     '.MuiOutlinedInput-notchedOutline': {
                                         borderColor: 'var(--faint-font-color)',
                                     },

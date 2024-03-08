@@ -13,10 +13,14 @@ import { auth, db, app } from './../firebase'
 import { doc, setDoc, Timestamp, getDoc, writeBatch } from "firebase/firestore";
 import RecButton from '../extra/rec-icon.svg'
 import { generateQuestions, nextSpacialRepetitionProblems, generateRecommendations } from "../functions";
+import Skeleton from '@mui/material/Skeleton';
+
+import Button from '@mui/lab/LoadingButton';
+
 
 function Home() {
     const { currentUser } = useContext(AuthContext);
-    const { userProblems, setUserProblems } = useContext(AuthContext);
+    const { userProblems, setUserProblems, loadingProblems, setLoadingProblems } = useContext(AuthContext);
 
     const statusOrder = ["Not Complete", "Repeat", "InComplete", "Complete"];
 
@@ -74,11 +78,15 @@ function Home() {
     const handleRecommendClick = async () => {
         try {
             console.log("b/f generate " + currentUser, userProblems)
+            setLoadingProblems(true)
+        
             // nextSpacialRepetitionProblems(userProblems, 3);
             // await generateQuestions
             // console.log(generateRecommendations(userProblems))
 
           await generateQuestions(currentUser, userProblems); // Commit the batch
+          setLoadingProblems(false)
+          console.log(loadingProblems)
           console.log("a/f generate " + currentUser, userProblems)
 
 
@@ -100,9 +108,19 @@ function Home() {
                         
                             
                         <div id="recommended">
-                            <div id="rec-btn" onClick={handleRecommendClick}>Recommend</div>
-                            <div id="problems">
-                                {recommendedProblems.map((problem, index) => (
+                            <Button id="rec-btn"
+                            size="small"
+                            onClick={handleRecommendClick}
+                          
+                            >
+                            <span id="rec-word">Recommend</span>
+                            </Button>
+
+                        
+
+                            <div id="problems-main">
+                            {!loadingProblems ? (
+                                recommendedProblems.map((problem, index) => (
                                     <ProblemRec 
                                         key={problem.__id} // Add a key for list rendering
                                         id={problem.__id} 
@@ -115,7 +133,22 @@ function Home() {
                                         timerTime={timerTime}
                                         timerRunningListener={isTimerRunning}
                                     />
-                                ))}
+                            
+                                ))
+                            ) : (
+                                <>
+                                    {Array.from({ length: 3 }).map((_, index) => (
+                                        <Skeleton 
+                                        key={index}
+                                        sx={{ bgcolor: 'var(--boxes-background)' , width: '100%', marginBottom: '10', borderRadius: '5px'}}
+                                        variant="rectangular"
+                                        height={175}
+                                        />
+                                    ))}
+                                </>
+                                                        
+                            )}
+                            
                             </div>
                         </div>
                           
@@ -140,7 +173,7 @@ function Home() {
             ) : (
                 <SignIn />
             )}
-            <Footer />
+            <Footer id="food" />
         </div>
     );
 }

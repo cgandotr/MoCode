@@ -3,13 +3,11 @@
     border-top: 1.5px solid var(--problem-outline);
     display: flex;
     justify-content: space-between;
-    width: 100%;
+
     height: fit-content;
-    min-width: fit-content;
     flex-direction: row;
     align-items: center;
     height: fit-content;
-    min-width: fit-content;
     transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
       /* border: 3px solid rgba(255, 255, 255, 0.348);  */
 
@@ -22,16 +20,26 @@
     flex-direction: column;
     align-items: flex-start; /* Align metadata items to the start */
     margin: 10px 0 10px 0;
-
+    /* border: 3px solid rgba(255, 255, 255, 0.348);  */
+    width: 50%;
 }
 
 .title-status-container {
     display: flex;
     align-items: center;
+    width: fit-content;
+    max-width: 90%;
+    /* border: 3px solid rgba(255, 255, 255, 0.348);  */
+
 }
 
 #title {
     margin-left: 12px;
+    white-space: nowrap; /* Keeps the text on a single line */
+    overflow: hidden; /* Hides text that overflows the element's box */
+    text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
+    /* border: 3px solid rgb(248, 37, 37);  */
+    width: 100%;
 }
 
 #category, #difficulty {
@@ -39,7 +47,7 @@
     border-radius: 34px;
     color: white;
     white-space: nowrap; /* Prevents breaking the content into multiple lines */
-
+    
 }
 
 
@@ -59,7 +67,7 @@
 }
 
 #status {
-    height: 30px;
+    height: 20px;
     transition: all 0.3s ease; /* Smooth transition for size change */
     box-shadow: 2px 2px 2px rgba(75, 75, 75, 0.096);
     border-radius: 50%; /* Make it round */
@@ -68,7 +76,7 @@
 
 #start-pause, #complete, #incomplete {
     margin: 0 10px 0 10px;
-    height: 40px;
+    height: 30px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.096);
     border-radius: 50%; /* Make it round */
     transition: all 0.3s ease; /* Smooth transition for size change */
@@ -81,15 +89,6 @@
 }
 
 
-
-
-.title-status-container > #title {
-    flex-shrink: 0; /* Prevents the element from shrinking */
-    min-width: fit-content; /* Ensures element does not shrink below its content size */
-    white-space: nowrap; /* Keeps the text on a single line */
-    overflow: hidden; /* Hides text that overflows the element's box */
-    text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
-}
 
 
 

@@ -4,6 +4,9 @@ import './Stats.css';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import dayjs from 'dayjs';
+import Badge from '@mui/material/Badge';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -63,6 +66,8 @@ const categoryColors = {
 };
 
 function Stats() {
+    // const [activeDays, setActiveDays] = useState([]);
+
     const { userProblems, problems } = useContext(AuthContext);
     
     const [value, setValue] = useState(0);
@@ -129,13 +134,53 @@ function Stats() {
     
     
 
-    // const data = [
-    //     { value: 10, label: 'series A', color: "#d65a5a" },
-    //     { value: 15, label: 'series B' },
-    //     { value: 20, label: 'series C' },
-    //   ];
 
+    // useEffect(() => {
+    //     // Assuming each item in userProblems might have multiple 'Complete' statuses and corresponding dates.
+    //     console.log(userProblems);
+        
+    //     setActiveDays(userProblems.reduce((acc, problem) => {
+    //         problem.status.forEach((status, index) => {
+    //             if (status === "Complete") {
+    //                 console.log(problem)
+    //                 const dateObject = problem.dateCompleted[index].toDate(); // Convert Firestore Timestamp to JavaScript Date
+    //                 const formattedDate = dateObject.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
+    //                 if (!acc.includes(formattedDate)) {
+    //                     acc.push(formattedDate);
+    //                 }
+    //             }
+    //         });
+    //         return acc;
+    //     }, []))
+    //     console.log(activeDays)
+    // }, [userProblems]);
+    
+    
 
+    function renderDay(day, selectedDates, pickersDayProps) {
+        const dateString = day.format('YYYY-MM-DD');
+        const activeDays = userProblems.reduce((acc, problem) => {
+            problem.status.forEach((status, index) => {
+                if (status === "Complete") {
+                    console.log(problem)
+                    const dateObject = problem.dateCompleted[index].toDate(); // Convert Firestore Timestamp to JavaScript Date
+                    const formattedDate = dateObject.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
+                    if (!acc.includes(formattedDate)) {
+                        acc.push(formattedDate);
+                    }
+                }
+            });
+            return acc;
+        }, [])
+        console.log(activeDays)
+        const isSelected = activeDays.includes(dateString);
+
+        return (
+            <Badge key={dateString} overlap="circular" badgeContent={isSelected ? '🔥' : undefined}>
+                <PickersDay {...pickersDayProps} />
+            </Badge>
+        );
+    }
 
     return (
         <div className='stats'>
@@ -144,7 +189,7 @@ function Stats() {
                 <div id="list">
                     {top3Problems.map((userProblem, index) => (
                         <div id="three" key={index}>
-                            <h4>{getProblemTitle(userProblem.problemLink)}</h4>
+                            <h4 id="title3">{getProblemTitle(userProblem.problemLink)}</h4>
                             <h4 id="number">{userProblem.status.filter(status => status === "Complete" || status === "InComplete").length}</h4>
                         </div>
                     ))}
@@ -186,28 +231,28 @@ function Stats() {
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0}>
-                    <Stack direction="row" width="100%" textAlign="center" spacing={1}  id="stack">
-                                <Box flexGrow={1} id="box">
-                                    <PieChart id="pie"
-                                        slotProps={{ legend: { hidden: true } }}
-                                        // skipAnimation
-                                        series={[{
-                                            data: pieChartData,
-                                            highlightScope: { faded: 'global', highlighted: 'item' },
-                                        
-                                        }]}
-                                        sx={{
-                                            // width: [100, 200, 300] 
-                                        }}
-                                    height={300}
-                                    width={300}
-                    
-                                /> 
-                                </Box>
-                            </Stack>
+                            <PieChart id="pie"
+                                slotProps={{ legend: { hidden: true } }}
+                                // skipAnimation
+                                series={[{
+                                    data: pieChartData,
+                                    highlightScope: { faded: 'global', highlighted: 'item' },
+                                
+                                }]}
+                                sx={{
+                                }}
+                            height={225}
+                            width={325}
+            
+                        /> 
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                    <LocalizationProvider
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateCalendar
+                    renderDay={renderDay}
+                />
+            </LocalizationProvider>
+                    {/* <LocalizationProvider
                         dateAdapter={AdapterDayjs}
                         localeText={{
                             calendarWeekNumberHeaderText: '#',
@@ -215,8 +260,7 @@ function Stats() {
                         }}
                         >
                         <DateCalendar 
-                          readOnly={true}
-
+                        disabled
                             sx={{
                             '& .MuiPickersCalendarHeader-label': { // Targets all text within the component
                                 color: 'var(--main-font-color)',
@@ -249,7 +293,7 @@ function Stats() {
                         
                               }}
                         />
-                        </LocalizationProvider>
+                        </LocalizationProvider> */}
                     </TabPanel>
                 </SwipeableViews>
             </div>
