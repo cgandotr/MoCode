@@ -3,6 +3,8 @@
     width: 100%;
     background: var(--background);
     color: var(--font-color);
+    overflow-y: auto;
+
 
 
 

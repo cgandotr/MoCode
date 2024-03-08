@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 import './App.css';
-import NavBar from '../src/components/NavBar';
-import Footer from '../src/components/Footer';
-import SignIn from '../src//components/SignIn'
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import SignIn from './components/SignIn'
+import Contact from './components/Contact';
+import Button from '@mui/lab/LoadingButton';
+import { useNavigate } from 'react-router-dom';
+
 
 function App() {
   const [text, setText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
-  const texts = ["jobOffer;", "happiness;", "salaryRaise;", "passCSE115A;"];
+  const texts = ["jobOffer;", "happiness;", "salaryRaise;"];
+
+  let navigate = useNavigate();
+
+  const redirectToPage = () => {
+    navigate('/home'); // Replace '/yourTargetPath' with the path you want to navigate to
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -45,19 +55,27 @@ function App() {
     <div className="App">
       <NavBar></NavBar>
       <div className="intro">
-        <div id="left">
-          <h1 id="logo">MoCode</h1>
-          <h2 id="liner">Get Your Offer Letter!</h2>
-        </div>
+        
         <div class="code-box">
-    <code>
-        if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
-    </code>
-</div>
+          <code>
+            if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
+          </code>
+        </div>
+        <div id="header">
+            <h1 id="head">The Best Way to Code</h1>
+            <h2 id="liner">Programming Questions tailored just for you!</h2>
+            <Button id="get-started-btn"
+                            size="small" onClick={redirectToPage}>
+                              Get Started
+
+                            </Button>
+          </div>
 
 
       </div>
-      <SignIn></SignIn>
+
+      <Contact></Contact>
+  
       <Footer></Footer>
     </div>
   );

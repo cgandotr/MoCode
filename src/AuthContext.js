@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
           } else {
             setCurrentUser(null); // Handle the case where the user document doesn't exist.
           }
+          setLoadingPage(false)
         }, (error) => {
           console.error("Error fetching user data:", error);
         });
@@ -41,9 +42,9 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null);
         setUserProblems([]);
         setProblems([]);
+        setLoadingPage(false)
         updateTheme("Dark"); // Optionally reset to default theme.
       }
-      setLoadingPage(false)
     });
 
     // Clean up: unsubscribe from the auth state listener when the component unmounts.

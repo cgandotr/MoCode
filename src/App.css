@@ -1,50 +1,46 @@
 .App {
   height: 100%;
   width: 100%;
-  margin: 0;
-  padding: 0;
   background: var(--background);
-
-
-
-
+  overflow-y: scroll
+  
+  
 }
 
 .intro {
-     margin: 100 20% 0 20% ;
-      /* border: 3px solid rgba(255, 255, 255, 0.348);  */
-      padding: 10 10 0 10;
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      justify-content: center; /* Center children horizontally */
-      display: flex;        /* Enable Flexbox */
-      transition: 1s ease-in-out ; /* Smooth transition for the border color */
-      border-radius: 30px; /* All corners will be rounded with a radius of 10px */
+  display: flex;
+  flex-direction: row; /* Stack children horizontally by default */
+  justify-content: space-between; /* Space out children */
+  align-items: center; /* Align children vertically */
+  margin: 100px 20% 0 20%;
+  /* border: 3px solid rgba(255, 255, 255, 0.348); */
+  padding: 30px;
 }
 
-#left, #right {
-  padding: 2% 5% 2% 5%;
-  /* border: 2px solid rgb(91, 39, 39); */
-  width: 100%; 
+@media (max-width: 768px) {
+  .intro {
+    flex-direction: column; /* Stack children vertically */
+    margin: 100px 10px; /* Reduce margin */
+  }
+  #header {
+    margin-left: 0px;
+  }
 }
 
-#left {
-  grid-column: 1;
-  right: 0;
-  /* border-right: 3px solid rgba(255, 255, 255, 0.348);  */
-}
-#right {
-  grid-column: 2;
-}
 
-#logo {
-
+#head {
+  font-size: 35px;
 }
 
 #liner {
-  margin-top: -40;
+  font-weight: 100;
+  font-size: 20px;
+  margin-top: -10;
+}
 
+#header {
+  margin-left: 40px;
+  text-align: center;
 }
 
 
@@ -54,9 +50,9 @@
   font-family: 'Courier New', Courier, monospace;
   padding: 30px;
   border-radius: 8px;
-  width: 100%;
+  min-width: 250px;
   margin: 0 auto;
-  height: 100;
+  height: 100px;
 }
 
 @keyframes typing {
@@ -73,4 +69,16 @@
   white-space: nowrap;
   overflow: hidden;
   animation: typing 2s steps(20, end), blink .75s step-end infinite;
+}
+
+
+#get-started-btn {
+  background: var(--boxes-background);
+  color: var(--main-font-color);
+  cursor: pointer;
+  border-radius: 30px;
+  padding: 10px 15px;
+  margin: 0 0 10px 0;
+  /* border: 3px solid rgb(190, 39, 19); */
+  /* Removed float: right; since we're now using flexbox for alignment */
 }

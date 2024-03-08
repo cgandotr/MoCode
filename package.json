@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.3",
+    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/lab": "^5.0.0-alpha.167",
     "@mui/material": "^5.15.12",
@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "dayjs": "^1.11.10",
+    "emailjs-com": "^3.2.0",
     "firebase": "^10.7.2",
     "gapi-script": "^1.2.0",
     "ldrs": "^1.0.1",
@@ -52,5 +53,4 @@
     ]
   },
   "proxy": "https://leetcode.com"
-
 }

@@ -95,11 +95,14 @@ function Home() {
           console.error('Error updating recommended problems: ', error);
         }
       };
+
+   
       
      
     return (
         <div className="Home">
             <NavBar/>
+     
             {currentUser ? (
                 currentUser.leetcodeUserName ? (
                     <div id="logged-in">
@@ -168,12 +171,12 @@ function Home() {
                         </div>
                     </div>
                 ) : (
-                    <NewUserInfo/>
+                     <NewUserInfo/>
                 )
             ) : (
                 loadingPage ? <LoadingPage />  : <SignIn />
             )}
-            <Footer id="food" />
+            <Footer/>
         </div>
     );
 }

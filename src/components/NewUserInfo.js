@@ -35,43 +35,46 @@ function NewUserInfo() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         if (!currentUser?.__id) {
             alert("No user logged in.");
             return;
         }
-
-        setLoadingPage(true);
-
+    
+        setLoadingPage(true); // Start the loading process
         setLoadingMessage("Checking Username");
+    
         const usernameValid = await isUsernameValid(leetcodeUsername);
-
-        if (usernameValid == false) {
+        if (usernameValid === false) {
             showTemporaryFailureAlert();
-            setLoadingPage(false);
+            setLoadingPage(false); // Stop loading due to invalid username
             return;
         }
-
+    
         setLoadingMessage("Fetching History");
         await populateNewUserHistory(currentUser.__id, usernameValid);
       
         setLoadingMessage("Generating Questions");
         await generateQuestions(currentUser, userProblems);
-
-        // Update Firestore with the new username
+    
+        setLoadingMessage("Updating Username");
+        // Ensure the Firestore update is completed before stopping the loading process
+        try {
+            await setDoc(doc(db, 'users', currentUser.__id), {
+                leetcodeUserName: leetcodeUsername,
+            }, { merge: true });
+        } catch (error) {
+            console.error("Error updating user info:", error);
+            alert("Failed to update user information.");
+        }
+        
         setTimeout(async () => {
-            try {
-                await setDoc(doc(db, 'users', currentUser.__id), {
-                    leetcodeUserName: leetcodeUsername,
-                }, { merge: true });
-            } catch (error) {
-                console.error("Error updating user info:", error);
-                alert("Failed to update user information.");
-            } finally {
-                setLoadingPage(false);
-            }
-        }, 3000); // Simulate a delay before Firestore update
+            setLoadingPage(false); 
+
+        }, 1000); // Simulate a delay before Firestore update
+
     };
+    
 
     if (loadingPage) {
         return <LoadingPage/>
