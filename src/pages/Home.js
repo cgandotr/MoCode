@@ -16,11 +16,11 @@ import { generateQuestions, nextSpacialRepetitionProblems, generateRecommendatio
 import Skeleton from '@mui/material/Skeleton';
 
 import Button from '@mui/lab/LoadingButton';
+import LoadingPage from "../components/LoadingPage";
 
 
 function Home() {
-    const { currentUser } = useContext(AuthContext);
-    const { userProblems, setUserProblems, loadingProblems, setLoadingProblems } = useContext(AuthContext);
+    const { currentUser, userProblems, setUserProblems, loadingProblems, setLoadingProblems, loadingPage } = useContext(AuthContext);
 
     const statusOrder = ["Not Complete", "Repeat", "InComplete", "Complete"];
 
@@ -95,8 +95,8 @@ function Home() {
           console.error('Error updating recommended problems: ', error);
         }
       };
-  
-
+      
+     
     return (
         <div className="Home">
             <NavBar/>
@@ -171,7 +171,7 @@ function Home() {
                     <NewUserInfo/>
                 )
             ) : (
-                <SignIn />
+                loadingPage ? <LoadingPage />  : <SignIn />
             )}
             <Footer id="food" />
         </div>

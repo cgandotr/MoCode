@@ -7,6 +7,7 @@ import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../functions";
 import LoadingPage from "./LoadingPage";
+import Button from '@mui/lab/LoadingButton';
 
 
 function NewUserInfo() {
@@ -78,16 +79,17 @@ function NewUserInfo() {
 
     return (
         <div className="new-user-info">
-            <h1 id="main-text">Please Enter Your LeetCode Username</h1>
+            <h3 id="main-text">Please Enter Your LeetCode Username</h3>
             <form id="form" onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    id = "uname"
                     value={leetcodeUsername}
                     onChange={(e) => setLeetcodeUsername(e.target.value)}
                     placeholder="LeetCode Username"
                     required
                 />
-                <button type="submit">Submit</button>
+                <Button  id="submit-btn" type="submit" size="small">Submit</Button>
             </form>
             {showFailureAlert && (
                 <Alert className="alert" variant="filled" severity="error">

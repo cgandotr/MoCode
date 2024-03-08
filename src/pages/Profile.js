@@ -17,12 +17,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import LoadingPage from "../components/LoadingPage";
 
 
 function Profile() {
     // Grab Current User
-    const { currentUser, setCurrentUser, problems } = useContext(AuthContext);
-    const { userProblems, setUserProblems } = useContext(AuthContext);
+    const { currentUser, setCurrentUser, problems, userProblems, setUserProblems, loadingPage } = useContext(AuthContext);
 
     const [sortBy, setSortBy] = React.useState('dateCompleted');
 
@@ -183,7 +183,7 @@ useEffect(() => {
                     <NewUserInfo/>
                 )
             ) : (
-               <SignIn></SignIn>
+                loadingPage ? <LoadingPage />  : <SignIn />
             )}
             <Footer></Footer>
         </div>

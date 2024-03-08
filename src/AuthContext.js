@@ -10,12 +10,13 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProblems, setUserProblems] = useState([]);
   const [problems, setProblems] = useState([]);
-  const [loadingPage, setLoadingPage] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('Loading'); // Added loading message state
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState(''); // Added loading message state
   const [loadingProblems, setLoadingProblems] = useState(false);
 
 
   useEffect(() => {
+    setLoadingPage(true)
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
         // Set up real-time listener for the user document
@@ -42,29 +43,13 @@ export const AuthProvider = ({ children }) => {
         setProblems([]);
         updateTheme("Dark"); // Optionally reset to default theme.
       }
+      setLoadingPage(false)
     });
 
     // Clean up: unsubscribe from the auth state listener when the component unmounts.
     return () => unsubscribeAuth();
   }, []);
 
-  // useEffect(() => {
-  //   if (currentUser?.__id) {
-  //     console.log(currentUser)
-  //     const userDocRef = doc(db, "users", currentUser.__id);
-  //     const unsubscribeUserDoc = onSnapshot(userDocRef, (doc) => {
-  //       if (doc.exists()) {
-  //         const userData = doc.data();
-  //         setCurrentUser(userData); // Update with detailed user data
-  //         fetchProblemsForUser(userData.__id); // Assuming userData.__id is correct, adjust if needed
-  //       } else {
-  //         console.log("No such document!");
-  //       }
-  //     });
-
-  //     return () => unsubscribeUserDoc();
-  //   }
-  // }, [currentUser?.leetCodeUserName]);
 
 
   const fetchProblemsForUser = (userId) => {
