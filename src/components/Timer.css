@@ -20,7 +20,6 @@
 }
 
 #time {
-  font-size: vw;
   color: var(--main-font-color);
   /* border: 2px solid rgb(4, 167, 255); */
   width: fit-content;

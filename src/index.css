@@ -26,6 +26,7 @@ code {
 
 /* Light Mode */
 [data-theme="Light"] {
+  --button-color: rgb(27, 148, 247);
   --background: linear-gradient(to top right, #ffffff00, #ffffff);
   --main-font-color: rgb(45, 45, 45);
   --main-font-color-two: rgb(39, 39, 39);
@@ -44,6 +45,7 @@ code {
 }
 
 [data-theme="Dark"] {
+  --button-color: rgb(27, 148, 247);
   --background: linear-gradient(to top right, #000000, #050021, #07002e);
   --main-font-color: white;
   --main-font-color-two: rgb(231, 231, 231);

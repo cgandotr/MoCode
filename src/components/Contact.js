@@ -50,6 +50,7 @@ function Contact() {
                         variant="filled"
                         id="first-name"
                         label="First Name"
+                        size='small'
                         value={firstName} onChange={(e) => setFirstName(e.target.value)}
                         sx={{
                             '& .MuiFilledInput-root': { 
@@ -64,8 +65,8 @@ function Contact() {
                             '& .MuiInputBase-colorPrimary': {
                                 color: "var(--main-font-color-two)"
                             },
-                            '& .MuiInputLabel-sizeMedium' : {
-                                color: "var(--main-font-color-two)"
+                            '& .MuiInputLabel-sizeSmall' : {
+                                color: "var(--faint-font-color)"
                             },
                             '& .MuiFilledInput-underline' : {
                                 color: "var(--main-font-color-two)"
@@ -76,6 +77,7 @@ function Contact() {
                         id="last-name"
                         label="Last Name"
                         variant="filled"
+                        size='small'
                         value={lastName} onChange={(e) => setLastName(e.target.value)}
                         sx={{
                             '& .MuiFilledInput-root': { 
@@ -90,8 +92,8 @@ function Contact() {
                             '& .MuiInputBase-colorPrimary': {
                                 color: "var(--main-font-color-two)"
                             },
-                            '& .MuiInputLabel-sizeMedium' : {
-                                color: "var(--main-font-color-two)"
+                            '& .MuiInputLabel-sizeSmall' : {
+                                color: "var(--faint-font-color)"
                             },
                             '& .MuiFilledInput-underline' : {
                                 color: "var(--main-font-color-two)"
@@ -102,7 +104,9 @@ function Contact() {
                 </div>
                 <TextField
                     variant="filled"
-                    label="Email Address *"
+                    required
+                    label="Email Address"
+                    size='small'
                     value={email} onChange={(e) => setEmail(e.target.value)}
                     sx={{
                         '& .MuiFilledInput-root': { 
@@ -117,8 +121,8 @@ function Contact() {
                         '& .MuiInputBase-colorPrimary': {
                             color: "var(--main-font-color-two)"
                         },
-                        '& .MuiInputLabel-sizeMedium' : {
-                            color: "var(--main-font-color-two)"
+                        '& .MuiInputLabel-sizeSmall' : {
+                            color: "var(--faint-font-color)"
                         },
                         '& .MuiFilledInput-underline' : {
                             color: "var(--main-font-color-two)"
@@ -130,7 +134,7 @@ function Contact() {
                     label="Message"
                     multiline
                  
-                    rows={4}
+                    rows={3}
                     helperText="Enter your message"
                     value={message} onChange={(e) => setMessage(e.target.value)}
                     sx={{
@@ -147,7 +151,7 @@ function Contact() {
                             color: "var(--main-font-color-two)"
                         },
                         '& .MuiInputLabel-sizeMedium' : {
-                            color: "var(--main-font-color-two)"
+                            color: "var(--faint-font-color)"
                         },
                         '& .MuiFilledInput-underline' : {
                             color: "var(--main-font-color-two)"

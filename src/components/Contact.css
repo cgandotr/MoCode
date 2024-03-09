@@ -1,11 +1,12 @@
 .contact {
     flex-direction: column;
     display: flex;
-    margin: 20 20% 50 20% ;
+    /* margin: 20 20% 50 20% ; */
       /* border: 3px solid rgba(255, 255, 255, 0.348);  */
       padding: 30px;
     border-top: 1px solid var( --boxes-background);
     overflow-y: auto;
+    width: 450;
 }
 
 
@@ -13,11 +14,13 @@
     background: rgb(27, 148, 247);
     color: white;
     cursor: pointer;
-    width: 50%;
+    width: 20%;
+    min-width: fit-content;
     border-radius: 30px;
     padding: 10px 15px;
     margin: 0 0 10px 0;
     align-self: center;
+    font-size: 10;
     /* border: 3px solid rgb(190, 39, 19); */
     /* Removed float: right; since we're now using flexbox for alignment */
   }

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
-import SignIn from './components/SignIn'
 import Contact from './components/Contact';
+import QandA from './components/QandA';
 import Button from '@mui/lab/LoadingButton';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,27 +54,31 @@ function App() {
   return (
     <div className="App">
       <NavBar></NavBar>
-      <div className="intro">
-        
-        <div class="code-box">
-          <code>
-            if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
-          </code>
-        </div>
-        <div id="header">
-            <h1 id="head">The Best Way to Code</h1>
-            <h2 id="liner">Programming Questions tailored just for you!</h2>
-            <Button id="get-started-btn"
-                            size="small" onClick={redirectToPage}>
-                              Get Started
+      <div id="app-content">
 
-                            </Button>
+        <div className="intro">
+          
+          <div class="code-box">
+            <code>
+              if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
+            </code>
           </div>
+          <div id="header">
+              <h1 id="head">The Best Way to Code</h1>
+              <h2 id="liner">Programming Questions tailored just for you!</h2>
+              <Button id="get-started-btn"
+                              size="small" onClick={redirectToPage}>
+                                Get Started
+
+                              </Button>
+            </div>
 
 
+        </div>
+        <QandA></QandA>
+        <Contact></Contact>
       </div>
-
-      <Contact></Contact>
+      
   
       <Footer></Footer>
     </div>

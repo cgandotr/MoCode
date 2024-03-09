@@ -1,0 +1,38 @@
+.QandA {
+    border-top: 1px solid var( --boxes-background);
+    width: 60%;
+    min-width: 450;
+    padding: 30px;
+
+}
+
+#QandA-item {
+    margin: 30px 0 30px 0;
+}
+
+#Q {
+    font-size: 25px;
+    color: var(--main-font-color);
+    font-style: italic;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+#A {
+    padding: 10px 0 0 10px;
+    font-size: 20px;
+    color: var(--main-font-color-two);
+    font-weight: 200;
+}
+
+#FAQ {
+    font-style: italic;
+    font-size: 25px;
+    width: fit-content  ;
+    padding: 10 15 10 15;
+    border-radius: 2px;
+
+    background-color: var(--button-color)
+
+}
