@@ -2,39 +2,15 @@
     height: 100%;
     width: 100%;
     background: var(--background);
-    /* border: 5px solid rgb(174, 214, 63);  */
+    overflow-y: auto;
 
   }
 
- 
-  #welcome {
-
-    margin: 50 0 0 5%;
-        /* border: 5px solid rgb(174, 214, 63);  */
-    width: 40%;
-
-  }
   #recommended {
-
-    width: 50%;
     height: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align children to the right */
-    margin: 0 0 0  5%; /* Ensure you add 'px' units where needed */
-    /* border: 3px solid rgba(255, 255, 255, 0.348); */
-  }
-  
-  #rec-btn {
-    background: var(--boxes-background);
-    color: var(--main-font-color);
-    cursor: pointer;
-    width: 100px;
-    border-radius: 30px;
-    padding: 10px 15px;
-    margin: 0 0 10px 0;
-    /* border: 3px solid rgb(190, 39, 19); */
-    /* Removed float: right; since we're now using flexbox for alignment */
+    margin: 0 0 0  5%; 
+      border: 3px solid rgb(19, 67, 190); 
+
   }
   
 
@@ -58,30 +34,61 @@
 
   #problems-main {
     /* border: 3px solid rgb(190, 39, 19);  */
-    width: 100%;
+    margin-top: 20px;
   }
   
   #side-bar {
-      /* border: 3px solid rgb(190, 39, 19); */
-
-    margin: 30px 5% 15px 5%;
-    position: absolute;
-    right: 0; /* Positions the sidebar to the right */
-    max-width: 375px;
+    /* border: 3px solid rgb(0, 240, 20);  */
+    padding: 30px 0 15px 0;
     width: 30%;
-
-    
+    max-width: 375px;
   }
+
   .timer {
     margin: 0 0 5% 0;
 
   }
 
 
-  #logged-in {
+  #home-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* This will push children to either end */
+    align-items: flex-start; /* Align items to the start of the cross axis */
+    /* border: 3px solid rgb(190, 39, 19); */
+    margin: 0 5% 0 5%;
   }
   
- 
-.stats {
+
+
+#left-main-header {
+  margin: 40 0 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: space-between; /* Ensures elements are spaced out */
+
+
+}
+#welcome {
+  width: 70%;
+
 }
 
+#rec-btn {
+  background: var(--boxes-background);
+  color: var(--main-font-color);
+  cursor: pointer;
+  width: 100px;
+  border-radius: 30px;
+  padding: 10px 15px;
+  height: fit-content;
+  margin-bottom: 0;
+}
+
+#home-main {
+  /* border: 3px solid rgb(0, 176, 240);  */
+  width: 60%;
+
+
+}

@@ -105,56 +105,51 @@ function Home() {
      
             {currentUser ? (
                 currentUser.leetcodeUserName ? (
-                    <div id="logged-in">
-                        <h2 id="welcome">Welcome Back {currentUser.name}!</h2>
+                    <div id="home-content">
       
                         
-                            
-                        <div id="recommended">
-                            <Button id="rec-btn"
-                            size="small"
-                            onClick={handleRecommendClick}
-                          
-                            >
-                            <span id="rec-word">Recommend</span>
-                            </Button>
-
-                        
-
-                            <div id="problems-main">
-                            {!loadingProblems ? (
-                                recommendedProblems.map((problem, index) => (
-                                    <ProblemRec 
-                                        key={problem.__id} // Add a key for list rendering
-                                        id={problem.__id} 
-                                        startTimerEmit={startTimerFnc} 
-                                        pauseTimerEmit={pauseTimerFnc} 
-                                        resetTimerEmit={resetTimerFnc} 
-                                        timerControl={timerProblemId==null || timerProblemId == problem.__id}
-                                        timerResetLister={timerReset}
-                                        onTimerResetAcknowledged={() => setTimerReset(false)}
-                                        timerTime={timerTime}
-                                        timerRunningListener={isTimerRunning}
-                                    />
-                            
-                                ))
-                            ) : (
-                                <>
-                                    {Array.from({ length: 3 }).map((_, index) => (
-                                        <Skeleton 
-                                        key={index}
-                                        sx={{ bgcolor: 'var(--boxes-background)' , width: '100%', marginBottom: '10', borderRadius: '5px'}}
-                                        variant="rectangular"
-                                        height={175}
-                                        />
-                                    ))}
-                                </>
-                                                        
-                            )}
-                            
+                        <div id="home-main">
+                            <div id="left-main-header">
+                                <h2 id="welcome">Welcome Back {currentUser.name}!</h2>
+                                <Button id="rec-btn"
+                                size="small"
+                                onClick={handleRecommendClick}>
+                                    <span id="rec-word">Recommend</span>
+                                </Button>
                             </div>
+                                <div id="problems-main">
+                                {!loadingProblems ? (
+                                    recommendedProblems.map((problem, index) => (
+                                        <ProblemRec 
+                                            key={problem.__id} // Add a key for list rendering
+                                            id={problem.__id} 
+                                            startTimerEmit={startTimerFnc} 
+                                            pauseTimerEmit={pauseTimerFnc} 
+                                            resetTimerEmit={resetTimerFnc} 
+                                            timerControl={timerProblemId==null || timerProblemId == problem.__id}
+                                            timerResetLister={timerReset}
+                                            onTimerResetAcknowledged={() => setTimerReset(false)}
+                                            timerTime={timerTime}
+                                            timerRunningListener={isTimerRunning}
+                                        />
+                                
+                                    ))
+                                ) : (
+                                    <>
+                                        {Array.from({ length: 3 }).map((_, index) => (
+                                            <Skeleton 
+                                            key={index}
+                                            sx={{ bgcolor: 'var(--boxes-background)' , width: '100%', marginBottom: '10', borderRadius: '5px'}}
+                                            variant="rectangular"
+                                            height={175}
+                                            />
+                                        ))}
+                                    </>
+                                                            
+                                )}
+                                
+                                </div>
                         </div>
-                          
                         <div id="side-bar">
                             <Timer
                                 className="timer"
@@ -176,7 +171,7 @@ function Home() {
             ) : (
                 loadingPage ? <LoadingPage />  : <SignIn />
             )}
-            <Footer/>
+            {/* <Footer/> */}
         </div>
     );
 }

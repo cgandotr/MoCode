@@ -2,8 +2,8 @@
   border-radius: 34px;
   background: var(--boxes-background);
   padding: 30px;
-  position: relative;
     /* border: 5px solid rgb(174, 214, 63);  */
+    height: fit-content;
 
 }
 

@@ -5,13 +5,13 @@
   font-size: 10px; /* Ensure you include the unit, like px */
   width: 100%;
   bottom: 0;
-  position: static
+  position: absolute;
   
 
 }
   
 
-  #text {
-    text-align: center;
-    color: var(--footer-text-color);
-  }
+#foot-text {
+  text-align: center;
+  color: var(--footer-text-color);
+}

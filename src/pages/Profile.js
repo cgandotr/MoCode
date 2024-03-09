@@ -185,7 +185,7 @@ useEffect(() => {
             ) : (
                 loadingPage ? <LoadingPage />  : <SignIn />
             )}
-            <Footer></Footer>
+            {/* <Footer></Footer> */}
         </div>
     );   
 }
