@@ -95,9 +95,11 @@ function NewUserInfo() {
                 <Button  id="submit-btn" type="submit" size="small">Submit</Button>
             </form>
             {showFailureAlert && (
-                <Alert className="alert" variant="filled" severity="error">
-                Invalid LeetCode Username
-                </Alert>
+                <div className="alert-container">
+                    <Alert className="alert" variant="filled" severity="error">
+                    Invalid LeetCode Username
+                    </Alert>
+                </div>
             )}
         </div>
     );

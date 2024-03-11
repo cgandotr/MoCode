@@ -42,13 +42,17 @@
     margin: 10px 10px 0 0;
 }
 
+
+
 #confirm-button {
-    background-color: rgb(27, 148, 247);
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-    height: 30px;
-  width: 25%;
-  margin-top: 10px;
-  border-radius: 30px;
+    background-color: var(--button-color);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    width: 40%;
+    border-radius: 30px;
+    padding: 5 5 5 5;
+    align-self: center;
+    font-size: 10px;
+    margin: 10px;
 }
 

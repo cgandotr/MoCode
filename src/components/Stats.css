@@ -66,22 +66,14 @@
 }
 
 
-.MuiDayCalendar-root {
-  /* border: 2px solid rgb(123, 192, 45); */
 
-}
 
-#full-width-tabpanel-1 {
-  /* border: 2px solid rgb(4, 167, 255); */
-  width: fit-content;
-  padding: 0;
 
-}
-
-.MuiDateCalendar-root.css-lk3aih-MuiDateCalendar-root {
-  /* border: 2px solid rgb(4, 167, 255); */
-  padding: 0;
-  margin: 0;
-  scale: .9;
+#top-3-words {
+  font-style: italic;
+  width: fit-content  ;
+  padding: 3 7 0 7;
+  border-radius: 2px;
+  font-size: 17px;
 
 }

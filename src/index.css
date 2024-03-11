@@ -101,3 +101,22 @@ h4 {
   transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
 
 }
+
+
+.alert-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it overlays other content */
+  width: 100%; /* Full width or adjust as needed */
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.alert {
+  width: auto; /* Adjust based on the size of the alert */
+  max-width: 90%; /* Ensure it doesn't extend too wide */
+  /* Add more styling as needed */
+}

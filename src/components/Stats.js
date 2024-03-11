@@ -5,6 +5,8 @@ import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthCon
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek'; // Import isoWeek plugin for dayjs
+
 import Badge from '@mui/material/Badge';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 
@@ -16,11 +18,17 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Switch from '@mui/material/Switch';
 import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab, Typography } from '@mui/material';
+import { tab } from '@testing-library/user-event/dist/tab';
 
-// const data = [{
-//   name: "Array and Hashing"},
-//   {name: "Two Sum"},
-// ]
+
+const getWeekRange = (weekNumber, year) => {
+    const startOfWeek = dayjs().year(year).week(weekNumber).startOf('week');
+    const endOfWeek = startOfWeek.clone().endOf('week');
+    return { startOfWeek, endOfWeek };
+};
+
+
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -65,20 +73,84 @@ const categoryColors = {
     "JavaScript": "#5B60D0",
 };
 
+
+
+function ServerDay(props) {
+    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+  
+    const isSelected =
+      !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+  
+    return (
+      <Badge
+        key={props.day.toString()}
+        overlap="circular"
+        badgeContent={isSelected ? '🔥' : undefined}
+        sx={{
+            ...(isSelected && {
+              '.MuiPickersDay-root': { // Apply the background color to the day itself
+                backgroundColor: 'var(--boxes-background)'
+              },
+            }),
+          }}
+      >
+        <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+      </Badge>
+    );
+  }
+
 function Stats() {
-    // const [activeDays, setActiveDays] = useState([]);
+    
+    const [highlightedDays, setHighlightedDays] = useState([]);
 
     const { userProblems, problems } = useContext(AuthContext);
     
-    const [value, setValue] = useState(0);
+    const [tabvalue, setTabValue] = useState(0);
+
+    const [calendarvalue, setCalendarValue] = useState(dayjs());
+
+  // Determine the start and end of the current month
+  const currentMonthStart = dayjs().startOf('month');
+  const currentMonthEnd = dayjs().endOf('month');
+
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
   const handleChangeIndex = (index) => {
-    setValue(index);
+    setTabValue(index);
   };
+
+  useEffect(() => {
+    const getHighlightedDays = () => {
+        const currentMonthStart = dayjs().startOf('month');
+        const currentMonthEnd = dayjs().endOf('month');
+
+        // Initialize an empty array to store all highlighted days
+        let allHighlightedDays = [];
+
+        // Iterate through each userProblem
+        userProblems.forEach(problem => {
+            problem.status.forEach((status, index) => {
+                // Check if the status is "Complete" or "Incomplete"
+                if (status === "Complete" || status === "Incomplete") {
+                    // Convert the corresponding dateCompleted to dayjs and check if it's within the current month
+                    const attemptDate = dayjs(problem.dateCompleted[index].toDate());
+                    if (attemptDate.isAfter(currentMonthStart) && attemptDate.isBefore(currentMonthEnd)) {
+                        // If so, add this day to the allHighlightedDays array
+                        allHighlightedDays.push(attemptDate.date());
+                    }
+                }
+            });
+        });
+
+        // Deduplicate the days before returning
+        return [...new Set(allHighlightedDays)];
+    };
+
+    setHighlightedDays(getHighlightedDays());
+}, [userProblems]); // Re-run this effect if userProblems changes
 
         // Ensure userProblems is sorted by the length of their status array in descending order,
         // but only count 'Complete' or 'Incomplete' statuses.
@@ -131,61 +203,47 @@ function Stats() {
     
         setPieChartData(chartData);
     }, [userProblems, problems]);
-    
-    
 
-
-    // useEffect(() => {
-    //     // Assuming each item in userProblems might have multiple 'Complete' statuses and corresponding dates.
-    //     console.log(userProblems);
+    const renderDay = (day, selectedDates, pickersDayProps) => {
+        return <div>hi</div>
+      };
+    
+      const calculateHoursSpent = (weekNumber) => {
+        // Make sure to call .year() to get the current year as a number
+        const { startOfWeek, endOfWeek } = getWeekRange(weekNumber, dayjs().year());
+    
+        const secondsInHour = 3600;
         
-    //     setActiveDays(userProblems.reduce((acc, problem) => {
-    //         problem.status.forEach((status, index) => {
-    //             if (status === "Complete") {
-    //                 console.log(problem)
-    //                 const dateObject = problem.dateCompleted[index].toDate(); // Convert Firestore Timestamp to JavaScript Date
-    //                 const formattedDate = dateObject.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
-    //                 if (!acc.includes(formattedDate)) {
-    //                     acc.push(formattedDate);
-    //                 }
-    //             }
-    //         });
-    //         return acc;
-    //     }, []))
-    //     console.log(activeDays)
-    // }, [userProblems]);
-    
-    
-
-    function renderDay(day, selectedDates, pickersDayProps) {
-        const dateString = day.format('YYYY-MM-DD');
-        const activeDays = userProblems.reduce((acc, problem) => {
-            problem.status.forEach((status, index) => {
-                if (status === "Complete") {
-                    console.log(problem)
-                    const dateObject = problem.dateCompleted[index].toDate(); // Convert Firestore Timestamp to JavaScript Date
-                    const formattedDate = dateObject.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
-                    if (!acc.includes(formattedDate)) {
-                        acc.push(formattedDate);
+        const hours = userProblems.reduce((totalHours, problem) => {
+            // Iterate over the status array for each problem
+            return problem.status.reduce((acc, currentStatus, index) => {
+                if (currentStatus === "Complete" || currentStatus === "InComplete") {
+                    const completionDate = dayjs(problem.dateCompleted[index].toDate());
+                    if (completionDate.isAfter(startOfWeek) && completionDate.isBefore(endOfWeek)) {
+                        // Convert seconds to hours and accumulate
+                        const hoursForProblem = problem.timeDuration[index] / secondsInHour;
+                        return acc + hoursForProblem;
                     }
                 }
-            });
-            return acc;
-        }, [])
-        console.log(activeDays)
-        const isSelected = activeDays.includes(dateString);
-
-        return (
-            <Badge key={dateString} overlap="circular" badgeContent={isSelected ? '🔥' : undefined}>
-                <PickersDay {...pickersDayProps} />
-            </Badge>
-        );
-    }
-
+                return acc;
+            }, totalHours);
+        }, 0);
+    
+        // Round the total hours to the nearest whole number
+        const roundedHours = Math.round(hours);
+        
+        console.log(roundedHours);
+        return roundedHours;
+    };
+    
+    
+    
+    
+   
     return (
         <div className='stats'>
             <div id="top-3">
-                <h3>Top 3 Questions</h3>
+                <h3 id="top-3-words">Top 3 Questions</h3>
                 <div id="list">
                     {top3Problems.map((userProblem, index) => (
                         <div id="three" key={index}>
@@ -204,22 +262,14 @@ function Stats() {
       
             <div id="bottom-stats">
                 <Tabs 
-                    value={value}
+                    value={tabvalue}
                     onChange={handleChange}
                     variant="fullWidth"
                     sx={{
-                        '& .MuiTabs-indicator': {
-                          // Change the indicator color
-                          backgroundColor: 'var(--main-font-color)',
-                        },
-                        '& .MuiTab-root': {
-                          // Change the text color for all tabs
-                          color: 'var(--faint-font-color)',
-                        },
-                        '& .Mui-selected': {
-                          // Change the text color for the selected tab
-                          color: 'var(--main-font-color)',
-                        },
+                        '& .MuiTabs-indicator': {backgroundColor: 'var(--main-font-color)'},
+                        '& .MuiTab-root': { color: 'var(--faint-font-color)'},
+                        '& .Mui-selected': { color: 'var(--main-font-color)'},
+                        '& .MuiTab-fullWidth.Mui-selected': { color: 'var(--button-color)'},
                       }}
                 >
                     <Tab label="Category" />
@@ -227,10 +277,10 @@ function Stats() {
                 </Tabs>
                 <SwipeableViews
                     axis={'x'}
-                    index={value}
+                    index={tabvalue}
                     onChangeIndex={handleChangeIndex}
                 >
-                    <TabPanel value={value} index={0}>
+                    <TabPanel value={tabvalue} index={0}>
                             <PieChart id="pie"
                                 slotProps={{ legend: { hidden: true } }}
                                 // skipAnimation
@@ -246,54 +296,48 @@ function Stats() {
             
                         /> 
                     </TabPanel>
-                    <TabPanel value={value} index={1}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar
-                    renderDay={renderDay}
-                />
-            </LocalizationProvider>
-                    {/* <LocalizationProvider
-                        dateAdapter={AdapterDayjs}
-                        localeText={{
-                            calendarWeekNumberHeaderText: '#',
-                            calendarWeekNumberText: (weekNumber) => `${weekNumber}.`,
-                        }}
-                        >
-                        <DateCalendar 
-                        disabled
-                            sx={{
-                            '& .MuiPickersCalendarHeader-label': { // Targets all text within the component
-                                color: 'var(--main-font-color)',
-                            },
-                            '& .MuiSvgIcon-root': {
-                                color: 'var(--faint-font-color)',
-                            },
-                            '& .MuiPickersYear-yearButton': {
-                                color: 'var(--main-font-color)',
-                            },
-                            '& .MuiPickersDay-root': {
-                                color: 'var(--main-font-color)',
-                            },
-                            '& .MuiDayCalendar-weekDayLabel': {
-                                color: 'var(--main-font-color)',
-                            },
+                    <TabPanel value={tabvalue} index={1}>
+                    
+                    <LocalizationProvider dateAdapter={AdapterDayjs} localeText={{
+                        calendarWeekNumberHeaderText: 'hrs',
+                        calendarWeekNumberText: (weekNumber) => `${calculateHoursSpent(weekNumber)}`,
+                    }}>
+                        <DateCalendar
+                            views={['day']}
+                            value={calendarvalue}
+                            onChange={(newValue) => {
+                            setCalendarValue(newValue);
+                            }}
+                            renderInput={() => <></>} // Render nothing or your custom input component
+                            minDate={currentMonthStart}
+                            maxDate={currentMonthEnd}
+                            renderDay={renderDay}
+                            slots={{
+                                day: ServerDay,
+                            }}
+                            slotProps={{
+                                day: {
+                                highlightedDays,
+                                },
+                            }}
+                            disabled
+                            displayWeekNumber
+
                             
-                            '& .MuiDayCalendar-header': {
-                                backgroundColor: 'var(--boxes-background)',
-                                borderRadius: '50px',
-                            },
 
-                            '& .css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected': {
-                                backgroundColor: 'rgba(0, 0, 0, 0)',
-                            },
-
-                              
-                             
-                             
-                        
-                              }}
+                            sx={{
+                            '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--faint-font-color)'},
+                            '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
+                            '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px"},
+                            '& .MuiPickersCalendarHeader-label': { color: 'var(--main-font-color)' },
+                            '& .MuiDayCalendar-weekDayLabel': { color: 'var(--main-font-color)' },
+                            '& .MuiDayCalendar-header': { backgroundColor: 'var(--boxes-background)', borderRadius: '50px', marginBottom: "10" },
+                            '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
+                            '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
+                            '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"}
+                            }}
                         />
-                        </LocalizationProvider> */}
+                        </LocalizationProvider>
                     </TabPanel>
                 </SwipeableViews>
             </div>

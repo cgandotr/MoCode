@@ -18,13 +18,20 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import LoadingPage from "../components/LoadingPage";
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 
 
 function Profile() {
     // Grab Current User
     const { currentUser, setCurrentUser, problems, userProblems, setUserProblems, loadingPage } = useContext(AuthContext);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedName, setEditedName] = useState(currentUser?.name || "");
+    const [editedLeetCodeUsername, setEditedLeetCodeUsername] = useState(currentUser?.leetcodeUserName || "");
 
     const [sortBy, setSortBy] = React.useState('dateCompleted');
+    const [showFailureAlert, setShowFailureAlert] = useState(false); // State to control the visibility of the failure alert
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false); // State to control the visibility of the failure alert
 
    // Function to handle the change of sorting criteria
    const handleSortByChange = (event) => {
@@ -97,8 +104,60 @@ useEffect(() => {
     };
 
     
+    const toggleEditMode = () => {
+        setIsEditing(!isEditing);
+        // Reset values if cancelling edit
+        if (isEditing) {
+            setEditedName(currentUser?.name || '');
+            setEditedLeetCodeUsername(currentUser?.leetcodeUserName || '');
+        }
+    };
+    
+    const saveChanges = async () => {
+        if (!editedName.trim() || !editedLeetCodeUsername.trim()) {
+            showTemporaryFailureAlert();
+            return;
+        }
+    
+        const userDocRef = doc(db, 'users', currentUser.__id);
+        try {
+            await updateDoc(userDocRef, {
+                name: editedName,
+                leetcodeUserName: editedLeetCodeUsername,
+            });
+            setIsEditing(false); // Exit editing mode
+            showTemporarySuccessAlert(); // Show success alert only after successful update
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            // Consider showing an error alert here
+        }
+    };
+    
+    
+    useEffect(() => {
+        if (currentUser) {
+            setEditedName(currentUser.name || "");
+            setEditedLeetCodeUsername(currentUser.leetcodeUserName || "");
+        }
+    }, [currentUser]);
+    
+    const showTemporaryFailureAlert = () => {
+        setShowFailureAlert(true); // Show the alert
 
-  
+        // Set a timeout to hide the alert after 2 seconds
+        setTimeout(() => {
+            setShowFailureAlert(false); // Hide the alert
+        }, 2000);
+    };
+
+    const showTemporarySuccessAlert = () => {
+        setShowSuccessAlert(true); // Show the alert
+
+        // Set a timeout to hide the alert after 2 seconds
+        setTimeout(() => {
+            setShowSuccessAlert(false); // Hide the alert
+        }, 2000);
+    };
 
 
     return (
@@ -106,23 +165,40 @@ useEffect(() => {
             <NavBar></NavBar>   
             {currentUser ? (
                  currentUser.leetcodeUserName ? (
-                <div id="loggedIn">
+                <div id="profile-content">
                     <div id="profile-side-bar">
-
                         <div id="main-info">
                             <img id="profile-img" src={currentUser.photo}></img>
                             <div id="info">
-                                <h3 id="info-name">{currentUser.name}</h3>
+                                <h3 id="info-name">
+                                    {!isEditing ? currentUser.name :
+                                        <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
+                                    }
+                                </h3>
                                 <h4 id="info-email">{currentUser.email}</h4>
-                                <button id="edit-btn">Edit Profile</button>
+                                {!isEditing ?
+                                    <Button id="edit-btn" variant="contained" color="primary" onClick={toggleEditMode}>
+                                        Edit Profile
+                                    </Button>
+                                    :
+                                    <Button id="save-btn" variant="contained" color="primary" onClick={saveChanges}>
+                                        Save Changes
+                                    </Button>
+                                }
                             </div>
                         </div>
                         <div id="info-extra">
-                            <img id="leetcode-icon" src={LeetCodeIcon}></img> 
-                            <h3 id="leetcode-username">{currentUser.leetcodeUserName}</h3>
+                            <img id="leetcode-icon" src={LeetCodeIcon} alt="LeetCode Icon" />
+                            <h3 id="leetcode-username">
+                                {!isEditing ? currentUser.leetcodeUserName :
+                                    <input type="text" value={editedLeetCodeUsername} onChange={(e) => setEditedLeetCodeUsername(e.target.value)} />
+                                }
+                            </h3>
                         </div>
                         <div id="log-out">
-                            <button id="log-out-btn" onClick={googleLogoutFnc}>Log Out</button>
+                            <Button id="log-out-btn" variant="contained" color="primary" type="submit" onClick={googleLogoutFnc}>
+                                Log Out
+                            </Button>
                         </div>
                     </div>
 
@@ -178,6 +254,21 @@ useEffect(() => {
                                 ))}
                         </div>
                     </div>
+                    {showFailureAlert && (
+                        <div className="alert-container">
+                            <Alert className="alert" variant="filled" severity="error">
+                            Please Fill Out All Fields
+                            </Alert>
+                        </div>
+                    )}
+                    {showSuccessAlert && (
+                        <div className="alert-container">
+                            <Alert className="alert" variant="filled" severity="success">
+                                Successfully Saved Profile
+                            </Alert>
+                        </div>
+                    )}
+
                 </div>
                 ) : (
                     <NewUserInfo/>

@@ -5,7 +5,6 @@
 
     height: fit-content;
     transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
-      /* border: 3px solid rgba(231, 9, 9, 0.348);  */
       display: grid;
   grid-template-columns: auto auto; /* Adjust based on content */
   grid-gap: 10px; /* Space between grid items */

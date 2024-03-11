@@ -3,6 +3,7 @@ import React from 'react';
 import './ConfirmStatus.css'; // Create and import your CSS for styling the modal
 import ReactDOM from 'react-dom';
 import CancelIcon from "../extra/cancel.svg"
+import Button from '@mui/lab/LoadingButton';
 
 function ConfirmStatus({ isOpen, onConfirm, onCancel, source }) {
     if (!isOpen) return null;
@@ -20,7 +21,9 @@ function ConfirmStatus({ isOpen, onConfirm, onCancel, source }) {
 
                     <h3 id="message">Confirm marking this Question as {source}?</h3>
                     <h3 id="warning">This action cannot be undone.</h3>
-                    <button id="confirm-button" onClick={onConfirm}>Confirm</button>
+                    <Button id="confirm-button" variant="contained" color="primary" type="submit" onClick={onConfirm}>
+                        Confirm
+                    </Button>
                 </div>
             </div>
         ),

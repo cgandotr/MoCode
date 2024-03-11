@@ -7,11 +7,12 @@
     border-top: 1px solid var( --boxes-background);
     overflow-y: auto;
     width: 450;
+    
 }
 
 
 #email-btn {
-    background: rgb(27, 148, 247);
+    background: var(--button-color);
     color: white;
     cursor: pointer;
     width: 20%;
@@ -21,8 +22,7 @@
     margin: 0 0 10px 0;
     align-self: center;
     font-size: 10;
-    /* border: 3px solid rgb(190, 39, 19); */
-    /* Removed float: right; since we're now using flexbox for alignment */
+
   }
 
 

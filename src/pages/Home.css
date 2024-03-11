@@ -24,11 +24,6 @@
 
   }
 
-
-  #logged-in {
-    display: flex; /* Enable flexbox */
-    flex-direction: column;
-  }
   
   
 

@@ -48,6 +48,7 @@ const categoryColors = {
     "JavaScript": "#5B60D0",
 };
 
+
 const difficultyColors = {
     "Easy":  "#63c742",
     "Medium": "#e8932c",

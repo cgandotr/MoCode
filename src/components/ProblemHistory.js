@@ -16,7 +16,6 @@ const statusImages = {
     "Complete": CompleteIcon1,
     "InComplete": InCompleteIcon1,
 };
-
 const categoryColors = {
     "Arrays & Hashing":  "#d65a5a",
     "Two Pointers": "#d6855a",
@@ -38,6 +37,7 @@ const categoryColors = {
     "Bit Manipulation": "#5B60D0",
     "JavaScript": "#5B60D0",
 };
+
 
 const difficultyColors = {
     "Easy":  "#63c742",
