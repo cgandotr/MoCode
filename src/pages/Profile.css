@@ -14,7 +14,16 @@
   padding: 40px 20px 0px 20px;
 }
 
-
+input[type=text] {
+    background-color: var(--boxes-background);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 5 5 5 5;
+    width: 50%;
+    border-radius: 30px;
+    width: 100%;
+    text-align: center;
+}
 #profile-side-bar {
   background: var(--boxes-background);
   border-radius: 34px;

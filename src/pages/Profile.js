@@ -23,6 +23,9 @@ function Profile() {
     // Grab Current User
     const { currentUser, setCurrentUser, problems } = useContext(AuthContext);
     const { userProblems, setUserProblems } = useContext(AuthContext);
+    const [editMode, setEditMode] = useState(false);
+    const [editedName, setEditedName] = useState(currentUser?.name);
+    const [editedEmail, setEditedEmail] = useState(currentUser?.email);
 
     const [sortBy, setSortBy] = React.useState('dateCompleted');
 
@@ -97,7 +100,39 @@ useEffect(() => {
     };
 
     
+    const toggleEditMode = () => {
+        setEditMode(!editMode);
+    };
 
+    // Handle changes to form inputs
+    const handleNameChange = (event) => {
+        setEditedName(event.target.value);
+    };
+
+    const handleEmailChange = (event) => {
+        setEditedEmail(event.target.value);
+    };
+
+    // Update user profile in Firestore
+    const updateUserProfile = async () => {
+        if (!currentUser) return;
+
+        const userRef = doc(db, "users", currentUser.uid); // Assuming 'users' is your collection
+        await updateDoc(userRef, {
+            name: editedName,
+            email: editedEmail,
+        });
+
+        // Update local user info
+        setCurrentUser({
+            ...currentUser,
+            name: editedName,
+            email: editedEmail,
+        });
+
+        // Exit edit mode
+        setEditMode(false);
+    };
   
 
 
@@ -112,9 +147,24 @@ useEffect(() => {
                         <div id="main-info">
                             <img id="profile-img" src={currentUser.photo}></img>
                             <div id="info">
-                                <h3 id="info-name">{currentUser.name}</h3>
-                                <h4 id="info-email">{currentUser.email}</h4>
-                                <button id="edit-btn">Edit Profile</button>
+                            {editMode ? (
+                                    <>
+                                        <input type = "text" value={editedName} onChange={handleNameChange} />
+                                        <input type = "text" value={editedEmail} onChange={handleEmailChange} />
+                                    </>
+                                ) : (
+                                    
+                                    <>
+                                        <h3 id="info-name">{currentUser.name}</h3>
+                                        <h4 id="info-email">{currentUser.email}</h4>
+                                    </>
+                                )}
+                                {/*<h3 id="info-name">{currentUser.name}</h3>
+                                <h4 id="info-email">{currentUser.email}</h4>*/}
+                                {/*<button id="edit-btn" >Edit Profile</button>*/}
+                                <button id="edit-btn" onClick={editMode ? updateUserProfile : toggleEditMode}>
+                                    {editMode ? 'Save Changes' : 'Edit Profile'}
+                                </button>
                             </div>
                         </div>
                         <div id="info-extra">
