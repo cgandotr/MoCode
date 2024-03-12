@@ -269,32 +269,35 @@ function Stats() {
         return roundedHours;
     };  
 
+    /*
+    getProblemsForSpecificDate(specificDate)
+    ------------------------------------
+    Gets the problems submitten on a day
+    ------------------------------------
+    inputs: specificDate (date)
 
-    const getProblemsForSpecificDate = (specificDate) => {
-        // Ensure specificDate is a dayjs object for consistent comparison
-        const targetDate = dayjs(specificDate);
-    
-        // Initialize return array
+    outputs: array of problems ([] userProblems)
+    */
+    const getProblemsForSpecificDate = (specificDate) => {    
+        /* Initialize return array */
         let problemsForDate = [];
     
-        // Iterate through all userProblems
         userProblems.forEach(problem => {
             problem.status.forEach((status, index) => {
                 /* Go through each status in status[] */
                 /* Check if the status is "Complete" or "Incomplete" */
-                if (status === "Complete" || status === "Incomplete") {
+                if (status === "Complete" || status === "InComplete") {
                     /* Get corresponding dateCompleted (by index) */
                     /* Check if it's within the current month */
                     const attemptDate = dayjs(problem.dateCompleted[index].toDate());
-                    if (attemptDate.isSame(specificDate, 'day')) {                        /* Add date to array */
+                    if (attemptDate.isSame(specificDate, 'day')) {                       
+                        /* Add date to array */
                         problemsForDate.push(problem);
                     }
                 }
             });
         });
-    
-        // Return array of problems that match the specific date
-        return problemsForDate;
+            return problemsForDate;
     };
 
    /*
@@ -332,6 +335,30 @@ function Stats() {
                 placement="top"
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
+                PopperProps={{
+                    modifiers: [
+                      {
+                        name: 'offset',
+                        options: {
+                          offset: [0, 8], // Adjust the position of the tooltip (x, y)
+                        },
+                      },
+                    ],
+                    sx: {
+                      // Tooltip background color, text color, etc.
+                      '& .MuiTooltip-tooltip': {
+                        bgcolor: 'rgb(27, 148, 247)',
+                        color: 'white',
+                        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                        witdh: '1300000000px', 
+                        boxRadius: '50 50 50 50',
+                      },
+                      // Tooltip arrow color
+                      '& .MuiTooltip-arrow': {
+                        color: 'background.paper', // Match the tooltip's background
+                      },
+                    },
+                  }}
             >
                 <Badge
                     key={day.toString()}
@@ -371,7 +398,6 @@ function Stats() {
                     ))}
                 </div>
             </div>
-      
             <div id="bottom-stats">
                 <Tabs 
                     value={tabvalue}
@@ -395,11 +421,9 @@ function Stats() {
                     <TabPanel value={tabvalue} index={0}>
                             <PieChart id="pie"
                                 slotProps={{ legend: { hidden: true } }}
-                                // skipAnimation
                                 series={[{
                                     data: pieChartData,
                                     highlightScope: { faded: 'global', highlighted: 'item' },
-                                
                                 }]}
                                 sx={{
                                 }}
@@ -420,7 +444,7 @@ function Stats() {
                             onChange={(newValue) => {
                             setCalendarValue(newValue);
                             }}
-                            renderInput={() => <></>} // Render nothing or your custom input component
+                            renderInput={() => <></>}
                             minDate={currentMonthStart}
                             maxDate={currentMonthEnd}
                             slots={{
@@ -433,10 +457,8 @@ function Stats() {
                             }}
                             disabled
                             displayWeekNumber
-
-                            
-
                             sx={{
+                            '& .MuiButtonBase-root.Mui-disabled.MuiPickersDay-root.Mui-disabled.MuiPickersDay-dayWithMargin': { color: 'var(--main-font-color)'},
                             '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
                             '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
                             '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px"},
@@ -446,15 +468,14 @@ function Stats() {
                             '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
                             '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
                             '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"}
-                            }}
+                            
+                        }}
                         />
                         </LocalizationProvider>
                     </TabPanel>
                 </SwipeableViews>
             </div>
-    </div>
-
-    
+        </div>
     );
 }
 

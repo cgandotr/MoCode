@@ -117,6 +117,7 @@ function Contact() {
                         }}
                     />
                 </div>
+                <div id = "boxes">
                 <TextField
                     variant="filled"
                     required
@@ -148,6 +149,7 @@ function Contact() {
                         '& .MuiFilledInput-underline' : { color: "var(--main-font-color-two)" }
                     }}
                 />
+                </div>
                 <Button id="email-btn" variant="contained" color="primary" type="submit" onClick={sendEmail}>
                         Send Message
                 </Button>

@@ -7,6 +7,8 @@ import { AuthContext } from './AuthContext';
 import problemsJSON from './problems.json';
 
 
+
+
 /*
 ----------------------------------------------------------------------------------------------------------------------------
 BEGIN
@@ -14,10 +16,22 @@ EXPORTED FUNCTIONS
 */
 
 /*
-Checks if LeetCode UserName is Valid
-------------------------------------
-string: LeetCode UserName -> boolean: False,
-                             object: Recent Submissions from Valid LeetCode Username
+isUsernameValid(username)
+----------------------------------------------
+Attempts to verify the validity of a LeetCode username by fetching recent submission data.
+----------------------------------------------
+inputs:
+    string: username - The LeetCode username to verify.
+outputs:
+    mixed: Returns recent submissions object if the username is valid and the API call succeeds, 
+           or False if the username is invalid, the API call fails, or the API is down.
+----------------------------------------------
+Details:
+- Calls an external API (currently down as of 3/11/24) to fetch recent submissions for the given username.
+- Validates the username based on the API response status and the presence of errors in the response data.
+- If valid, returns the recent submissions data; otherwise, returns False.
+- Wrapped in a try-catch to handle and log any errors during the API call, defaulting to False in case of exceptions.
+----------------------------------------------
 */
 export async function isUsernameValid(username) {
     return true;
@@ -42,12 +56,24 @@ export async function isUsernameValid(username) {
 }
 
 /*
-Populates User History
-    Should be called whenever user updates
-    LeetCode Username
+populateNewUserHistory(userId, submissions)
 ----------------------------------------------
-string: userId,
-object: submission history
+Integrates a user's LeetCode submission history into their profile on the platform.
+----------------------------------------------
+inputs:
+    string: userId - The unique identifier of the user within the system.
+    object: submissions - A collection of submission objects retrieved from the LeetCode API.
+outputs:
+    - None. Updates the user's history directly in the database.
+----------------------------------------------
+Details:
+- Iterates over the provided submissions, matching each with a corresponding question in the local database.
+- For each matching submission, records its completion status and timestamp into the user's history.
+- This function is crucial for initializing or updating a user's problem-solving history after they update their LeetCode username.
+- Currently non-operational due to an external API dependency being down as of 3/11/24.
+----------------------------------------------
+Note: This function ensures the user's history reflects their actual problem-solving journey on LeetCode, facilitating personalized problem recommendations and tracking progress.
+----------------------------------------------
 */
 export async function populateNewUserHistory(userId, submissions) {
     return;
@@ -69,30 +95,47 @@ export async function populateNewUserHistory(userId, submissions) {
 }
 
 /*
-Generates New Questions for User
-    Called whenever user requests new questions
-    Called when creating new user
+generateQuestions(userData, userProblems)
 ----------------------------------------------
-object: userData,
-object: userProblems
+Generates and assigns a new set of problems for the user, updating their profile with the recommendations.
+----------------------------------------------
+inputs:
+    object: userData - Contains information about the user, such as ID and current problem recommendations.
+    object: userProblems - The current set of problems associated with the user, including their statuses and completion history.
+outputs:
+    - None directly. Updates the user's profile with new problem recommendations through side effects.
+----------------------------------------------
+Details:
+- Begins by flushing previously recommended but unattempted problems to keep recommendations fresh and relevant.
+- Filters out the flushed problems from the local userProblems list to ensure accuracy in subsequent steps.
+- Generates a new set of recommended problems based on the user's history and the outcomes of the flushing process.
+- Each new recommendation is processed to determine if it is a repeat or a completely new challenge for the user.
+- Adds these new recommendations to the user's profile, ensuring the user is presented with up-to-date and appropriate challenges.
+- Designed to be invoked when a user requests new problems or upon new user creation, facilitating personalized learning paths.
+----------------------------------------------
+Note: This process integrates multiple steps of problem recommendation, from selection to user profile update, ensuring a dynamic and tailored problem-solving experience.
+----------------------------------------------
 */
 export async function generateQuestions(userData, userProblems) {
-    // deleteUP(userData.__id)
+    /* Flush existing recommended problems */
     const userProblemsDeleted = await flushPreviousQuestions(userData, userProblems);
+    /* update local userProblems */
     userProblems = userProblems.filter(up => !userProblemsDeleted.includes(up.__id));
 
+    /* Generate 3 new rec problems */
     const selectedQuestions = generateProblems(userProblems, 3);
 
+    /* Add UserProblem Entry (prepare it to be added to user) */
     const problems = []
     for (const question of selectedQuestions) {
         const isRepeat = !userProblemsDeleted.some(up => up.problemLink === question.link) && userProblems.some(up => up.problemLink === question.link)
         const status = isRepeat ? "Repeat" : "Not Complete";
-
         const problemId = await addUserProblemEntry(userData.__id, question, null, status, null);
         problems.push(problemId)
     }
-    await updateUserRecommendedArray(userData.__id, problems);
 
+    /* Once prepared, update User to see new problems */
+    await updateUserRecommendedArray(userData.__id, problems);
 }
 
 /*
@@ -110,32 +153,46 @@ HELPER FUNCTIONS
 
 
 /*
-Fetch ALL Questions (from)
+fetchQuestions()
+----------------------------------------------
+Retrieves a list of coding problems.
+----------------------------------------------
+Inputs: None.
+Outputs:
+    Returns an array of problem objects loaded from a local JSON file.
+----------------------------------------------
+Details:
+    This function is used to load the entire set of coding problems that users can be given as recommendations.
+    Problems are predefined and stored in problems.json.
 */
-function fetchQuestions() {
+export function fetchQuestions() {
     return problemsJSON;
 }
 
-// deleteUP(userData.__id)
+/*
+deleteUP(userId)
+----------------------------------------------
+Deletes all UserProblems for a User
+----------------------------------------------
+deleteUP(userData.__id)
+----------------------------------------------
+*/
 async function deleteUP(userId) {
-    // Search for User Problems
+    /* Search for User Problems */
     const userProblemsRef = collection(db, "userProblems");
     const q = query(userProblemsRef, where('__userId', '==', userId));
     const querySnapshot = await getDocs(q);
-  
-    // Loop through the documents and delete them
+    
+    /* Loop through the documents and delete them */
     const deletionPromises = [];
     querySnapshot.forEach((doc) => {
-      // Add the delete promise to an array
+        /* Add the delete promise to an array */
       deletionPromises.push(deleteDoc(doc.ref));
     });
-  
-    // Wait for all deletions to complete
+    
+    /* Wait for all deletions to complete */
     await Promise.all(deletionPromises);
-  
-    console.log(`All problems for user ${userId} have been deleted.`);
-  }
-
+}
 
 
 /*
@@ -144,9 +201,23 @@ BEGIN
 FIREBASE FUNCTIONS
 */
 
-
 /*
-Add user problem and save it into firebase
+addUserProblemEntry(userId, question, timeStamp, status, timeDuration)
+----------------------------------------------
+Adds a user problem entry to Firebase.
+----------------------------------------------
+Inputs:
+    userId (string): The unique identifier for the user.
+    question (object): The problem object that the user attempted or is recommended.
+    timeStamp (Timestamp): The timestamp of that we want to prepend.
+    status (string): The status we want to prepend.
+    timeDuration (date): The duration we want to prepend.
+Outputs:
+    Returns the document ID of the added or updated problem entry.
+Details:
+    Checks if an entry already exists for the given user and problem.
+    If so, updates the existing entry with the new attempt details.
+    If not, creates a new document in the userProblems collection in Firebase.
 */
 async function addUserProblemEntry(userId, question, timeStamp, status, timeDuration) {
     const userProblemsRef = collection(db, "userProblems");
@@ -200,7 +271,25 @@ async function addUserProblemEntry(userId, question, timeStamp, status, timeDura
 }
 
 
-
+/*
+flushPreviousQuestions(userData, userProblems)
+----------------------------------------------
+Flushes previously recommended but unattempted questions for a user.
+----------------------------------------------
+inputs:
+    object: userData - Data containing user-specific information, including their recommended problem list.
+    object: userProblems - A collection of problem objects associated with the user, detailing each problem's status and other metadata.
+outputs:
+    array: An array of deleted user problem objects that were recommended but not attempted by the user.
+----------------------------------------------
+Details:
+- Iterates over the user's recommended problems.
+- Checks if each problem was seen but not attempted by the user (i.e., `dateCompleted` is `null`).
+- Deletes unattempted problems from the Firebase database.
+- This function ensures the user's recommendation list remains fresh and relevant by removing old, unattempted recommendations before adding new ones.
+- Essential for maintaining the quality of problem recommendations, aligning challenges with the user's current skill level and interests.
+----------------------------------------------
+*/
 async function flushPreviousQuestions(userData, userProblems) {
     let deleted = []
     try {
@@ -232,11 +321,24 @@ async function flushPreviousQuestions(userData, userProblems) {
 }
 
 
-
-
-
+/*
+updateUserRecommendedArray(userId, problems)
+----------------------------------------------
+Updates the recommended problems array for a user in the database.
+----------------------------------------------
+inputs:
+    string: userId - The unique identifier for the user.
+    array: problems - An array of problem IDs to set as the new list of recommended problems for the user.
+outputs:
+    - None. The function directly updates the user's document in the database with the new recommended problems.
+----------------------------------------------
+Details:
+- This function is responsible for updating the list of recommended problems associated with a user in the Firebase database.
+- It replaces the existing 'recommended' field in the user's document with the new array of problem IDs passed to the function.
+- Essential for ensuring the user has access to the latest set of recommended problems tailored to their progress and preferences.
+----------------------------------------------
+*/
 async function updateUserRecommendedArray(userId, problems) {
-
     // Update the document with the new array
     await updateDoc(doc(db, "users", userId), {
         recommended: problems,
@@ -259,8 +361,26 @@ REC PROBLEMS FUNCTIONS
 */
 
 
-// Weighted random selection helper function
-function weightedRandomSelect(problems, count, allProblems) {
+/*
+weightedRandomSelect(problems, count, allProblems)
+----------------------------------------------
+Selects a specified number of problems randomly, weighted by their normalized weights.
+----------------------------------------------
+inputs:
+    array: problems - An array of problem objects with a 'normalizedWeight' property for each.
+    number: count - The number of problems to select.
+    array: allProblems - The complete array of all problem objects from which the selection is made.
+outputs:
+    array: A subset of 'allProblems', randomly selected based on the weighted probability derived from 'problems'.
+----------------------------------------------
+Details:
+- Utilizes a weighted random selection algorithm to pick a specified number of unique problems from the complete set.
+- Each problem's chance of being selected is influenced by its 'normalizedWeight', ensuring a biased random selection that accounts for specified weights.
+- Ensures that the same problem is not selected more than once in the output array.
+- This function is crucial for generating problem sets that reflect a desired distribution, such as difficulty levels or problem types, based on dynamic user data or predefined criteria.
+----------------------------------------------
+*/
+export function weightedRandomSelect(problems, count, allProblems) {
     const selected = [];
     for (let i = 0; i < count; i++) {
         let sum = 0;
@@ -269,7 +389,7 @@ function weightedRandomSelect(problems, count, allProblems) {
             sum += problem.normalizedWeight;
             if (rand <= sum) {
                 const fullProblem = allProblems.find(p => p.link === problem.link);
-                if (fullProblem && !selected.includes(fullProblem)) { // Check if not already selected
+                if (fullProblem && !selected.includes(fullProblem)) { 
                     selected.push(fullProblem);
                     break;
                 }
@@ -280,8 +400,26 @@ function weightedRandomSelect(problems, count, allProblems) {
 }
 
 
-
-function generateProblems(userProblems, count) {
+/*
+generateProblems(userProblems, count)
+----------------------------------------------
+Generates a new set of problems for the user, taking into account their past interactions and preferences.
+----------------------------------------------
+inputs:
+    array: userProblems - A collection of problems the user has previously interacted with, including attempts and completions.
+    number: count - The number of new problems to generate for the user.
+outputs:
+    array: A list of newly selected problem objects tailored to the user's skill level and problem-solving history.
+----------------------------------------------
+Details:
+- This function generates a tailored set of problems for the user by analyzing their past problem interactions.
+- For each problem in the database, it calculates a score based on whether the user has seen the problem before and their recent activity.
+- Scores are converted to probabilities, which are then normalized to ensure they sum to 1, allowing for weighted random selection.
+- Uses the `weightedRandomSelect` function to select problems based on these normalized probabilities, ensuring a personalized and varied problem set.
+- The function dynamically adapts to the user's progress, focusing on areas where the user may need more practice or exposure to new topics.
+----------------------------------------------
+*/
+export function generateProblems(userProblems, count) {
     const problems = fetchQuestions()
 
     const probabilityProblems = problems.map(problem => {
@@ -297,14 +435,14 @@ function generateProblems(userProblems, count) {
         }
 
         const probability = calculateProbability(score, 4);
-        return { link: problem.link, probability }; // Ensure weight is not NaN
+        return { link: problem.link, probability };
     });
 
     // Normalize Probability
     const totalProb = probabilityProblems.reduce((acc, problem) => acc + problem.probability, 0);
     const normalizedProblems = probabilityProblems.map(problem => ({
         ...problem,
-        normalizedWeight: totalProb > 0 ? problem.probability / totalProb : 0, // Avoid division by zero
+        normalizedWeight: totalProb > 0 ? problem.probability / totalProb : 0,
     }));
 
     // Perform weighted random selection
@@ -312,14 +450,51 @@ function generateProblems(userProblems, count) {
     return selectedProblems;
 }
 
-// Calculate Probability Based on Score
-function calculateProbability(score, k) {
+/*
+calculateProbability(score, k)
+----------------------------------------------
+Calculates the probability of selecting a problem based on its score.
+----------------------------------------------
+inputs:
+    number: score - The calculated score for a problem, reflecting its relevance or difficulty level for the user.
+    number: k - A scaling factor to adjust the steepness of the probability curve.
+outputs:
+    number: A probability value between 0 and 1, indicating the likelihood of selecting the problem.
+----------------------------------------------
+Details:
+- This function applies the logistic function to transform a problem's score into a probability.
+- The 'score' input reflects the problem's calculated relevance or suitability for the user, with higher scores indicating a greater need or suitability.
+- The 'k' parameter allows adjustment of the curve's steepness, enabling fine-tuning of how score differences affect selection probability.
+- The probability calculation ensures that problems with higher scores have a higher chance of being selected, but all problems remain possible choices.
+- This method balances the need to focus on areas of importance with the chance of exploring a wider range of problems.
+----------------------------------------------
+*/
+export function calculateProbability(score, k) {
     return 1 / (1 + Math.exp(-k * (score - 1)));
-  }
+}
 
- 
-// Calculate Score based on Repeated Question
-function calculateScoreRepeat(userProblem) {
+
+/*
+calculateScoreRepeat(userProblem)
+----------------------------------------------
+Calculates a score for a problem based on its recurrence in the user's problem-solving history, indicating its priority for repeat practice.
+----------------------------------------------
+inputs:
+    object: userProblem - A specific problem object from the user's history, including dates of attempts and statuses.
+outputs:
+    number: A score ranging from 0.75 to 2, reflecting the problem's relevance based on its recency and frequency of attempts.
+----------------------------------------------
+Details:
+- Evaluates the significance of a problem for the user by examining how recently and how frequently it has been attempted.
+- 'recencyScore' contributes to the score by valuing problems attempted more recently, encouraging the reinforcement of recent learning.
+- 'frequencyScore' acknowledges the need for repeated practice, increasing with the number of attempts, up to a cap, to balance between focusing on the same problems and exploring new challenges.
+- The combined score, ranging from 0.75 to 2, determines the problem's priority for repetition. Scores closer to 2 indicate a higher priority for the problem to be revisited due to its recent and frequent attempts.
+- This dynamic scoring mechanism ensures a tailored and adaptive learning path, promoting efficiency and effectiveness in problem-solving skills development.
+----------------------------------------------
+Note: The output score range is carefully designed to ensure a balanced emphasis on both recency and frequency, facilitating an optimized repetition schedule tailored to each user's unique problem-solving history.
+----------------------------------------------
+*/
+export function calculateScoreRepeat(userProblem) {
     const currentDate = new Date();
 
     // Initialize both scores with a minimum value of 0.25
@@ -346,16 +521,54 @@ const difficultyToNum = {
     "Hard": 6
 }
 
-// Calculate Score based on New Question
-function calculateScoreNew(problem, averageDifficulty, recentCategories) {
+/*
+calculateScoreNew(problem, averageDifficulty, recentCategories)
+----------------------------------------------
+Calculates a suitability score for a new problem based on the user's recent problem-solving history.
+----------------------------------------------
+inputs:
+    object: problem - Includes category and difficulty.
+    number: averageDifficulty - User's recent average problem difficulty.
+    array: recentCategories - Categories of recently attempted problems by the user.
+outputs:
+    number: Score (0.25 to 5) indicating the problem's suitability for recommendation.
+----------------------------------------------
+Details:
+- Scores problems higher if they match the user's recent categories or closely align with their average difficulty level.
+- Encourages reinforcing learning in familiar areas while providing challenges at a suitable difficulty.
+- Aims for a balanced learning experience, adapting to user preferences and skill level.
+----------------------------------------------
+Note: The scoring range from 0.25 to 5 allows for nuanced differentiation among new problems, ensuring recommendations are both relevant and challenging.
+----------------------------------------------
+*/
+export function calculateScoreNew(problem, averageDifficulty, recentCategories) {
     let categoryScore = recentCategories.includes(problem.category) ? 1 : 0.25;
     let difficultyScore = Math.max(0.0, Math.min(4, 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficulty)));
      // [.25, 5]
     return  categoryScore + difficultyScore;
 }
 
-// Top 10 stats for category and difficulty
-function recentStatistics(userProblems, problems) {
+/*
+recentStatistics(userProblems, problems)
+----------------------------------------------
+Calculates the average difficulty and identifies the recent categories of problems the user has completed.
+----------------------------------------------
+inputs:
+    array: userProblems - The user's problem-solving history.
+    array: problems - The complete list of available problems.
+outputs:
+    array: Contains the average difficulty and a list of recent problem categories.
+----------------------------------------------
+Details:
+- Analyzes the last 10 completed problems to determine the user's recent focus areas and difficulty level.
+- Includes "fake" entries for users with fewer than 10 recent completions to standardize the dataset.
+- Averages the difficulty levels and aggregates the categories of these problems.
+- Provides insight into the user's recent activity, guiding personalized problem recommendations.
+----------------------------------------------
+Note: This function ensures that recommendations stay aligned with the user's current learning path and preferences, even with limited recent activity.
+----------------------------------------------
+*/
+export function recentStatistics(userProblems, problems) {
     let recentCategories = new Set();
     let totalDifficulty = 0;
     let averageDifficulty;
@@ -407,414 +620,5 @@ function recentStatistics(userProblems, problems) {
 /*
 END
 REC PROBLEMS FUNCTIONS
-----------------------------------------------------------------------------------------------------------------------------
-*/
-
-
-/*
-----------------------------------------------------------------------------------------------------------------------------
-BEGIN
-OLD FUNCTIONS
-*/
-
-
-// async function defaultPrioritiesString() {
-//     const questions = await fetchQuestions();
-
-//     // Use map to transform each question into a string "link:0.50"
-//     const priorities = questions.map(question => `${question.link}=0.50`);
-
-//     // Join all the priority strings with a comma
-//     return priorities.join(',');
-// }
-
-
-// function recommendRepeatProblems(userProblems, count) { // Default k to 1 if not specified
-//     const problems = fetchQuestions(); // Assume this fetches the full list of questions
-//     const currentDate = new Date();
-
-//     const weightedProblems = userProblems.map(problem => {
-//         let recencyScore = 0.5; // Default to a neutral value
-//         let frequencyScore = 0.5; // Default to a neutral value
-
-//         if (problem.dateCompleted[0]) {
-//             const lastAttemptDate = new Date(problem.dateCompleted[0]);
-//             if (!isNaN(lastAttemptDate.getTime())) { // Ensure lastAttemptDate is a valid date
-//                 const hoursSinceLastAttempt = (currentDate - lastAttemptDate) / (1000 * 60 * 60);
-//                 recencyScore = Math.max(0, 1 - (hoursSinceLastAttempt / (24 * 30))); // Recency score calculation
-//                 frequencyScore = 1 - (Math.min(problem.dateCompleted.length, 10) / 10); // Frequency score calculation, capped at 10
-//             }
-//         }
-
-//         // Calculate weight using logistic function
-//         const logisticInput = -k * (recencyScore + frequencyScore - 1);
-//         const weight = 1 / (1 + Math.exp(logisticInput));
-
-//         return { link: problem.problemLink, weight: isNaN(weight) ? 0 : weight }; // Ensure weight is not NaN
-//     });
-
-//     // Normalize the weights
-//     const totalWeight = weightedProblems.reduce((acc, problem) => acc + problem.weight, 0);
-//     const normalizedProblems = weightedProblems.map(problem => ({
-//         ...problem,
-//         normalizedWeight: totalWeight > 0 ? problem.weight / totalWeight : 0, // Avoid division by zero
-//     }));
-
-//     // Perform weighted random selection
-//     const selectedProblems = weightedRandomSelect(normalizedProblems, count, problems);
-    
-//     return selectedProblems;
-// }
-
-
-// function recommendRepeatProblems(userProblems, count) {
-//     const problems = fetchQuestions(); // Assume this fetches the full list of questions
-//     const currentDate = new Date();
-
-//     // const eligibleUserProblems = userProblems;
-//     // // .filter(problem => {
-//     // //     if (!problem.dateCompleted[0]) {
-//     // //         return true; // Always include problems without a completion date
-//     // //     } else {
-//     // //         const lastAttemptDate = new Date(problem.dateCompleted[0]);
-//     // //         const hoursSinceLastAttempt = (currentDate - lastAttemptDate) / (1000 * 60 * 60);
-//     // //         return hoursSinceLastAttempt >= 24; // Exclude problems completed within the last 24 hours
-//     // //     }
-//     // // });
-
-//     const weightedProblems = userProblems.map(problem => {
-//         let recencyScore = 0.0;
-//         let frequencyScore = 0.0;
-
-//         if (problem.dateCompleted[0]) {
-//             // Calculate recency score
-//             const lastAttemptDate = new Date(problem.dateCompleted[0]);
-//             const hoursSinceLastAttempt = (currentDate - lastAttemptDate) / (1000 * 60 * 60);
-//             recencyScore = Math.max(0, 1 - (hoursSinceLastAttempt / (24 * 30))); // Example: Recency within a month scales from 1 to 0
-
-//             // Calculate frequency score
-//             frequencyScore = 1 - (problem.dateCompleted.length / 10); // Assuming max frequency score decreases as attempts increase, capped at 10 attempts
-//         } else {
-//             // Medium base score for null completion dates, assuming neutral frequency and recency
-//             recencyScore = 0.5;
-//             frequencyScore = 0.5;
-//         }
-
-//         // Combine recency and frequency scores
-//         let combineScore = (recencyScore + frequencyScore)
-
-//         // Apply logistic function transformation to adjust probability
-//         const weight = 1 / (1 + Math.exp(-k * (recencyScore + frequencyScore - 0.5)));
-//         return { link: problem.problemLink, weight };
-//     });
-
-//     // Then, normalize the weights to sum to 1
-//     const totalWeight = weightedProblems.reduce((acc, problem) => acc + problem.weight, 0);
-//     const normalizedProblems = weightedProblems.map(problem => ({
-//         ...problem,
-//         normalizedWeight: problem.weight / totalWeight
-//     }));
-//     console.log(normalizedProblems, count, problems)
-//     // Perform weighted random selection based on normalized weights
-//     const selectedProblems = weightedRandomSelect(normalizedProblems, count, problems);
-//     console.log(selectedProblems)
-//     return selectedProblems;
-// }
-
-
-// function recommendNewProblems(userProblems, count) {
-//     const problems = fetchQuestions(); 
-//     let targetCategoriesSet = new Set();
-//     let totalDifficultyNum = 0;
-//     let averageDifficultyNum = 0;
-
-//     const recentlyCompletedProblems = userProblems
-//         .filter(up => up.status[0] === "Completed")
-//         .sort((a, b) => b.dateCompleted[0].toDate() - a.dateCompleted[0].toDate())
-//         .slice(0, 10);
-
-//     if (recentlyCompletedProblems.length > 0) {
-//         recentlyCompletedProblems.forEach(up => {
-//             const matchingProblem = problems.find(p => p.link === up.problemLink);
-//             if (matchingProblem) {
-//                 totalDifficultyNum += difficultyToNum[matchingProblem.difficulty];
-//                 targetCategoriesSet.add(matchingProblem.category);
-//             }
-//         });
-
-//         averageDifficultyNum = totalDifficultyNum / recentlyCompletedProblems.length;
-//     } else {
-//         averageDifficultyNum = difficultyToNum["Easy"];
-//         targetCategoriesSet = new Set(categories);
-//     }
-
-//     const attemptedProblemLinks = new Set(userProblems.map(problem => problem.problemLink));
-//     const unattemptedProblems = problems.filter(problem => !attemptedProblemLinks.has(problem.link));
-
-//     // Calculate weights for unattempted problems
-//     const weightedProblems = unattemptedProblems.map(problem => {
-//         let categoryScore = targetCategoriesSet.has(problem.category) ? 1 : 0;
-//         let difficultyScore = 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficultyNum);
-//         let weight = 1 / (1 + Math.exp(-k * (categoryScore + difficultyScore - 0.5)));
-
-//         return { link: problem.link, weight };
-//     });
-
-//     // Normalize weights to sum to 1
-//     const totalWeight = weightedProblems.reduce((acc, problem) => acc + problem.weight, 0);
-//     const normalizedProblems = weightedProblems.map(problem => ({
-//         ...problem,
-//         normalizedWeight: problem.weight / totalWeight
-//     }));
-
-//     console.log(normalizedProblems, count, problems)
-
-//     // Perform weighted random selection
-//     const selectedProblems = weightedRandomSelect(normalizedProblems, count, problems);
-
-//     // Return selected problems
-//     console.log(selectedProblems)
-//     return selectedProblems;
-// }
-
-
-// const spacialP = 0.8;
-// export function generateRecommendations(userProblems, count) {
-//     const problems = fetchQuestions(); 
-//     let targetCategoriesSet = new Set();
-//     let totalDifficultyNum = 0;
-//     let averageDifficultyNum = 0;
-
-//     const recentlyCompletedProblems = userProblems
-//         .filter(up => up.status[0] === "Completed")
-//         .sort((a, b) => b.dateCompleted[0].toDate() - a.dateCompleted[0].toDate())
-//         .slice(0, 10);
-
-//     if (recentlyCompletedProblems.length > 0) {
-//         recentlyCompletedProblems.forEach(up => {
-//             const matchingProblem = problems.find(p => p.link === up.problemLink);
-//             if (matchingProblem) {
-//                 totalDifficultyNum += difficultyToNum[matchingProblem.difficulty];
-//                 targetCategoriesSet.add(matchingProblem.category);
-//             }
-//         });
-
-//         averageDifficultyNum = totalDifficultyNum / recentlyCompletedProblems.length;
-//     } else {
-//         averageDifficultyNum = difficultyToNum["Easy"];
-//         targetCategoriesSet = new Set(categories);
-//     }
-
-//     const attemptedProblemLinks = new Set(userProblems.map(problem => problem.problemLink));
-//     const unattemptedProblems = problems.filter(problem => !attemptedProblemLinks.has(problem.link));
-
-//     // Calculate weights for unattempted problems
-//     const weightedProblems = unattemptedProblems.map(problem => {
-//         let categoryScore = targetCategoriesSet.has(problem.category) ? 1 : 0;
-//         let difficultyScore = 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficultyNum);
-//         let weight = 1 / (1 + Math.exp(-k * (categoryScore + difficultyScore - 0.5)));
-
-//         return { link: problem.link, weight };
-//     });
-
-//     // Normalize weights to sum to 1
-//     const totalWeight = weightedProblems.reduce((acc, problem) => acc + problem.weight, 0);
-//     const normalizedProblems = weightedProblems.map(problem => ({
-//         ...problem,
-//         normalizedWeight: problem.weight / totalWeight
-//     }));
-
-//     console.log(normalizedProblems, count, problems)
-
-//     // Perform weighted random selection
-//     const selectedProblems = weightedRandomSelect(normalizedProblems, count, problems);
-
-//     // Return selected problems
-//     console.log(selectedProblems)
-//     return selectedProblems;
-    
-// }
-
-
-
-//   export function nextSpacialRepetitionProblems(userProblems, count) {
-//     // Current date to calculate recency
-//     const currentDate = new Date();
-  
-//     // Define the weight for date priority (adjust this to shift emphasis between recency and frequency)
-//     let datePriorityWeight = 0.5; // Example: 0.5 equally weighs both factors
-  
-//     // Sort problems based on a weighted combination of recency and frequency
-//     const sortedProblems = userProblems.sort((a, b) => {
-//       // Check for null most recent completion date and assign low priority
-//       const hasRecentA = a.dateCompleted[0] !== null;
-//       const hasRecentB = b.dateCompleted[0] !== null;
-  
-//       if (!hasRecentA && hasRecentB) return 1; // A is deprioritized
-//       if (hasRecentA && !hasRecentB) return -1; // B is deprioritized
-  
-//       // Calculate the recency factor (days since last seen) for non-null dates
-//       const recencyA = hasRecentA ? (currentDate - new Date(a.dateCompleted[0])) / (1000 * 3600 * 24) : 0;
-//       const recencyB = hasRecentB ? (currentDate - new Date(b.dateCompleted[0])) / (1000 * 3600 * 24) : 0;
-  
-//       // Calculate priority based on recency and frequency
-//       const priorityA = (datePriorityWeight * recencyA) + ((1 - datePriorityWeight) * a.dateCompleted.length);
-//       const priorityB = (datePriorityWeight * recencyB) + ((1 - datePriorityWeight) * b.dateCompleted.length);
-  
-//       // Sort by ascending priority
-//       return priorityA - priorityB;
-//     });
-  
-//     // Return the IDs of the top 'count' sorted problems based on the calculated priority
-//     return sortedProblems.slice(0, count); // Ensure to map to problem.id for the return
-//   }
-
-//   export function recentDifficultyAttempts(userProblems) {
-//     // Assuming fetchQuestions is defined and returns the problems array
-//     const problems = fetchQuestions(); // Correctly call fetchQuestions to get problems
-
-//     const difficultyScale = { Easy: 0, Medium: 0.5, Hard: 1 };
-
-//     const completedProblems = userProblems.filter(us => us.status[0] === "Complete");
-
-//     // Correctly sort by dateCompleted[0] in descending order
-//     const sortedByDateCompleted = completedProblems.sort((a, b) => {
-//         const dateB = new Date(b.dateCompleted[0]); // Note the swapped names
-//         const dateA = new Date(a.dateCompleted[0]);
-//         return dateB - dateA; // Descending order
-//     });
-
-//     // Take the last (most recent) 10 completed problems
-//     const lastCompleted = sortedByDateCompleted.slice(0, 10);
-
-//     // Pad with 'Easy' if less than 10
-//     const paddedLastCompleted = lastCompleted.length < 10
-//         ? [...lastCompleted, ...Array(10 - lastCompleted.length).fill({ problemLink: null })]
-//         : lastCompleted;
-
-//     const difficulties = paddedLastCompleted.map(us => {
-//         const matchingProblem = problems.find(p => p.link === us.problemLink);
-//         return matchingProblem ? difficultyScale[matchingProblem.difficulty] : difficultyScale['Easy']; // Default to 'Easy' if not found
-//     });
-
-//     // Calculate the average difficulty based on paddedLastCompleted
-//     const averageDifficulty = difficulties.reduce((acc, difficulty) => acc + difficulty, 0) / paddedLastCompleted.length;
-    
-//     return averageDifficulty;
-// }
-  
-
-// function convertPrioritiesStringToObject(prioritiesString) {
-//     // Split the string to get an array of "link:priority" pairs
-//     const pairs = prioritiesString.split(',');
-
-//     // Initialize an empty object to hold the link-priority mappings
-//     const prioritiesObject = {};
-
-//     // Iterate over each pair
-//     pairs.forEach(pair => {
-//         // Split each pair by ":" to separate the link and its priority
-//         const [link, priority] = pair.split('=');
-
-//         // Convert priority to float and add the link (as string) and priority (as float) to the object
-//         prioritiesObject[link] = parseFloat(priority);
-//     });
-
-//     return prioritiesObject;
-// }
-
-// function convertPrioritiesObjectToString(prioritiesObject) {
-//     // Convert the priorities object into an array of "link:priority" strings
-//     const pairs = Object.entries(prioritiesObject).map(([link, priority]) => `${link}=${priority}`);
-
-//     // Join the pairs with a comma to form the final string
-//     return pairs.join(',');
-// }
-
-
-// function calculateProbability(oldProbability) {
-//     console.log(oldProbability)
-//     console.log(1 / (1 + Math.exp(-k * (oldProbability - 1))))
-//     return 1 / (1 + Math.exp(-k * (oldProbability - 1)));
-//   }
-
-
-
-
-// async function generateQuestionsBasedOnProbability(prioritiesObject, count) {
-//     const questions = await fetchQuestions();
-//     // Convert prioritiesObject values to an array of numbers for totalWeight calculation
-//     let totalWeight = Object.values(prioritiesObject).reduce((acc, priority) => acc + parseFloat(priority), 0);
-//     let selectedQuestions = [];
-
-//     questions.sort((a, b) => {
-//         // Get the priority for question a and b, or default to 0.5 if not found in prioritiesObject
-//         const priorityA = prioritiesObject[a.url] !== undefined ? prioritiesObject[a.url] : 0.5;
-//         const priorityB = prioritiesObject[b.url] !== undefined ? prioritiesObject[b.url] : 0.5;
-      
-//         // Compare the two priorities to determine the order
-//         return priorityB - priorityA;
-//       });
-//       const sortedEntries = Object.entries(prioritiesObject)
-//       .sort((a, b) => a[1] - b[1]); // Sort the array by the second element (the number) of each pair
-      
-//     // Convert the array back into an object
-//     const sortedObject = Object.fromEntries(sortedEntries);
-//     console.log( "entry" + sortedEntries);
-//       console.log(questions); // Sorted questions based on priority
-
-//     for (let i = 0; i < count; i++) {
-//         let randomNum = Math.random() * totalWeight;
-//         let sum = 0;
-//         for (let j = 0; j < questions.length; j++) {
-//             // Use question's link to look up its priority in the prioritiesObject
-//             const questionPriority = parseFloat(prioritiesObject[questions[j].link] || "0");
-//             sum += questionPriority;
-//             if (randomNum <= sum) {
-//                 selectedQuestions.push(questions[j]);
-//                 break;
-//             }
-//         }
-//     }
-//     return selectedQuestions;
-// }
-
-// async function adjustProbability(userData, matchingQuestion, status) {
-//     try {
-        
-//         const prioritiesObject = convertPrioritiesStringToObject(userData.priorities);
-//         // console.log(prioritiesObject)
-//         // Initialize the priority if the link is not found
-//         if (!(matchingQuestion.link in prioritiesObject)) {
-//             prioritiesObject[matchingQuestion.link] = 0.50; // Default priority
-//         }
-
-//         // Adjust priority based on status
-//         if (status === "Complete") {
-//             prioritiesObject[matchingQuestion.link] = calculateProbability(prioritiesObject[matchingQuestion.link]);
-//         } else if (status === "InComplete") {
-//             prioritiesObject[matchingQuestion.link] = calculateProbability(prioritiesObject[matchingQuestion.link]);
-//         }
-//         // No change for other statuses
-//         // console.log("NEW " + prioritiesObject[matchingQuestion.link])
-
-//         const prioritiesNewString = convertPrioritiesObjectToString(prioritiesObject);
-//         // console.log(userData.__id)
-//         const userDocRef = doc(db, "users", userData.__id);
-
-//         // Update the document with the new priorities string
-//         await updateDoc(userDocRef, {
-//             priorities: prioritiesNewString
-//         });
-//     } catch (error) {
-//         console.error("Error adjusting user priorities: ", error);
-//         throw new Error('Failed to adjust user priorities.');
-//     }
-// }
-
-
-/*
-END
-OLD FUNCTIONS
 ----------------------------------------------------------------------------------------------------------------------------
 */
