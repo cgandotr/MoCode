@@ -15,14 +15,9 @@
   margin-left: 10%;
   width: 91%;
   font-size: 11px;
-  
+
 }
-/*#options {
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-  width: 90%;
-}*/
+
 #questions2 {
   color: white;
   font-size: 17px;;
@@ -30,6 +25,7 @@
   margin-top: -10%;
   text-decoration: underline;
 }
+
 #list {
   padding: 10px 20px 20px 20px;
 }
