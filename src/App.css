@@ -3,33 +3,23 @@
   width: 100%;
   background: var(--background);
   overflow-y: auto;
-  
-  
+  scrollbar-width: thin;
+  scrollbar-color: var(--faint-font-color) transparent;
 }
 
 .intro {
   display: flex;
-  flex-direction: row; /* Stack children horizontally by default */
+  flex-direction: row;
   margin: 100px;
-  /* border: 3px solid rgba(255, 255, 255, 0.348); */
   padding: 30px;
   align-items: center;
 }
-
-
-@media (max-width: 800px) {
-  .intro {
-    flex-direction: column; /* Stack children vertically */
-  }
-}
-
 
 #head {
   font-size: 35px;
 }
 
 #liner {
-  
   font-weight: 100;
   font-size: 20px;
   margin-top: -15px;
@@ -38,13 +28,12 @@
 #header {
   padding: 20px;
   text-align: center;
-  /* border: 3px solid rgba(255, 255, 255, 0.348); */
-
 }
 
 #header, .code-box {
   margin: 20px;
 }
+
 .code-box {
   background-color: #282a36;
   color: #f8f8f2;
@@ -53,8 +42,28 @@
   border-radius: 8px;
   min-width: 250px;
   height: 100px;
-  /* border: 3px solid rgba(255, 255, 255, 0.348); */
+}
 
+#animatedText {
+  border-right: 2px solid;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(20, end), blink .75s step-end infinite;
+}
+
+#get-started-btn {
+  background: var(--boxes-background);
+  color: var(--main-font-color);
+  cursor: pointer;
+  border-radius: 30px;
+  padding: 10px 15px;
+  margin: 0 0 10px 0;
+}
+
+#app-content {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
 }
 
 @keyframes typing {
@@ -66,28 +75,8 @@
   50% { border-color: transparent; }
 }
 
-#animatedText {
-  border-right: 2px solid;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typing 2s steps(20, end), blink .75s step-end infinite;
-}
-
-
-#get-started-btn {
-  background: var(--boxes-background);
-  color: var(--main-font-color);
-  cursor: pointer;
-  border-radius: 30px;
-  padding: 10px 15px;
-  margin: 0 0 10px 0;
-  /* border: 3px solid rgb(190, 39, 19); */
-  /* Removed float: right; since we're now using flexbox for alignment */
-}
-
-#app-content {
-  align-items: center; /* Align children vertically */
-  flex-direction: column;
-  display: flex;
-
+@media (max-width: 800px) {
+  .intro {
+    flex-direction: column; 
+  }
 }

@@ -1,10 +1,10 @@
-// firebase.js
+/* Connection to firebase */
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-// Your web app's Firebase configuration
+/* MoCode web app's Firebase configuration */
 const firebaseConfig = {
   apiKey: "AIzaSyBIIeM2fAxFKw6UjTaYUv91JeTvtSDtaSo",
   authDomain: "mocode-115a.firebaseapp.com",
@@ -15,9 +15,8 @@ const firebaseConfig = {
   measurementId: "G-5EERF1QSXB"
 };
 
-// Initialize Firebase
+/* Initialize Firebase */
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 

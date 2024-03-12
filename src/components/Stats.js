@@ -270,15 +270,19 @@ function Stats() {
         return roundedHours;
     };  
 
+    /*
+    getProblemsForSpecificDate(specificDate)
+    ------------------------------------
+    Gets the problems submitten on a day
+    ------------------------------------
+    inputs: specificDate (date)
 
-    const getProblemsForSpecificDate = (specificDate) => {
-        // Ensure specificDate is a dayjs object for consistent comparison
-        const targetDate = dayjs(specificDate);
-    
-        // Initialize return array
+    outputs: array of problems ([] userProblems)
+    */
+    const getProblemsForSpecificDate = (specificDate) => {    
+        /* Initialize return array */
         let problemsForDate = [];
     
-        // Iterate through all userProblems
         userProblems.forEach(problem => {
             problem.status.forEach((status, index) => {
                 /* Go through each status in status[] */
@@ -287,15 +291,14 @@ function Stats() {
                     /* Get corresponding dateCompleted (by index) */
                     /* Check if it's within the current month */
                     const attemptDate = dayjs(problem.dateCompleted[index].toDate());
-                    if (attemptDate.isSame(specificDate, 'day')) {                        /* Add date to array */
+                    if (attemptDate.isSame(specificDate, 'day')) {                       
+                        /* Add date to array */
                         problemsForDate.push(problem);
                     }
                 }
             });
         });
-    
-        // Return array of problems that match the specific date
-        return problemsForDate;
+            return problemsForDate;
     };
 
    /*
@@ -372,7 +375,6 @@ function Stats() {
                     ))}
                 </div>
             </div>
-      
             <div id="bottom-stats">
                 <Tabs 
                     value={tabvalue}
@@ -396,11 +398,9 @@ function Stats() {
                     <TabPanel value={tabvalue} index={0}>
                             <PieChart id="pie"
                                 slotProps={{ legend: { hidden: true } }}
-                                // skipAnimation
                                 series={[{
                                     data: pieChartData,
                                     highlightScope: { faded: 'global', highlighted: 'item' },
-                                
                                 }]}
                                 sx={{
                                 }}
@@ -421,7 +421,7 @@ function Stats() {
                             onChange={(newValue) => {
                             setCalendarValue(newValue);
                             }}
-                            renderInput={() => <></>} // Render nothing or your custom input component
+                            renderInput={() => <></>}
                             minDate={currentMonthStart}
                             maxDate={currentMonthEnd}
                             slots={{
@@ -434,10 +434,8 @@ function Stats() {
                             }}
                             disabled
                             displayWeekNumber
-
-                            
-
                             sx={{
+                            '& .MuiButtonBase-root.Mui-disabled.MuiPickersDay-root.Mui-disabled.MuiPickersDay-dayWithMargin': { color: 'var(--main-font-color)'},
                             '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
                             '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
                             '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px"},
@@ -453,9 +451,7 @@ function Stats() {
                     </TabPanel>
                 </SwipeableViews>
             </div>
-    </div>
-
-    
+        </div>
     );
 }
 
