@@ -12,6 +12,9 @@ import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab, Typography } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import { List, ListItem, ListItemText } from '@mui/material';
+import { Tooltip } from '@mui/material';
+
 
 /* Other Imports */
 import dayjs from 'dayjs';
@@ -54,37 +57,6 @@ function TabPanel(props) {
           </Box>
         )}
       </div>
-    );
-  }
-  
-
-/*
-ServerDay()
-------------------------------------
-Custom Object to with streak indicator
-------------------------------------
-*/
-function ServerDay(props) {
-    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-
-    /* If current day is in highlighted days array, then we want to display streak */
-    const isSelected = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
-  
-    return (
-      <Badge
-        key={props.day.toString()}
-        overlap="circular"
-        badgeContent={isSelected ? '🔥' : undefined}
-        sx={{
-            ...(isSelected && {
-              '.MuiPickersDay-root': { 
-                backgroundColor: 'var(--boxes-background)'
-              },
-            }),
-          }}
-      >
-        <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-      </Badge>
     );
   }
 
@@ -298,7 +270,89 @@ function Stats() {
         return roundedHours;
     };  
 
-   
+
+    const getProblemsForSpecificDate = (specificDate) => {
+        // Ensure specificDate is a dayjs object for consistent comparison
+        const targetDate = dayjs(specificDate);
+    
+        // Initialize return array
+        let problemsForDate = [];
+    
+        // Iterate through all userProblems
+        userProblems.forEach(problem => {
+            problem.status.forEach((status, index) => {
+                /* Go through each status in status[] */
+                /* Check if the status is "Complete" or "Incomplete" */
+                if (status === "Complete" || status === "Incomplete") {
+                    /* Get corresponding dateCompleted (by index) */
+                    /* Check if it's within the current month */
+                    const attemptDate = dayjs(problem.dateCompleted[index].toDate());
+                    if (attemptDate.isSame(specificDate, 'day')) {                        /* Add date to array */
+                        problemsForDate.push(problem);
+                    }
+                }
+            });
+        });
+    
+        // Return array of problems that match the specific date
+        return problemsForDate;
+    };
+
+   /*
+    ServerDay()
+    ------------------------------------
+    Custom Object
+    Allows Streak to be render
+    When Hovering Over Date, renders problems submitted
+    ------------------------------------
+    */
+    function ServerDay(props) {
+        const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+
+        const isHighlighted = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+    
+        const [hover, setHover] = useState(false);
+
+        const renderTooltipContent = (day) => (
+            <List dense>
+            <ListItemText primary={`Submitted Problems - ${dayjs(day).format('MM/DD/YYYY')}`} />
+
+                {getProblemsForSpecificDate(day).map((userProblem, index) => (
+                    <ListItem key={index}>
+                        <ListItemText primary={`${getProblemTitle(userProblem.problemLink)}`} />
+                    </ListItem>
+                ))}
+            </List>
+        );
+    
+
+        return (
+            <Tooltip
+                title={renderTooltipContent(day)}
+                open={hover && isHighlighted}
+                placement="top"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+            >
+                <Badge
+                    key={day.toString()}
+                    overlap="circular"
+                    badgeContent={isHighlighted ? '🔥' : undefined}
+                    sx={{
+                        ...(isHighlighted && {
+                        '.MuiPickersDay-root': { 
+                            backgroundColor: 'var(--boxes-background)',
+                        },
+                        }),
+                    }}
+                >
+                    <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+                </Badge>
+            </Tooltip>
+        );
+    }
+
+
     return (
         <div className='stats'>
             <div id="top-3">
