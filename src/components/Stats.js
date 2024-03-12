@@ -1,4 +1,4 @@
-import { useContext , useEffect, useState, React} from 'react';
+import React, { useContext , useEffect, useState} from 'react';
 
 import './Stats.css';
 import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
@@ -17,9 +17,13 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 import Switch from '@mui/material/Switch';
 import SwipeableViews from 'react-swipeable-views';
-import { Tabs, Tab, Typography } from '@mui/material';
+import { Tabs, Tab, Typography, Tooltip } from '@mui/material';
 import { tab } from '@testing-library/user-event/dist/tab';
 import TextField from '@mui/material/TextField';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+
 
 
 const getWeekRange = (weekNumber, year) => {
@@ -405,38 +409,56 @@ function Stats() {
                             '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"}
                             }}
                         /> */}
-                        <DateCalendar 
-                            views={['day']}
-                            value={currDate}
-                            onChange={(newValue) => handleChangeDate(newValue)}
-                            minDate={currentMonthStart}
-                            maxDate={currentMonthEnd}
-                            renderInput={(params) => <TextField {...params} />}
-                            sx={{
-                            '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
-                            '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
-                            '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px", marginRight: "40px"},
-                            '& .MuiPickersCalendarHeader-label': { color: 'var(--main-font-color)' },
-                            '& .MuiDayCalendar-weekDayLabel': { color: 'var(--main-font-color)' },
-                            '& .MuiDayCalendar-header': { backgroundColor: 'var(--boxes-background)', borderRadius: '50px', marginBottom: "10" },
-                            '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
-                            '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
-                            '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"},
-                            '& .MuiPickersDay-root': { color: 'white' }, 
-                            '& .MuiPickersDay-root.Mui-disabled': { color: 'rgba(255, 255, 255, 0.5)' }, 
-                        }}
-                        />
+                        <Tooltip title={
+                            <React.Fragment>
+                                <List dense>
+                                {probsToDisplay.map((problem, index) => (
+                                    <ListItem key={index}>
+                                    <ListItemText primary={problem.prob_name ? problem.prob_name : 'No Name'} />
+                                    </ListItem>
+                                ))}
+                                </List>
+                          </React.Fragment>
+
+                            
+                        }>
+                            <DateCalendar 
+                                views={['day']}
+                                slots={{
+                                    day: ServerDay,
+                                }}
+                                value={currDate}
+                                onChange={(newValue) => handleChangeDate(newValue)}
+                                minDate={currentMonthStart}
+                                maxDate={currentMonthEnd}
+                                renderInput={(params) => <TextField {...params} />}
+                                sx={{
+                                '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
+                                '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
+                                '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px", marginRight: "40px"},
+                                '& .MuiPickersCalendarHeader-label': { color: 'var(--main-font-color)' },
+                                '& .MuiDayCalendar-weekDayLabel': { color: 'var(--main-font-color)' },
+                                '& .MuiDayCalendar-header': { backgroundColor: 'var(--boxes-background)', borderRadius: '50px', marginBottom: "10" },
+                                '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
+                                '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
+                                '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"},
+                                '& .MuiPickersDay-root': { color: 'white' }, 
+                                '& .MuiPickersDay-root.Mui-disabled': { color: 'rgba(255, 255, 255, 0.5)' }, 
+                            }}
+                            />
+                        </Tooltip>
                         </LocalizationProvider>
-                        {probsToDisplay.length > 0 && (
+                        {/*{probsToDisplay.length > 0 && (
                             <div id = "questions2">Questions Completed</div>
-                        )}
-                        <ul id = "questions">
-                            {probsToDisplay.map((problem, index) => (
-                                <li id = "options" key={index}>
-                                {problem.prob_name ? problem.prob_name : 'No Name'}
-                                </li>
-                            ))}
-                        </ul>
+                        )}*/}
+                        
+                            {/* <ul id="questions">
+                                {probsToDisplay.map((problem, index) => (
+                                    <li id="options">
+                                        {problem.prob_name ? problem.prob_name : 'No Name'}
+                                    </li>
+                                ))}
+                            </ul> */}
                         
                     </TabPanel>
                 </SwipeableViews>
