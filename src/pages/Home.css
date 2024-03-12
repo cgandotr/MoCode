@@ -1,73 +1,55 @@
 .Home {
-    height: 100%;
-    width: 100%;
-    background: var(--background);
-    overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  background: var(--background);
+  overflow-y: auto;
+}
 
-  }
-
-  #recommended {
-    height: fit-content;
-    margin: 0 0 0  5%; 
-      border: 3px solid rgb(19, 67, 190); 
-
-  }
+#recommended {
+  height: fit-content;
+  margin: 0 0 0 5%; 
+}
   
+#rec-btn:hover {
+  background: var(--problem-outline);
+}
 
-  #rec-btn:hover {
-    background: var(--problem-outline);
-
-  }
-
-  #rec-word {
-    font-size: 10px;
-
-  }
-
+#rec-word {
+  font-size: 10px;
+}
+ 
+#problems-main {
+  margin-top: 20px;
+}
   
+#side-bar {
+  padding: 30px 0 15px 0;
+  width: 30%;
+  max-width: 375px;
+}
+
+.timer {
+  margin: 0 0 5% 0;
+}
+
+#home-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  margin: 0 5% 0 5%;
+}
   
-
-  #problems-main {
-    /* border: 3px solid rgb(190, 39, 19);  */
-    margin-top: 20px;
-  }
-  
-  #side-bar {
-    /* border: 3px solid rgb(0, 240, 20);  */
-    padding: 30px 0 15px 0;
-    width: 30%;
-    max-width: 375px;
-  }
-
-  .timer {
-    margin: 0 0 5% 0;
-
-  }
-
-
-  #home-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* This will push children to either end */
-    align-items: flex-start; /* Align items to the start of the cross axis */
-    /* border: 3px solid rgb(190, 39, 19); */
-    margin: 0 5% 0 5%;
-  }
-  
-
-
 #left-main-header {
   margin: 40 0 0 0;
   display: flex;
   flex-direction: row;
   align-items: end;
-  justify-content: space-between; /* Ensures elements are spaced out */
-
-
+  justify-content: space-between; 
 }
+
 #welcome {
   width: 70%;
-
 }
 
 #rec-btn {
@@ -82,11 +64,9 @@
 }
 
 #home-main {
-  /* border: 3px solid rgb(0, 176, 240);  */
   width: 60%;
-
-
 }
+
 @media (min-width: 555px) and (max-width: 780px) {
   #home-content {
     display: flex;
@@ -121,4 +101,3 @@
     width: 140%;
     margin-left: 110%;
   }
-}
