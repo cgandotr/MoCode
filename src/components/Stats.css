@@ -19,11 +19,21 @@
 #questions {
   color: white;
   margin-left: 10%;
+  width: 91%;
+  font-size: 11px;
+  
 }
+/*#options {
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  width: 90%;
+}*/
 #questions2 {
   color: white;
-  font-size: 20px;;
+  font-size: 17px;;
   margin-left: 17%;
+  margin-top: -10%;
   text-decoration: underline;
 }
 #list {

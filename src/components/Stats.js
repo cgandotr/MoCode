@@ -432,7 +432,7 @@ function Stats() {
                         )}
                         <ul id = "questions">
                             {probsToDisplay.map((problem, index) => (
-                                <li key={index}>
+                                <li id = "options" key={index}>
                                 {problem.prob_name ? problem.prob_name : 'No Name'}
                                 </li>
                             ))}
