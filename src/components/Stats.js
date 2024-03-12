@@ -19,6 +19,7 @@ import Switch from '@mui/material/Switch';
 import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab, Typography } from '@mui/material';
 import { tab } from '@testing-library/user-event/dist/tab';
+import TextField from '@mui/material/TextField';
 
 
 const getWeekRange = (weekNumber, year) => {
@@ -103,11 +104,15 @@ function Stats() {
     
     const [highlightedDays, setHighlightedDays] = useState([]);
 
+    const [probsToDisplay, setProbsToDisplay] = useState([]);
+
     const { userProblems, problems } = useContext(AuthContext);
     
     const [tabvalue, setTabValue] = useState(0);
 
     const [calendarvalue, setCalendarValue] = useState(dayjs());
+
+    const [currDate, setCurrDate] = useState(dayjs());
 
   // Determine the start and end of the current month
   const currentMonthStart = dayjs().startOf('month');
@@ -122,34 +127,100 @@ function Stats() {
     setTabValue(index);
   };
 
+  const getData = () => {
+    let problemsToDisplay = [];
+        userProblems.forEach(problem => {
+            problem.dateCompleted.forEach((dc, index) => {
+                let current_date = dayjs(currDate).format("ddd MMM DD YYYY");
+                if(dc != null){
+                    console.log("dc: " + dc.toDate().toDateString());
+                    console.log(current_date);
+                    if(current_date === dc.toDate().toDateString()){
+                        problemsToDisplay.push(problem);
+                    }   
+                }
+
+            })
+        });
+
+    problemsToDisplay.forEach(problem => {
+        console.log("ENTRY");
+        let probName = problem ? problems.find(p => p.link === problem.problemLink) : null;
+        console.log("PROBNAME: " + probName.title);
+        problem.prob_name = probName.title;
+    })
+
+
+    // Deduplicate the days before returning
+    return [...new Set(problemsToDisplay)];
+  };
+
+  const handleChangeDate = (newDate) => {
+    console.log("NEWDATE" + newDate);
+    setCurrDate(newDate);
+    console.log("NEW CURR DATE: " + currDate);
+    setProbsToDisplay(getData());
+    console.log("probsToDisplay: ", probsToDisplay);
+  }
+
   useEffect(() => {
     const getHighlightedDays = () => {
+        // const currentMonthStart = dayjs().startOf('month');
+        // const currentMonthEnd = dayjs().endOf('month');
+
+        // // Initialize an empty array to store all highlighted days
+        // let allHighlightedDays = [];
+
+        // // Iterate through each userProblem
+        // userProblems.forEach(problem => {
+        //     problem.status.forEach((status, index) => {
+        //         // Check if the status is "Complete" or "Incomplete"
+        //         if (status === "Complete" || status === "Incomplete") {
+        //             // Convert the corresponding dateCompleted to dayjs and check if it's within the current month
+        //             const attemptDate = dayjs(problem.dateCompleted[index].toDate());
+        //             if (attemptDate.isAfter(currentMonthStart) && attemptDate.isBefore(currentMonthEnd)) {
+        //                 // If so, add this day to the allHighlightedDays array
+        //                 allHighlightedDays.push(attemptDate.date());
+        //             }
+        //         }
+        //     });
+        // });
+        /*
+
         const currentMonthStart = dayjs().startOf('month');
         const currentMonthEnd = dayjs().endOf('month');
 
-        // Initialize an empty array to store all highlighted days
         let allHighlightedDays = [];
 
-        // Iterate through each userProblem
         userProblems.forEach(problem => {
             problem.status.forEach((status, index) => {
-                // Check if the status is "Complete" or "Incomplete"
-                if (status === "Complete" || status === "Incomplete") {
-                    // Convert the corresponding dateCompleted to dayjs and check if it's within the current month
-                    const attemptDate = dayjs(problem.dateCompleted[index].toDate());
-                    if (attemptDate.isAfter(currentMonthStart) && attemptDate.isBefore(currentMonthEnd)) {
-                        // If so, add this day to the allHighlightedDays array
-                        allHighlightedDays.push(attemptDate.date());
+                if(status === "Complete"){
+                    const dateCompleted = dayjs(problem.dateCompleted[index].toDate());
+                    if (dateCompleted.isAfter(currentMonthStart) && dateCompleted.isBefore(currentMonthEnd)) {
+                        allHighlightedDays.push(dateCompleted.date());
                     }
                 }
-            });
+            })
+        });
+        */
+        let problemsToDisplay = [];
+        userProblems.forEach(problem => {
+            problem.dateCompleted.forEach((dc, index) => {
+                let current_date = dayjs(currDate).format("ddd MMM DD YYYY");
+                if(dc != null){
+                    console.log("dc: " + dc.toDate().toDateString());
+                    console.log(current_date);
+                    if(current_date === dc.toDate().toDateString()){
+                        problemsToDisplay.push(problem);
+                    }   
+                }
+
+            })
         });
 
         // Deduplicate the days before returning
-        return [...new Set(allHighlightedDays)];
+        return [...new Set(problemsToDisplay)];
     };
-
-    setHighlightedDays(getHighlightedDays());
 }, [userProblems]); // Re-run this effect if userProblems changes
 
         // Ensure userProblems is sorted by the length of their status array in descending order,
@@ -235,10 +306,7 @@ function Stats() {
         console.log(roundedHours);
         return roundedHours;
     };
-    
-    
-    
-    
+
    
     return (
         <div className='stats'>
@@ -302,7 +370,7 @@ function Stats() {
                         calendarWeekNumberHeaderText: 'hrs',
                         calendarWeekNumberText: (weekNumber) => `${calculateHoursSpent(weekNumber)}`,
                     }}>
-                        <DateCalendar
+                        {/* <DateCalendar
                             views={['day']}
                             value={calendarvalue}
                             onChange={(newValue) => {
@@ -336,8 +404,40 @@ function Stats() {
                             '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
                             '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"}
                             }}
+                        /> */}
+                        <DateCalendar 
+                            views={['day']}
+                            value={currDate}
+                            onChange={(newValue) => handleChangeDate(newValue)}
+                            minDate={currentMonthStart}
+                            maxDate={currentMonthEnd}
+                            renderInput={(params) => <TextField {...params} />}
+                            sx={{
+                            '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
+                            '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
+                            '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px", marginRight: "40px"},
+                            '& .MuiPickersCalendarHeader-label': { color: 'var(--main-font-color)' },
+                            '& .MuiDayCalendar-weekDayLabel': { color: 'var(--main-font-color)' },
+                            '& .MuiDayCalendar-header': { backgroundColor: 'var(--boxes-background)', borderRadius: '50px', marginBottom: "10" },
+                            '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
+                            '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
+                            '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"},
+                            '& .MuiPickersDay-root': { color: 'white' }, 
+                            '& .MuiPickersDay-root.Mui-disabled': { color: 'rgba(255, 255, 255, 0.5)' }, 
+                        }}
                         />
                         </LocalizationProvider>
+                        {probsToDisplay.length > 0 && (
+                            <div id = "questions2">Questions Completed</div>
+                        )}
+                        <ul id = "questions">
+                            {probsToDisplay.map((problem, index) => (
+                                <li id = "options" key={index}>
+                                {problem.prob_name ? problem.prob_name : 'No Name'}
+                                </li>
+                            ))}
+                        </ul>
+                        
                     </TabPanel>
                 </SwipeableViews>
             </div>
