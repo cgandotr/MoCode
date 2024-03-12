@@ -14,6 +14,7 @@ import Badge from '@mui/material/Badge';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { Tooltip } from '@mui/material';
 import {List, ListItem, ListItemText} from '@mui/material';
+
 /* Other Imports */
 import dayjs from 'dayjs';
 
@@ -57,8 +58,6 @@ function TabPanel(props) {
       </div>
     );
   }
-  
-
 
 
 /*
@@ -295,64 +294,64 @@ function Stats() {
         });
     
         // Return array of problems that match the specific date
-        console.log(problemsForDate)
         return problemsForDate;
     };
 
+   /*
+    ServerDay()
+    ------------------------------------
+    Custom Object
+    Allows Streak to be render
+    When Hovering Over Date, renders problems submitted
+    ------------------------------------
+    */
+    function ServerDay(props) {
+        const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
 
-    /*
-ServerDay()
-------------------------------------
-Custom Object to with streak indicator
-------------------------------------
-*/
-function ServerDay(props) {
-    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+        const isHighlighted = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+    
+        const [hover, setHover] = useState(false);
 
-    /* If current day is in highlighted days array, then we want to display streak */
-    const isHighlighted = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
-  
-    const [hover, setHover] = useState(false);
+        const renderTooltipContent = (day) => (
+            <List dense>
+            <ListItemText primary={`Submitted Problems - ${dayjs(day).format('MM/DD/YYYY')}`} />
 
-    const renderTooltipContent = (day) => (
-        <List dense>
-        <ListItemText primary={`Submitted Problems - ${dayjs(day).format('MM/DD/YYYY')}`} />
+                {getProblemsForSpecificDate(day).map((userProblem, index) => (
+                    <ListItem key={index}>
+                        <ListItemText primary={`${getProblemTitle(userProblem.problemLink)}`} />
+                    </ListItem>
+                ))}
+            </List>
+        );
+    
 
-            {getProblemsForSpecificDate(day).map((userProblem, index) => (
-                <ListItem key={index}>
-                    <ListItemText primary={`${getProblemTitle(userProblem.problemLink)}`} />
-                </ListItem>
-            ))}
-        </List>
-    );
- 
-
-    return (
-        <Tooltip
-            title={renderTooltipContent(day)}
-            open={hover && isHighlighted}
-            placement="top"
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-        >
-            <Badge
-                key={day.toString()}
-                overlap="circular"
-                badgeContent={isHighlighted ? '🔥' : undefined}
-                sx={{
-                    ...(isHighlighted && {
-                      '.MuiPickersDay-root': { 
-                        backgroundColor: 'var(--boxes-background)',
-                      },
-                    }),
-                }}
+        return (
+            <Tooltip
+                title={renderTooltipContent(day)}
+                open={hover && isHighlighted}
+                placement="top"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
             >
-                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-            </Badge>
-        </Tooltip>
-    );
-}
-   
+                <Badge
+                    key={day.toString()}
+                    overlap="circular"
+                    badgeContent={isHighlighted ? '🔥' : undefined}
+                    sx={{
+                        ...(isHighlighted && {
+                        '.MuiPickersDay-root': { 
+                            backgroundColor: 'var(--boxes-background)',
+                        },
+                        }),
+                    }}
+                >
+                    <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+                </Badge>
+            </Tooltip>
+        );
+    }
+
+
     return (
         <div className='stats'>
             <div id="top-3">

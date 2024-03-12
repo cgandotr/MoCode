@@ -369,7 +369,7 @@ const ProblemRec = ({ id, startTimerEmit, pauseTimerEmit, resetTimerEmit , timer
                 <div className={`title-status-container`}>
                     <Tooltip title={`Problem Status: ${currentUserProblem.status[0]}`}>
                         <img id="status" src={statusImages[currentUserProblem.status[0]]} alt={`Status: ${currentUserProblem.status[0]}`} />
-                    </Tooltip>
+                     </Tooltip>
                     <Tooltip title={currentProblem.title}>
                         <h3 id="title">{currentProblem.title}</h3>
                     </Tooltip>
