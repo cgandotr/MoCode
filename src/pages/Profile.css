@@ -1,22 +1,17 @@
 .Profile {
-    height: 100%;
-    width: 100%;
-    background: var(--background);
-    color: var(--font-color);
-    overflow-y: auto;
-
-
-  }
-
-
-
-
+  height: 100%;
+  width: 100%;
+  background: var(--background);
+  color: var(--font-color);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--faint-font-color) transparent;
+}
 
 #profile-content {
-  display: flex; /* Enable flexbox */
+  display: flex;
   flex-direction: row;
   padding: 40px 20px 0px 20px;
-
 }
 
 #profile-side-bar {
@@ -27,22 +22,20 @@
   display: flex;
   flex-direction: column;
   width: 250px;
-  height: fit-content
-
-  
+  height: fit-content;
 }
 
 #main-info {
-  display: flex; /* Activates Flexbox layout */
-  justify-content: space-between; /* Spaces out the child elements */
-  align-items: start; /* Aligns items to the start of the flex container */
-  width: 100%; /* Ensures the container takes full width */
+  display: flex; 
+  justify-content: space-between; 
+  align-items: start; 
+  width: 100%; 
   margin: 0 0 30px 0;
 }
 
 #profile-img {
-  border-radius: 50%; /* This creates the circular shape */
-  object-fit: cover; /* This ensures the image covers the area without stretching */
+  border-radius: 50%; 
+  object-fit: cover; 
   margin-right: 30;
   height: 90px;
 }
@@ -63,7 +56,6 @@
   padding: 5 5 5 5;
   align-self: center;
   font-size: 10px;
-  
 }
 
 #edit-btn, #save-btn{
@@ -85,15 +77,15 @@
 
 #log-out {
   border-top: 1px solid var(--profile-seperators);
-  display: flex; /* Enables Flexbox */
-  justify-content: center; /* Centers content horizontally */
-  align-items: center; /* Centers content vertically */
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
   padding: 20px 0 0 0;  
 }
 
 #info-extra {
   border-top: 1px solid var(--profile-seperators);
-  display: flex; /* Enables Flexbox */
+  display: flex;
   flex-direction: row;
   padding: 15px;
 }
@@ -101,8 +93,6 @@
 #leetcode-icon {
   height: 30px;
   width: 30px;
-      /* border: 2px solid rgb(4, 167, 255);  */
-
 }
 
 #leetcode-username {
@@ -116,37 +106,26 @@
   flex-direction: row;
   height: fit-content;
   align-items: end;
-    /* border: 2px solid rgb(4, 167, 255);  */
-
-  justify-content: space-between; /* Ensures elements are spaced out */
-  
+  justify-content: space-between; 
 }
 
 #history-title {
-  /*width: fit-content;*/
+  width: fit-content;
   height: fit-content;
-
-  /* border: 2px solid rgb(15, 55, 77);  */
 }
 
 
 #history {
   width: 55%;
-  /* border: 2px solid rgb(4, 167, 255);  */
-
   margin: 0 5% 0 5%;
-  /* border: 3px solid rgba(33, 179, 104, 0.348);  */
-
 }
 
 #problems {
-  /* border: 1px solid var(--boxes-background);  */
   width: 100%;
   height:70vh;
   overflow-y: scroll;
   background: linear-gradient(to top, #6a6a6a29 1%, #ffffff00 15%);
 }
-
 
 #sort-by {
   margin: 8% 1% 2% auto;
@@ -155,58 +134,8 @@
 #info-name{
   font-size: 15px;
 }
-@media (max-width: 524px) {
-  #profile-content {
-    display: flex;
-    flex-direction: column;
-  }
-  #profile-side-bar {
-    display: flex;
-    margin-left: 14%;
-    width: 61%;
-  }
-  #history {
-    margin-left: 11%;
-    width: 80%;
-  }
-  #info {
-    width: 38%;
-  }
-  #info-email {
-    font-size: 61%;
-  }
-  #info-name {
-    font-size: 61%;
-  }
-  
-}
 
-@media (min-width: 524px) and (max-width: 750px) {
-#profile-content {
-  display: flex;
-  flex-direction: column;
-}
-#profile-side-bar {
-  display: flex;
-  margin-left: 22%;
-  width: 50%;
-}
-#history {
-  margin-left: 11%;
-  width: 80%;
-}
-#info {
-  width: 38%;
-}
-#info-email {
-  font-size: 71%;
-}
-#info-name {
-  font-size: 71%;
-}
-}
-/* Responsive adjustments */
-@media (min-width: 750px) and (max-width: 1200px) {
+@media (max-width: 1200px) {
   #profile-side-bar {
     padding: 20 20 30 20;
     margin: 50 0 50 5%;
@@ -217,7 +146,6 @@
   #main-info {
     align-items: center;
     flex-direction: column;
-
   }
 
   #log-out {
@@ -226,10 +154,9 @@
     width: 100%;
   }
   #profile-img {
-    border-radius: 50%; /* This creates the circular shape */
-    object-fit: cover; /* This ensures the image covers the area without stretching */
+    border-radius: 50%; 
+    object-fit: cover;
     margin: 0 0 10px;
-
   }
 
   #info-name{
@@ -245,17 +172,11 @@
 
   #leetcode-icon {
     height: 25px;
-    width: 25px;
-        /* border: 2px solid rgb(4, 167, 255);  */
-  
+    width: 25px;  
   }
   
   #leetcode-username {
     font-size: 18px;
   }
-  
-
-  
 }
-
 
