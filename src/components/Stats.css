@@ -56,16 +56,23 @@
 
 .react-swipeable-view-container {
     /* border: 2px solid rgb(4, 167, 255); */
-    min-width: fit-content;
+    width: auto;
   
 }
 
 #full-width-tabpanel-0 {
-  /* border: 2px solid rgb(191, 208, 217); */
+/* align-items: center; */
+width: fit-content
+}
+
+#full-width-tabpanel-1 {
 /* align-items: center; */
 }
 
+.MuiBox-root {
+  height: fit-content;
 
+}
 
 
 
@@ -76,4 +83,8 @@
   border-radius: 2px;
   font-size: 17px;
 
+}
+ 
+.MuiTypography-root.MuiTypography-body1.css-ahj2mt-MuiTypography-root {
+  width: 100%
 }

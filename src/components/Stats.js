@@ -292,7 +292,7 @@ function Stats() {
                                 sx={{
                                 }}
                             height={225}
-                            width={325}
+                            width={300}
             
                         /> 
                     </TabPanel>
@@ -326,7 +326,7 @@ function Stats() {
                             
 
                             sx={{
-                            '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--faint-font-color)'},
+                            '& .MuiDayCalendar-weekNumberLabel': { color: 'var(--main-font-color)'},
                             '& .MuiDayCalendar-weekNumber': { color: 'var(--faint-font-color)'},
                             '& .MuiDayCalendar-root': { scale: "0.8", marginTop: "-20px"},
                             '& .MuiPickersCalendarHeader-label': { color: 'var(--main-font-color)' },
