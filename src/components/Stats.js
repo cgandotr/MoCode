@@ -1,27 +1,36 @@
-import { useContext , useEffect, useState, React} from 'react';
-
+import { useContext , useEffect, useState, React } from 'react';
 import './Stats.css';
-import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
+
+/* AuthContext Imports */
+import { AuthContext } from '../AuthContext';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek'; // Import isoWeek plugin for dayjs
-
-import Badge from '@mui/material/Badge';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-
-import Switch from '@mui/material/Switch';
 import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab, Typography } from '@mui/material';
-import { tab } from '@testing-library/user-event/dist/tab';
 import TextField from '@mui/material/TextField';
+import Badge from '@mui/material/Badge';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+
+/* Other Imports */
+import dayjs from 'dayjs';
+
+/* Custom imports */
+import { categoryColors } from '../index';
 
 
+/*
+getWeekRange()
+------------------------------------
+Gets start and end dates for a given week number & year
+------------------------------------
+inputs: weekNumber (int)
+        year (int)
+
+outputs: [startofWeek, endofWeek] dates
+*/
 const getWeekRange = (weekNumber, year) => {
     const startOfWeek = dayjs().year(year).week(weekNumber).startOf('week');
     const endOfWeek = startOfWeek.clone().endOf('week');
@@ -52,27 +61,7 @@ function TabPanel(props) {
 
 
 
-const categoryColors = {
-    "Arrays & Hashing":  "#d65a5a",
-    "Two Pointers": "#d6855a",
-    "Sliding Window": "#d6b35a",
-    "Stack": "#b1d65a",
-    "Binary Search": "#5ad666",
-    "Linked List": "#757dd1",
-    "Trees": "#5a96d6",
-    "Tries": "#5a68d6",
-    "Heap / Priority Queue": "#815ad6",
-    "Backtracking": "#bd5ad6",
-    "Graphs": "#d65ab3",
-    "Advanced Graphs": "#d65a64",
-    "1-D Dynamic Programming": "#5B60D0",
-    "2-D Dynamic Programming": "#5B60D0",
-    "Greedy": "#5B60D0",
-    "Intervals": "#5B60D0",
-    "Math & Geometry": "#5B60D0",
-    "Bit Manipulation": "#5B60D0",
-    "JavaScript": "#5B60D0",
-};
+
 
 
 
