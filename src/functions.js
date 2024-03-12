@@ -7,6 +7,8 @@ import { AuthContext } from './AuthContext';
 import problemsJSON from './problems.json';
 
 
+
+
 /*
 ----------------------------------------------------------------------------------------------------------------------------
 BEGIN
@@ -112,7 +114,7 @@ HELPER FUNCTIONS
 /*
 Fetch ALL Questions (from)
 */
-function fetchQuestions() {
+export function fetchQuestions() {
     return problemsJSON;
 }
 
@@ -260,7 +262,7 @@ REC PROBLEMS FUNCTIONS
 
 
 // Weighted random selection helper function
-function weightedRandomSelect(problems, count, allProblems) {
+export function weightedRandomSelect(problems, count, allProblems) {
     const selected = [];
     for (let i = 0; i < count; i++) {
         let sum = 0;
@@ -281,7 +283,7 @@ function weightedRandomSelect(problems, count, allProblems) {
 
 
 
-function generateProblems(userProblems, count) {
+export function generateProblems(userProblems, count) {
     const problems = fetchQuestions()
 
     const probabilityProblems = problems.map(problem => {
@@ -313,13 +315,13 @@ function generateProblems(userProblems, count) {
 }
 
 // Calculate Probability Based on Score
-function calculateProbability(score, k) {
+export function calculateProbability(score, k) {
     return 1 / (1 + Math.exp(-k * (score - 1)));
   }
 
  
 // Calculate Score based on Repeated Question
-function calculateScoreRepeat(userProblem) {
+export function calculateScoreRepeat(userProblem) {
     const currentDate = new Date();
 
     // Initialize both scores with a minimum value of 0.25
@@ -347,7 +349,7 @@ const difficultyToNum = {
 }
 
 // Calculate Score based on New Question
-function calculateScoreNew(problem, averageDifficulty, recentCategories) {
+export function calculateScoreNew(problem, averageDifficulty, recentCategories) {
     let categoryScore = recentCategories.includes(problem.category) ? 1 : 0.25;
     let difficultyScore = Math.max(0.0, Math.min(4, 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficulty)));
      // [.25, 5]
@@ -355,7 +357,7 @@ function calculateScoreNew(problem, averageDifficulty, recentCategories) {
 }
 
 // Top 10 stats for category and difficulty
-function recentStatistics(userProblems, problems) {
+export function recentStatistics(userProblems, problems) {
     let recentCategories = new Set();
     let totalDifficulty = 0;
     let averageDifficulty;
