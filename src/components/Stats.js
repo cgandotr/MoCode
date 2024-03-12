@@ -332,6 +332,30 @@ function Stats() {
                 placement="top"
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
+                PopperProps={{
+                    modifiers: [
+                      {
+                        name: 'offset',
+                        options: {
+                          offset: [0, 8], // Adjust the position of the tooltip (x, y)
+                        },
+                      },
+                    ],
+                    sx: {
+                      // Tooltip background color, text color, etc.
+                      '& .MuiTooltip-tooltip': {
+                        bgcolor: 'rgb(27, 148, 247)',
+                        color: 'white',
+                        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                        witdh: '1300000000px', 
+                        boxRadius: '50 50 50 50',
+                      },
+                      // Tooltip arrow color
+                      '& .MuiTooltip-arrow': {
+                        color: 'background.paper', // Match the tooltip's background
+                      },
+                    },
+                  }}
             >
                 <Badge
                     key={day.toString()}
@@ -446,7 +470,8 @@ function Stats() {
                             '& .MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit.css-1vooibu-MuiSvgIcon-root' : { opacity: '0'},
                             '& .MuiButtonBase-root.Mui-disabled' : {color: 'var(--main-font-color)' },
                             '& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-disabled.css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected' : {backgroundColor: 'var(--button-color)', opacity: "1", color: "white"}
-                            }}
+                            
+                        }}
                         />
                         </LocalizationProvider>
                     </TabPanel>
