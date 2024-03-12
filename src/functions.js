@@ -7,6 +7,8 @@ import { AuthContext } from './AuthContext';
 import problemsJSON from './problems.json';
 
 
+
+
 /*
 ----------------------------------------------------------------------------------------------------------------------------
 BEGIN
@@ -163,7 +165,7 @@ Details:
     This function is used to load the entire set of coding problems that users can be given as recommendations.
     Problems are predefined and stored in problems.json.
 */
-function fetchQuestions() {
+export function fetchQuestions() {
     return problemsJSON;
 }
 
@@ -378,7 +380,7 @@ Details:
 - This function is crucial for generating problem sets that reflect a desired distribution, such as difficulty levels or problem types, based on dynamic user data or predefined criteria.
 ----------------------------------------------
 */
-function weightedRandomSelect(problems, count, allProblems) {
+export function weightedRandomSelect(problems, count, allProblems) {
     const selected = [];
     for (let i = 0; i < count; i++) {
         let sum = 0;
@@ -417,7 +419,7 @@ Details:
 - The function dynamically adapts to the user's progress, focusing on areas where the user may need more practice or exposure to new topics.
 ----------------------------------------------
 */
-function generateProblems(userProblems, count) {
+export function generateProblems(userProblems, count) {
     const problems = fetchQuestions()
 
     const probabilityProblems = problems.map(problem => {
@@ -467,9 +469,10 @@ Details:
 - This method balances the need to focus on areas of importance with the chance of exploring a wider range of problems.
 ----------------------------------------------
 */
-function calculateProbability(score, k) {
+export function calculateProbability(score, k) {
     return 1 / (1 + Math.exp(-k * (score - 1)));
 }
+
 
 /*
 calculateScoreRepeat(userProblem)
@@ -491,7 +494,7 @@ Details:
 Note: The output score range is carefully designed to ensure a balanced emphasis on both recency and frequency, facilitating an optimized repetition schedule tailored to each user's unique problem-solving history.
 ----------------------------------------------
 */
-function calculateScoreRepeat(userProblem) {
+export function calculateScoreRepeat(userProblem) {
     const currentDate = new Date();
 
     // Initialize both scores with a minimum value of 0.25
@@ -538,7 +541,7 @@ Details:
 Note: The scoring range from 0.25 to 5 allows for nuanced differentiation among new problems, ensuring recommendations are both relevant and challenging.
 ----------------------------------------------
 */
-function calculateScoreNew(problem, averageDifficulty, recentCategories) {
+export function calculateScoreNew(problem, averageDifficulty, recentCategories) {
     let categoryScore = recentCategories.includes(problem.category) ? 1 : 0.25;
     let difficultyScore = Math.max(0.0, Math.min(4, 1 - Math.abs(difficultyToNum[problem.difficulty] - averageDifficulty)));
      // [.25, 5]
@@ -565,7 +568,7 @@ Details:
 Note: This function ensures that recommendations stay aligned with the user's current learning path and preferences, even with limited recent activity.
 ----------------------------------------------
 */
-function recentStatistics(userProblems, problems) {
+export function recentStatistics(userProblems, problems) {
     let recentCategories = new Set();
     let totalDifficulty = 0;
     let averageDifficulty;
