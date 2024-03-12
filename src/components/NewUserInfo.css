@@ -1,48 +1,45 @@
 .new-user-info {
-    margin: 50 30% 100 30% ;
-    padding: 10 10 10 10;
-    height: 150;
-    display: flex;        /* Enable Flexbox */
-    flex-direction: column;
-    align-items: center;
+  margin: 50 30% 100 30% ;
+  padding: 10 10 10 10;
+  height: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #alert {
-    transition: all .7s ease-in-out; /* Adjust time and easing function as needed */
-
+  transition: all .7s ease-in-out;
 }
 
 #submit-btn {
-    background-color: rgb(27, 148, 247);
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    padding: 2 2 2 2;
-    width: 50%;
-    margin-left: 10px;
-    border-radius: 30px;
-    font-size: 10;
-    height: 25px;
-
-
+  background-color: rgb(27, 148, 247);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding: 2 2 2 2;
+  width: 50%;
+  margin-left: 10px;
+  border-radius: 30px;
+  font-size: 10;
+  height: 25px;
   }
 
-  #uname {
-    height: 25px;
-    border-radius: 10px;
-    padding: 5;
-    width: fit-content;
-    text-align: center;
-    outline: none;
-    border: 2px solid var(--nav-bar-border)
-  }
+#uname {
+  height: 25px;
+  border-radius: 10px;
+  padding: 5;
+  width: fit-content;
+  text-align: center;
+  outline: none;
+  border: 2px solid var(--nav-bar-border)
+}
 
-  #form{
-    align-items: center;
-    display: flex;
-  }
+#form{
+  align-items: center;
+  display: flex;
+}
 
-  #main-text {
-    text-align: center;
-    margin: 20px;
-    font-weight: 150;
-  }
+#main-text {
+  text-align: center;
+  margin: 20px;
+  font-weight: 150;
+}

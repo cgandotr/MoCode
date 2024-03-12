@@ -1,6 +1,13 @@
 import React from "react";
 import './Footer.css';
 
+
+/*
+Footer
+------------------------------------
+Component that lives at bottom of 'App' Component
+Styling for website
+*/
 function Footer() {
     return (
         <div className='footer'>

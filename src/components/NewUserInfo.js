@@ -1,64 +1,96 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import './NewUserInfo.css';
-import { db } from './../firebase';
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+
+/* AuthContext Imports */
 import { AuthContext } from '../AuthContext';
-import { CircularProgress } from '@mui/material';
+
+/* Firebase Imports */
+import { db } from './../firebase';
+import { doc, setDoc } from "firebase/firestore";
+
+/* MUI Library Imports */
 import Alert from '@mui/material/Alert';
-import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../functions";
-import LoadingPage from "./LoadingPage";
 import Button from '@mui/lab/LoadingButton';
+
+/* Custom Functions Imports */
+import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../functions";
+
+/* Custom Components Imports */
+import LoadingPage from "./LoadingPage";
 
 
 function NewUserInfo() {
-    const [leetcodeUsername, setLeetcodeUsername] = useState('');
+    /*
+    AuthContext Variables
+    */
     const { currentUser, userProblems, setLoadingMessage, setLoadingPage, loadingPage } = useContext(AuthContext);
+    
+    /*
+    State for leetcode username based on user input
+    */
+    const [leetcodeUsername, setLeetcodeUsername] = useState('');
 
-    const [showFailureAlert, setShowFailureAlert] = useState(false); // State to control the visibility of the failure alert
+    /*
+    State for showing failure alert
+        Shown when leetcode username isn't valid
+    */
+    const [showFailureAlert, setShowFailureAlert] = useState(false);
 
-    // Function to show the failure alert for 2 seconds
+
+    /*
+    showTemporaryFailureAlert()
+    ------------------------------------
+    Function that shows failure alert for 2s
+    ------------------------------------
+    */
     const showTemporaryFailureAlert = () => {
-        setShowFailureAlert(true); // Show the alert
-
-        // Set a timeout to hide the alert after 2 seconds
+        setShowFailureAlert(true);
         setTimeout(() => {
-            setShowFailureAlert(false); // Hide the alert
+            setShowFailureAlert(false);
         }, 2000);
     };
 
-
-    
-
-
-
-    
-
+    /*
+    handleSubmit()
+    ------------------------------------
+    Function that handles new user initialization
+    Called by button w/ id = "submit-btn" for leetcode username input
+    ------------------------------------
+    */
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+        
+        // Ensure user is logged in (via google auth)
         if (!currentUser?.__id) {
             alert("No user logged in.");
             return;
         }
-    
-        setLoadingPage(true); // Start the loading process
+        
+        // 1. Check if leetcode username is valid
+        // 3/11/24 - Leetcode API down -> returns true always
+        setLoadingPage(true);
         setLoadingMessage("Checking Username");
-    
+        
         const usernameValid = await isUsernameValid(leetcodeUsername);
         if (usernameValid === false) {
             showTemporaryFailureAlert();
-            setLoadingPage(false); // Stop loading due to invalid username
+            setLoadingPage(false);
             return;
         }
-    
+        
+        // 2. Fetch history for Leetcode
+        // 3/11/24 - Leetcode API down -> return (does nothing)
         setLoadingMessage("Fetching History");
         await populateNewUserHistory(currentUser.__id, usernameValid);
-      
+        
+        // 3. Generate Questions
+        //  Recs 3 problems
         setLoadingMessage("Generating Questions");
         await generateQuestions(currentUser, userProblems);
     
         setLoadingMessage("Updating Username");
-        // Ensure the Firestore update is completed before stopping the loading process
+
+        // Once we initialize New User we not update user for LeetCodeUserName
         try {
             await setDoc(doc(db, 'users', currentUser.__id), {
                 leetcodeUserName: leetcodeUsername,
@@ -70,12 +102,11 @@ function NewUserInfo() {
         
         setTimeout(async () => {
             setLoadingPage(false); 
-
-        }, 1000); // Simulate a delay before Firestore update
+        }, 1000); 
 
     };
     
-
+    /* Display Loading Page if true */
     if (loadingPage) {
         return <LoadingPage/>
     }
