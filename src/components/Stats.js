@@ -283,7 +283,7 @@ function Stats() {
             problem.status.forEach((status, index) => {
                 /* Go through each status in status[] */
                 /* Check if the status is "Complete" or "Incomplete" */
-                if (status === "Complete" || status === "Incomplete") {
+                if (status === "Complete" || status === "InComplete") {
                     /* Get corresponding dateCompleted (by index) */
                     /* Check if it's within the current month */
                     const attemptDate = dayjs(problem.dateCompleted[index].toDate());
