@@ -1,17 +1,10 @@
 .footer {
-  /* Other styles */
   padding: 20px 40px;
   border: .75px solid var(--footer-border-color);
-  font-size: 10px; /* Ensure you include the unit, like px */
-
+  font-size: 10px;
   bottom: 0;
- 
-  
-  
-
 }
   
-
 #foot-text {
   text-align: center;
   color: var(--footer-text-color);

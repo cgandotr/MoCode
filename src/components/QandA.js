@@ -2,6 +2,7 @@ import React from "react";
 import './QandA.css';
 
 function QandA() {
+    /* FAQ Questions */
     const questions = [
         {
             'question': 'What is MoCode?',

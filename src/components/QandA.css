@@ -3,7 +3,6 @@
     width: 60%;
     min-width: 450;
     padding: 30px;
-
 }
 
 #QandA-item {
@@ -34,5 +33,4 @@
     border-radius: 2px;
     color: white;
     background-color: var(--button-color)
-
 }

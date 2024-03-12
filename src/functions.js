@@ -19,72 +19,27 @@ Checks if LeetCode UserName is Valid
 string: LeetCode UserName -> boolean: False,
                              object: Recent Submissions from Valid LeetCode Username
 */
-
-
-
-// https://leetcode.com/graphql?query=query
-// { 
-//    recentAcSubmissionList(username: "camillegandotra", limit: 5) {
-//     id
-//     title
-//     titleSlug
-//     timestamp
-//   }
-// }
-
 export async function isUsernameValid(username) {
     return true;
-//     const endpoint = "https://leetcode.com/graphql"; // LeetCode GraphQL endpoint
-//     const query = `
-//     {
-      
-//         recentAcSubmissionList(username: "${username}", limit: 5) {
-//                 id
-//                 title
-//                 titleSlug
-//                 timestamp
-//               }
-//     }`;
+    try {
+        const response = await fetch(`https://leetcode-api-faisalshohag.vercel.app/${username}`);
+        if (response.status !== 200) {
+            return false;
+        }
 
-//     try {
-//         const response = await fetch('https://mocode-115a.web.app/api/graphql', {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//               query: `{
-//                 matchedUser(username: "yourUsername") {
-//                   activeBadge {
-//                     displayName
-//                     icon
-//                   }
-//                 }
-//               }`,
-//               variables: {}
-//             }),
-//           })
+        const data = await response.json();
+        if (data.errors) {
+            return false;
+        }
 
-//         console.log(response);
-//         if (response.status !== 200) {
-//             return false;
-//         }
+        const submissions = data.recentSubmissions;
+        return submissions;
 
-//         const data = await response.json();
-//         console.log(data); // Logging the data to see the structure
-//         if (data.errors) {
-//             return false;
-//         }
-
-//         // Depending on the exact structure of the response data, you might need to adjust this:
-//         return data.data.matchedUser !== null;
-
-//     } catch (error) {
-//         console.error("Error checking username validity:", error);
-//         return false;
-//     }
+    } catch (error) {
+        console.error("Error checking username validity:", error);
+        return false; 
+    }
 }
-
 
 /*
 Populates User History
@@ -95,21 +50,21 @@ string: userId,
 object: submission history
 */
 export async function populateNewUserHistory(userId, submissions) {
-    // console.log(submissions)
-    // const questions = await fetchQuestions();
+    return;
+    const questions = await fetchQuestions();
 
-    // for (const sub of submissions) {
-    //     const matchingQuestion = questions.find(question => question.title === sub.title);
+    for (const sub of submissions) {
+        const matchingQuestion = questions.find(question => question.title === sub.title);
         
-    //     if (matchingQuestion) {
-    //         const timeStamp = Timestamp.fromMillis(sub.timestamp * 1000);
-    //         const status = sub.statusDisplay === "Accepted" ? "Complete" : "InComplete";
-    //         const timeDuration = null;
-    //         await addUserProblemEntry(userId, matchingQuestion, timeStamp, status, timeDuration);
-    //     }
-    //     else {
-    //     }
-    // }
+        if (matchingQuestion) {
+            const timeStamp = Timestamp.fromMillis(sub.timestamp * 1000);
+            const status = sub.statusDisplay === "Accepted" ? "Complete" : "InComplete";
+            const timeDuration = null;
+            await addUserProblemEntry(userId, matchingQuestion, timeStamp, status, timeDuration);
+        }
+        else {
+        }
+    }
     return;
 }
 
@@ -863,20 +818,3 @@ END
 OLD FUNCTIONS
 ----------------------------------------------------------------------------------------------------------------------------
 */
-
-
-function matchLeetCodeUserName(username) {
-    return `
-
-    https://leetcode.com/graphql?query=query
-    { 
-        matchedUser(username: "${username}") {
-            activeBadge {
-            displayName
-            icon
-            }
-        }
-    }
-`
-
-} 

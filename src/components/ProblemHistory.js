@@ -1,81 +1,79 @@
 import { useContext , React} from 'react';
-import { AuthContext } from '../AuthContext'; // Adjust the path to your AuthContext
 import './ProblemHistory.css';
 
-import CompleteIcon1 from "../extra/complete-1.svg"
-import CompleteIcon2 from "../extra/complete-2.svg";
-import InCompleteIcon1 from "../extra/incomplete-1.svg"
-import InCompleteIcon2 from "../extra/incomplete-2.svg"
+/* AuthContext Imports */
+import { AuthContext } from '../AuthContext';
 
-import { db } from '../firebase';
-import { doc, setDoc, Timestamp, getDoc } from 'firebase/firestore';
+/* Custom imports */
+import { difficultyColors, categoryColors, statusImages } from '../index';
 
+/* MUI Library Imports */
 import Tooltip from '@mui/material/Tooltip';
 
-const statusImages = {
-    "Complete": CompleteIcon1,
-    "InComplete": InCompleteIcon1,
-};
-const categoryColors = {
-    "Arrays & Hashing":  "#d65a5a",
-    "Two Pointers": "#d6855a",
-    "Sliding Window": "#d6b35a",
-    "Stack": "#b1d65a",
-    "Binary Search": "#5ad666",
-    "Linked List": "#757dd1",
-    "Trees": "#5a96d6",
-    "Tries": "#5a68d6",
-    "Heap / Priority Queue": "#815ad6",
-    "Backtracking": "#bd5ad6",
-    "Graphs": "#d65ab3",
-    "Advanced Graphs": "#d65a64",
-    "1-D Dynamic Programming": "#5B60D0",
-    "2-D Dynamic Programming": "#5B60D0",
-    "Greedy": "#5B60D0",
-    "Intervals": "#5B60D0",
-    "Math & Geometry": "#5B60D0",
-    "Bit Manipulation": "#5B60D0",
-    "JavaScript": "#5B60D0",
-};
 
+/*
+ProblemHistory
+------------------------------------
+Problem Component for History
+We flatten out our problems (since status, dateCompleted, and timeDuration are arrays)
+    then feed the properties to this component
+Used in 'Profile' Component
+------------------------------------
+inputs:
+    id (the id of the userProblem passed in)
+    history_status (the status of the userProblem passed in)
+    history_dateCompleted (the date of completion of the userProblem passed in)
+    history_dateCompleted (the time duration of the userProblem passed in)
 
-const difficultyColors = {
-    "Easy":  "#63c742",
-    "Medium": "#e8932c",
-    "Hard": "#D05B5B"
-};
-
-
-
-
+outputs:
+    -
+*/
 const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, history_timeDuration}) => {
-    
+    /*
+    AuthContext Variables
+    */
     const { userProblems, problems } = useContext(AuthContext);
 
-   
+    /*
+    currentUserProblem
+    ------------------------------------
+    links the userProblem matching the id passed in
+    */
     const currentUserProblem = userProblems.find(up => up.__id === id);
+
+    /*
+    currentProblem
+    ------------------------------------
+    links the Problem matching the currentUserProblem
+    */
     const currentProblem = currentUserProblem ? problems.find(p => p.link === currentUserProblem.problemLink) : null;
 
-    
+
+    /* Render null if not able to find matching userProblem or Problem */
     if (!currentUserProblem || !currentProblem) {
         return null;
     }
 
-  
+    /*
+    formatTime()
+    ------------------------------------
+    inputs: time (int) in seconds
 
-  function formatTime(timeInSeconds) {
-    const hours = Math.floor(timeInSeconds / 3600);
-    const minutes = Math.floor((timeInSeconds % 3600) / 60);
-    if (timeInSeconds == null) {
-        return "null"
+    outputs: formatted version of time (string)
+    */
+    function formatTime(timeInSeconds) {
+        const hours = Math.floor(timeInSeconds / 3600);
+        const minutes = Math.floor((timeInSeconds % 3600) / 60);
+        if (timeInSeconds == null) {
+            return "null"
+        }
+        if (hours > 0) {
+        return `${hours}hr, ${minutes}min`;
+        } else {
+        return `${minutes}min`;
+        }
     }
-    if (hours > 0) {
-      return `${hours}hr, ${minutes}min`;
-    } else {
-      return `${minutes}min`;
-    }
-  }
-  
+    
 
     return (
         <div className="history" id='problem'>
@@ -88,7 +86,6 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
                         <h3 id="title" className="history" >{currentProblem.title}</h3>
                     </Tooltip>
                 </div>
-                
                 <Tooltip title={`Difficulty Level`}>
                     <h4 id="difficulty" style={{ backgroundColor: difficultyColors[currentProblem.difficulty] }}>
                         {currentProblem.difficulty}
@@ -100,11 +97,8 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
                     </h4>
                 </Tooltip>
             </div>
-            
             <div id="user-stats">
-                 <h4 id="duration" className='history'> 
-                    {formatTime(history_timeDuration)}
-                </h4>
+                <h4 id="duration" className='history'>{formatTime(history_timeDuration)}</h4>
                 <h4 id="date-completed" className='history'>
                     {history_dateCompleted.toDate().toLocaleDateString("en-US", {
                         month: 'long', 
@@ -112,10 +106,7 @@ const ProblemHistory = ({ id, parent, history_status, history_dateCompleted, his
                     })}
                 </h4>  
 
-            </div>
-               
-              
-            
+            </div> 
         </div>
     );
 }
