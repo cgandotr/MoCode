@@ -21,7 +21,7 @@ git clone https://github.com/cgandotr/MoCode.git
 ```
 2. Install NPM packages
 ```sh
-npm install --legacy-peer-deps
+npm install --force
 ```
 3. Run the application (locally)
 ```sh
