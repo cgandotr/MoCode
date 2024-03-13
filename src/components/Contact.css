@@ -20,6 +20,12 @@
   align-self: center;
   font-size: 10;
 }
+#boxes {
+  display: flex;
+  flex-direction: column;
+  width: 92.9%;
+  
+}
 @media (max-width: 465px) {
   h2 {
     font-size: 40%;
