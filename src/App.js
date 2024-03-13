@@ -58,7 +58,7 @@ function App() {
 
         <div className="intro">
           
-          <div class="code-box">
+          <div className="code-box">
             <code>
               if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
             </code>
