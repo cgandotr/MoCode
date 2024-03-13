@@ -34,3 +34,24 @@
     color: white;
     background-color: var(--button-color)
 }
+@media (max-width: 465px) {
+    .QandA {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+    }
+    #FAQ {
+        margin-left: 16%;
+    }
+    #QandA-item {
+        margin-left: 16%;
+        width: 70%;
+    }
+    #Q {
+        font-size: 47%;
+        
+    }
+    #A {
+        font-size: 40%;
+    }
+}

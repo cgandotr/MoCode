@@ -19,6 +19,16 @@ import { isUsernameValid, populateNewUserHistory, generateQuestions } from "../f
 import LoadingPage from "./LoadingPage";
 
 
+/*
+NewUserInfo
+------------------------------------
+Page that should be displayed once user Signs In w/ Google
+Here we want to enter LeetCode Username and do actions for a New User
+This includes
+    Validating LeetCode UserName (3/11/24 - API DOWN)
+    Grabbing History for User (3/11/24 - API DOWN)
+    Generate New Questions
+*/
 function NewUserInfo() {
     /*
     AuthContext Variables
