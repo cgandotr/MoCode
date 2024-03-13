@@ -65,9 +65,8 @@
 
 #home-main {
   width: 60%;
-
-
 }
+
 @media (min-width: 555px) and (max-width: 780px) {
   #home-content {
     display: flex;
@@ -76,31 +75,11 @@
   #home-main {
     width: 100%;
   }
-  
-  .stats {
-    width: 250%;
-    margin-left: 20%;
-  }
-  .timer {
-    margin-left: 110%;
-  }
-  
-}
-@media (max-width: 555px) {
-  #home-content {
-    display: flex;
-    flex-direction: column;
-  }
-  #home-main {
-    width: 100%;
-  }
-  .stats {
-    width: 250%;
-    margin-left: 20%;
-  }
 
-  .timer {
-    width: 140%;
-    margin-left: 110%;
+  #side-bar {
+    width: 100%;
+    max-width: 100%;
+    align-self: center;
+    margin-bottom: 20px;
   }
 }

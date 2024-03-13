@@ -110,7 +110,7 @@
 }
 
 #history-title {
-  width: fit-content;
+  /*width: fit-content;*/
   height: fit-content;
 }
 
@@ -127,6 +127,7 @@
   background: linear-gradient(to top, #6a6a6a29 1%, #ffffff00 15%);
 }
 
+
 #sort-by {
   margin: 8% 1% 2% auto;
 }
@@ -142,7 +143,6 @@
   }
   #profile-side-bar {
     display: flex;
-    margin-left: 14%;
     width: 61%;
   }
   #history {
@@ -160,32 +160,7 @@
   }
   
 }
-\
-@media (min-width: 524px) and (max-width: 750px) {
-#profile-content {
-  display: flex;
-  flex-direction: column;
-}
-#profile-side-bar {
-  display: flex;
-  margin-left: 22%;
-  width: 50%;
-}
-#history {
-  margin-left: 11%;
-  width: 80%;
-}
-#info {
-  width: 38%;
-}
-#info-email {
-  font-size: 71%;
-}
-#info-name {
-  font-size: 71%;
-}
-}
-/* Responsive adjustments */
+
 @media (min-width: 750px) and (max-width: 1200px) {
   #profile-side-bar {
     padding: 20 20 30 20;
@@ -228,6 +203,30 @@
   
   #leetcode-username {
     font-size: 18px;
+  }
+}
+
+@media (min-width: 524px) and (max-width: 750px) {
+  #profile-content {
+    display: flex;
+    flex-direction: column;
+  }
+  #profile-side-bar {
+    display: flex;
+    align-self: center;
+    width: 40%;
+  }
+  #history {
+    width: 80%;
+    align-self: center;
+    margin-bottom: 10%
+  }
+
+  #info-email {
+    font-size: 71%;
+  }
+  #info-name {
+    font-size: 71%;
   }
 }
 

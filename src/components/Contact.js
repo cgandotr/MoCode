@@ -117,43 +117,42 @@ function Contact() {
                         }}
                     />
                 </div>
-                
                 <div id = "boxes">
-                <TextField
-                    variant="filled"
-                    required
-                    label="Email Address"
-                    size='small'
-                    value={email} onChange={(e) => setEmail(e.target.value)}
-                    sx={{
-                        '& .MuiFilledInput-root': { backgroundColor: "var(--boxes-background)" },
-                        '&.Mui-focused': { backgroundColor: 'var(--boxes-background)' },
-                        '& .MuiInputBase-input': { color: "var(--main-font-color-two)" },
-                        '& .MuiInputBase-colorPrimary': { color: "var(--main-font-color-two)" },
-                        '& .MuiInputLabel-sizeSmall' : { color: "var(--faint-font-color)" },
-                        '& .MuiFilledInput-underline' : { color: "var(--main-font-color-two)" }
-                    }}
-                />
-                <TextField
-                    variant="filled"
-                    label="Message"
-                    multiline
-                    rows={3}
-                    helperText="Enter your message"
-                    value={message} onChange={(e) => setMessage(e.target.value)}
-                    sx={{
-                        '& .MuiFilledInput-root': { backgroundColor: "var(--boxes-background)" },
-                        '&.Mui-focused': { backgroundColor: 'var(--boxes-background)' },
-                        '& .MuiInputBase-input': { color: "var(--main-font-color-two)" },
-                        '& .MuiInputBase-colorPrimary': { color: "var(--main-font-color-two)" },
-                        '& .MuiInputLabel-sizeMedium' : { color: "var(--faint-font-color)" },
-                        '& .MuiFilledInput-underline' : { color: "var(--main-font-color-two)" }
-                    }}
-                />
+                    <TextField
+                        variant="filled"
+                        required
+                        label="Email Address"
+                        size='small'
+                        value={email} onChange={(e) => setEmail(e.target.value)}
+                        sx={{
+                            '& .MuiFilledInput-root': { backgroundColor: "var(--boxes-background)" },
+                            '&.Mui-focused': { backgroundColor: 'var(--boxes-background)' },
+                            '& .MuiInputBase-input': { color: "var(--main-font-color-two)" },
+                            '& .MuiInputBase-colorPrimary': { color: "var(--main-font-color-two)" },
+                            '& .MuiInputLabel-sizeSmall' : { color: "var(--faint-font-color)" },
+                            '& .MuiFilledInput-underline' : { color: "var(--main-font-color-two)" }
+                        }}
+                    />
+                    <TextField
+                        variant="filled"
+                        label="Message"
+                        multiline
+                        rows={3}
+                        helperText="Enter your message"
+                        value={message} onChange={(e) => setMessage(e.target.value)}
+                        sx={{
+                            '& .MuiFilledInput-root': { backgroundColor: "var(--boxes-background)" },
+                            '&.Mui-focused': { backgroundColor: 'var(--boxes-background)' },
+                            '& .MuiInputBase-input': { color: "var(--main-font-color-two)" },
+                            '& .MuiInputBase-colorPrimary': { color: "var(--main-font-color-two)" },
+                            '& .MuiInputLabel-sizeMedium' : { color: "var(--faint-font-color)" },
+                            '& .MuiFilledInput-underline' : { color: "var(--main-font-color-two)" }
+                        }}
+                    />
+                    <Button id="email-btn" variant="contained" color="primary" type="submit" onClick={sendEmail}>
+                            Send Message
+                    </Button>
                 </div>
-                <Button id="email-btn" variant="contained" color="primary" type="submit" onClick={sendEmail}>
-                        Send Message
-                </Button>
             </FormControl>
         </div>
     );
