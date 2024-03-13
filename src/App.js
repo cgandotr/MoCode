@@ -89,8 +89,8 @@ function App() {
     <div className="App">
       <NavBar></NavBar>
       <div id="app-content">
-        <div className="intro">
-          <div class="code-box">
+        <div className="intro">          
+          <div className="code-box">
             <code>
               if (MoCode) &#123;<br></br><span id="animatedText">&nbsp;&nbsp;return {text}</span><br></br>&#125;
             </code>
