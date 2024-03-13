@@ -29,7 +29,6 @@ import ConfirmStatus from './ConfirmStatus';
 /* External Window for leetcode problem */
 let externalWindow = null;
 
-
 /*
 ProblemRec
 ------------------------------------

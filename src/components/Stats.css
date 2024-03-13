@@ -2,33 +2,22 @@
   border-radius: 34px;
   background: var(--boxes-background);
   padding: 30px;
-    /* border: 5px solid rgb(174, 214, 63);  */
-    height: fit-content;
-
+  height: fit-content;
 }
-
 
 #bottom-stats{
   border-top: 1.5px solid var(--problem-outline);
   padding: 5px 0 0 0;
-  /* border: 2px solid rgb(4, 167, 255); */
   height: 60%;
-
-
 }
 #questions {
   color: white;
   margin-left: 10%;
   width: 91%;
   font-size: 11px;
-  
+
 }
-/*#options {
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-  width: 90%;
-}*/
+
 #questions2 {
   color: white;
   font-size: 17px;;
@@ -36,74 +25,38 @@
   margin-top: -10%;
   text-decoration: underline;
 }
-#list {
-    padding: 10px 20px 20px 20px;
 
+#list {
+  padding: 10px 20px 20px 20px;
 }
+
 #three {
   display: flex;
-
-  justify-content: space-between; /* Align items on the main-axis to have space between them */
-  align-items: center; /* Align items on the cross-axis in the center */
-  width: 100%; /* Ensure the div takes full width to spread title and number apart */
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%; 
   
 }
 
 #title3 {
-  white-space: nowrap; /* Keeps the text on a single line */
-  overflow: hidden; /* Hides text that overflows the element's box */
-  text-overflow: ellipsis; /* Adds an ellipsis to indicate overflow */
-  /* border: 3px solid rgb(248, 37, 37);  */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
   width: 90%;
 }
+
 #number {
-  white-space: nowrap; /* Prevent wrapping */
-
+  white-space: nowrap;
 }
-
-
-#stack {
-  /* border: 2px solid rgb(4, 167, 255); */
-}
-
-
-
 
 #switch {
   float: right;
 }
 
-.react-swipeable-view-container {
-    /* border: 2px solid rgb(4, 167, 255); */
-    width: auto;
-  
-}
-
-#full-width-tabpanel-0 {
-/* align-items: center; */
-width: fit-content
-}
-
-#full-width-tabpanel-1 {
-/* align-items: center; */
-}
-
-.MuiBox-root {
-  height: fit-content;
-
-}
-
-
-
 #top-3-words {
   font-style: italic;
-  width: fit-content  ;
+  width: fit-content;
   padding: 3 7 0 7;
   border-radius: 2px;
   font-size: 17px;
-
-}
- 
-.MuiTypography-root.MuiTypography-body1.css-ahj2mt-MuiTypography-root {
-  width: 100%
 }

@@ -74,5 +74,3 @@ with open('problems.json', 'w') as f:
 driver.quit()
 
 print("Scraping completed and data saved to problems.json")
-
-# 62/34/42/44/55/22/...
