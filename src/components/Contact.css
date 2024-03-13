@@ -20,3 +20,29 @@
   align-self: center;
   font-size: 10;
 }
+#boxes {
+  display: flex;
+  flex-direction: column;
+  width: 92.9%;
+  
+}
+@media (max-width: 465px) {
+  h2 {
+    font-size: 40%;
+    margin-left: 13%;
+  }
+  #contact-names {
+    display: flex;
+    width: 77%;
+    margin-left: 13%;
+  }
+  #boxes {
+    display: flex;
+    flex-direction: column;
+    width: 77%;
+    margin-left: 13%;
+  }
+}
+
+   
+}
